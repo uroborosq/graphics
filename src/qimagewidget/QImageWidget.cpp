@@ -1,4 +1,4 @@
-#include "../../include/qimagewidget/QImageWidget.h"
+#include "QImageWidget.h"
 
 QImageWidget::QImageWidget(int* pixels, const int& height,const int& width)
 {
