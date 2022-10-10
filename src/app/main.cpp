@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
     int height = 900;
     int width = 1600;
-    auto pixels = (int*)calloc(height*width*3, 4);
+    auto pixels = (uint8_t*)calloc(height*width*3, 4);
 
     for (int i = 0; i < height; ++i)
     {
