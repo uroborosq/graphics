@@ -11,7 +11,12 @@ find_package(Qt6 REQUIRED COMPONENTS Gui)
 qt_standard_project_setup()
 include_directories(include/qimagewidget/)
 include_directories(include/qinterface/)
-add_executable(horoshoeditor src/app/main.cpp include/qimagewidget/QImageWidget.h src/qimagewidget/QImageWidget.cpp src/qinterface/QInterface.cpp include/qinterface/QInterface.h)
+include_directories(include/pnm/)
+add_executable(horoshoeditor src/app/main.cpp
+        include/pnm/Pnm.h src/pnm/Pnm.cpp
+        include/qimagewidget/QImageWidget.h src/qimagewidget/QImageWidget.cpp
+        include/qinterface/QOpenPictureWindow.h src/qinterface/QOpenPictureWindow.cpp
+        include/qinterface/QMainWindow.h src/qinterface/QMainWindow.cpp include/qinterface/QSavePictureWindow.h src/qinterface/QSavePictureWindow.cpp)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
 

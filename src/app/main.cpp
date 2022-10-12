@@ -2,15 +2,19 @@
 #include <random>
 #include <QApplication>
 #include "QImageWidget.h"
-#include "../../include/qinterface/QInterface.h"
+#include "QOpenPictureWindow.h"
+#include "Pnm.h"
 
 
 int main(int argc, char* argv[]) {
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    std::default_random_engine e;
+
     QApplication app(argc, argv);
 
-    auto interface = new QInterface();
+//    Pnm file("logo.pnm");
+
+    auto interface = new QOpenPictureWindow();
     interface->show();
+
     return QApplication::exec();
+//    return 0;
 }
