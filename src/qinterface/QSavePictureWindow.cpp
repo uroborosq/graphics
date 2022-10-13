@@ -1,15 +1,15 @@
 #include "QSavePictureWindow.h"
 #include "Pnm.h"
 
-QSavePictureWindow::QSavePictureWindow(std::string path) {
+QSavePictureWindow::QSavePictureWindow(const std::string& path) {
 
     this->resize(250, 100);
     auto savePathLine = new QLineEdit();
-    savePathLine->setText("enter path to save the file...");
+    auto label = new QLabel("Введите путь для сохранения файла");
     auto saveButton = new QPushButton("Сохранить");
-    saveButton->setFixedSize(100, 30);
 
     auto layout = new QVBoxLayout();
+    layout->addWidget(label);
     layout->addWidget(savePathLine);
     layout->addWidget(saveButton);
     setLayout(layout);

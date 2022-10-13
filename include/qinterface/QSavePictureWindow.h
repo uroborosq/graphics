@@ -10,7 +10,7 @@
 
 class QSavePictureWindow : public QWidget {
 public:
-    QSavePictureWindow(std::string path);
+    QSavePictureWindow(const std::string& path);
 };
 
 #endif //HOROSHOEDITOR_QSAVEPICTUREWINDOW_H

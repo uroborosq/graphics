@@ -10,11 +10,8 @@ int main(int argc, char* argv[]) {
 
     QApplication app(argc, argv);
 
-//    Pnm file("logo.pnm");
-
     auto interface = new QOpenPictureWindow();
     interface->show();
 
     return QApplication::exec();
-//    return 0;
 }

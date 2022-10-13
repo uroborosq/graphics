@@ -10,7 +10,7 @@
 
 class QMainWindow : public QWidget {
 public:
-    QMainWindow(std::string path);
+    QMainWindow(const std::string& path);
 };
 
 #endif //HOROSHOEDITOR_QMAINWINDOW_H
