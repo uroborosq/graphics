@@ -10,7 +10,7 @@
 
 class QMainWindow : public QWidget {
 public:
-    QMainWindow(std::vector<uint8_t> pixels, const int& height, const int& width, char* tag);
+    QMainWindow(std::string path);
 };
 
 #endif //HOROSHOEDITOR_QMAINWINDOW_H

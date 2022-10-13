@@ -12,7 +12,7 @@ QOpenPictureWindow::QOpenPictureWindow() {
     auto picturePath = new QLineEdit();
     picturePath->setText("enter path to the file...");
 
-    auto openButton = new QPushButton("Open");
+    auto openButton = new QPushButton("Открыть");
     openButton->setFixedSize(100, 30);
 
     auto layout = new QVBoxLayout();
@@ -26,9 +26,8 @@ QOpenPictureWindow::QOpenPictureWindow() {
         this->close();
 
         auto path = picturePath->text().toStdString();
-        Pnm file(path);
 
-        auto mainInterface = new QMainWindow(file.data, file.height, file.width, file.tag);
+        auto mainInterface = new QMainWindow(path);
 
     });
 }

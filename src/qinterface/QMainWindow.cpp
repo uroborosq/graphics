@@ -1,15 +1,17 @@
 #include "QMainWindow.h"
 #include "QImageWidget.h"
 #include "QSavePictureWindow.h"
+#include "Pnm.h"
 
-QMainWindow::QMainWindow(std::vector<uint8_t> pixels, const int& height, const int& width, char* tag){
+QMainWindow::QMainWindow(std::string path){
 
     this->resize(200, 300);
 
-    auto saveButton = new QPushButton("Save as...");
+    auto saveButton = new QPushButton("Сохранить как...");
     saveButton->setFixedSize(100, 30);
 
-    auto picture = new QImageWidget(pixels, height, width, tag);
+    Pnm file(path);
+    auto picture = new QImageWidget(file.data, file.height, file.width, file.tag);
 
     auto layout = new QVBoxLayout();
     layout->addWidget(picture);
@@ -19,7 +21,7 @@ QMainWindow::QMainWindow(std::vector<uint8_t> pixels, const int& height, const i
     this->show();
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
-        auto saveWindow = new QSavePictureWindow();
+        auto saveWindow = new QSavePictureWindow(path);
         saveWindow->show();
     });
 
