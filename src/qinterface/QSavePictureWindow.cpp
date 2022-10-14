@@ -1,7 +1,8 @@
+#include <QMessageBox>
 #include "QSavePictureWindow.h"
 #include "Pnm.h"
 
-QSavePictureWindow::QSavePictureWindow(const std::string& path) {
+QSavePictureWindow::QSavePictureWindow(Pnm* file) {
 
     this->resize(250, 100);
     auto savePathLine = new QLineEdit();
@@ -15,11 +16,15 @@ QSavePictureWindow::QSavePictureWindow(const std::string& path) {
     setLayout(layout);
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
-
-        auto savePicturePath = savePathLine->text().toStdString();
-        Pnm file(path);
-        file.write(savePicturePath);
-
-        this->close();
+        try {
+            auto savePicturePath = savePathLine->text().toStdString();
+            file->write(savePicturePath);
+            this->close();
+        }
+        catch (const std::invalid_argument& e){
+            auto box = new QMessageBox();
+            box->setText(e.what());
+            box->exec();
+        }
     });
 }

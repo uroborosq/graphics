@@ -7,10 +7,11 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include "Pnm.h"
 
 class QSavePictureWindow : public QWidget {
 public:
-    QSavePictureWindow(const std::string& path);
+    explicit QSavePictureWindow(Pnm* file);
 };
 
 #endif //HOROSHOEDITOR_QSAVEPICTUREWINDOW_H

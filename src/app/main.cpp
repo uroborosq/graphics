@@ -9,8 +9,8 @@
 int main(int argc, char* argv[]) {
 
     QApplication app(argc, argv);
-
-    auto interface = new QOpenPictureWindow();
+    Pnm* file = new Pnm();
+    auto interface = new QOpenPictureWindow(file);
     interface->show();
 
     return QApplication::exec();

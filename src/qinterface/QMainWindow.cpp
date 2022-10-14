@@ -3,14 +3,13 @@
 #include "QSavePictureWindow.h"
 #include "Pnm.h"
 
-QMainWindow::QMainWindow(const std::string& path){
+QMainWindow::QMainWindow(Pnm* file){
 
     this->resize(200, 300);
 
     auto saveButton = new QPushButton("Сохранить как...");
 
-    Pnm file(path);
-    auto picture = new QImageWidget(file.data, file.height, file.width, file.tag);
+    auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
 
     auto layout = new QVBoxLayout();
     layout->addWidget(picture);
@@ -18,7 +17,7 @@ QMainWindow::QMainWindow(const std::string& path){
     setLayout(layout);
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
-        auto saveWindow = new QSavePictureWindow(path);
+        auto saveWindow = new QSavePictureWindow(file);
         saveWindow->show();
     });
 

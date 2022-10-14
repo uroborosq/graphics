@@ -7,10 +7,11 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include "Pnm.h"
 
 class QOpenPictureWindow : public QWidget {
 public:
-    QOpenPictureWindow();
+    explicit QOpenPictureWindow(Pnm* file);
 };
 
 #endif //HOROSHOEDITOR_QOPENPICTUREWINDOW_H

@@ -7,10 +7,10 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
-
+#include "Pnm.h"
 class QMainWindow : public QWidget {
 public:
-    QMainWindow(const std::string& path);
+    QMainWindow(Pnm* file);
 };
 
 #endif //HOROSHOEDITOR_QMAINWINDOW_H

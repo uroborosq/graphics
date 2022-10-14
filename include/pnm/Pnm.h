@@ -15,9 +15,10 @@ public :
     int max;
     char tag[2];
     std::vector<uint8_t> data;
-
+    Pnm();
     explicit Pnm(const std::string &path);
-    bool write(const std::string &path);
+    void write(const std::string &path);
+    void read(const std::string &path);
 private:
     bool readTag(std::ifstream *ifstream);
 };
