@@ -13,6 +13,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file) {
     auto label = new QLabel("Введите путь к файлу");
     auto picturePath = new QLineEdit();
     auto openButton = new QPushButton("Открыть");
+    openButton->setAutoDefault(true);
     auto layout = new QVBoxLayout();
 
     layout->addWidget(label);

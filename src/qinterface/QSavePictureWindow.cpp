@@ -8,6 +8,7 @@ QSavePictureWindow::QSavePictureWindow(Pnm* file) {
     auto savePathLine = new QLineEdit();
     auto label = new QLabel("Введите путь для сохранения файла");
     auto saveButton = new QPushButton("Сохранить");
+    saveButton->setAutoDefault(true);
 
     auto layout = new QVBoxLayout();
     layout->addWidget(label);

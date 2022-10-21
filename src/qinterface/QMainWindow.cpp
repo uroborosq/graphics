@@ -8,6 +8,7 @@ QMainWindow::QMainWindow(Pnm* file){
     this->resize(200, 300);
 
     auto saveButton = new QPushButton("Сохранить как...");
+    saveButton->setAutoDefault(true);
 
     auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
 
