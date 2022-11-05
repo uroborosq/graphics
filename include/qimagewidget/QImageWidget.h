@@ -6,7 +6,7 @@
 class QImageWidget : public QLabel
 {
 public:
-    QImageWidget(std::vector<uint8_t>, const int&, const int&, char*);
+    QImageWidget(std::vector<float>, const int&, const int&, char*);
 };
 
 #endif //___QIMAGEWIDGET_H
