@@ -14,11 +14,22 @@ qt_standard_project_setup()
 include_directories(include/qimagewidget/)
 include_directories(include/qinterface/)
 include_directories(include/pnm/)
+include_directories(include/colorspaces)
+include_directories(include/colorchannels)
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
         include/qimagewidget/QImageWidget.h src/qimagewidget/QImageWidget.cpp
         include/qinterface/QOpenPictureWindow.h src/qinterface/QOpenPictureWindow.cpp
-        include/qinterface/QMainWindow.h src/qinterface/QMainWindow.cpp include/qinterface/QSavePictureWindow.h src/qinterface/QSavePictureWindow.cpp)
+        include/qinterface/QMainWindow.h src/qinterface/QMainWindow.cpp
+        include/qinterface/QSavePictureWindow.h src/qinterface/QSavePictureWindow.cpp
+        include/colorchannels/selectcolorchannel.h src/colorchannels/selectcolorchannel.cpp
+        include/colorspaces/CMYColorSpace.h src/colorspaces/CMYColorSpace.cpp
+        include/colorspaces/HSLColorSpace.h src/colorspaces/HSLColorSpace.cpp
+        include/colorspaces/HSVColorSpace.h src/colorspaces/HSVColorSpace.cpp
+        include/colorspaces/YCbCr_601ColorSpace.h src/colorspaces/YCbCr_601ColorSpace.cpp
+        include/colorspaces/YCbCr_709ColorSpace.h src/colorspaces/YCbCr_709ColorSpace.cpp
+        include/colorspaces/YCoCgColorSpace.h src/colorspaces/YCoCgColorSpace.cpp
+        )
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
 
