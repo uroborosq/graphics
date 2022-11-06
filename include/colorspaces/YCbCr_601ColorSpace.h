@@ -2,8 +2,8 @@
 // Created by kotyangensss on 06.11.2022.
 //
 
-#ifndef HOROSHOEDITOR_YCBCR_601_H
-#define HOROSHOEDITOR_YCBCR_601_H
+#ifndef HOROSHOEDITOR_YCBCR_601COLORSPACE_H
+#define HOROSHOEDITOR_YCBCR_601COLORSPACE_H
 
 #include "AbstractColorSpace.h"
 
@@ -15,4 +15,4 @@ public:
 
 };
 
-#endif //HOROSHOEDITOR_YCBCR_601_H
+#endif //HOROSHOEDITOR_YCBCR_601COLORSPACE_H
