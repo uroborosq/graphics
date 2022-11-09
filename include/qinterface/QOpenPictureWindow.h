@@ -8,10 +8,12 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include "Pnm.h"
+#include "QMain.h"
+
 
 class QOpenPictureWindow : public QWidget {
 public:
-    explicit QOpenPictureWindow(Pnm* file);
+    explicit QOpenPictureWindow(Pnm* file, QMain* mainWindow);
 };
 
 #endif //HOROSHOEDITOR_QOPENPICTUREWINDOW_H
