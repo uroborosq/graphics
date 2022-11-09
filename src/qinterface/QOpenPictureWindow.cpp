@@ -4,10 +4,10 @@
 #include "QOpenPictureWindow.h"
 #include "QImageWidget.h"
 #include "Pnm.h"
-#include "QMainWindow.h"
+#include "QMain.h"
 
 
-QOpenPictureWindow::QOpenPictureWindow(Pnm *file) {
+QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
     this->resize(200, 100);
 
     auto label = new QLabel("Введите путь к файлу");
@@ -26,9 +26,11 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file) {
         auto path = picturePath->text().toStdString();
         try {
             file->read(path);
-            auto mainInterface = new QMainWindow(file);
             this->close();
-            mainInterface->show();
+            auto oldPicture = mainWindow->centralWidget();
+            auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
+            mainWindow->setCentralWidget(picture);
+            delete oldPicture;
         }
         catch (const std::invalid_argument &e) {
             auto messageBox = new QMessageBox();

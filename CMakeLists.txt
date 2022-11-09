@@ -18,7 +18,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
         include/qimagewidget/QImageWidget.h src/qimagewidget/QImageWidget.cpp
         include/qinterface/QOpenPictureWindow.h src/qinterface/QOpenPictureWindow.cpp
-        include/qinterface/QMainWindow.h src/qinterface/QMainWindow.cpp include/qinterface/QSavePictureWindow.h src/qinterface/QSavePictureWindow.cpp)
+        include/qinterface/QMain.h src/qinterface/QMain.cpp
+        include/qinterface/QSavePictureWindow.h src/qinterface/QSavePictureWindow.cpp
+        )
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
 
