@@ -2,15 +2,7 @@
 #include <QApplication>
 #include "QOpenPictureWindow.h"
 #include "Pnm.h"
-#include <iostream>
-#include "HSVColorSpace.h"
-#include "CMYColorSpace.h"
-#include "selectcolorchannel.h"
-#include "QImageWidget.h"
-#include "HSLColorSpace.h"
-#include "YCoCgColorSpace.h"
-#include "YCbCr_601ColorSpace.h"
-#include "YCbCr_709ColorSpace.h"
+#include "QMain.h"
 
 int main(int argc, char *argv[]) {
 //// Можно потестить этим
@@ -37,7 +29,7 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
     Pnm* file = new Pnm();
-    auto interface = new QOpenPictureWindow(file);
+    auto interface = new QMain(file);
     interface->show();
 
     return QApplication::exec();
