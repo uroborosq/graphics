@@ -10,14 +10,28 @@
 QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
     this->resize(200, 100);
 
-    auto label = new QLabel("Введите путь к файлу");
+    auto pathLabel = new QLabel("Введите путь к файлу");
     auto picturePath = new QLineEdit();
     auto openButton = new QPushButton("Открыть");
     openButton->setAutoDefault(true);
+
+    auto colorspaceLabel = new QLabel("Выберите цветовое пространство");
+    auto colorspaces = new QComboBox();
+    colorspaces->addItem("RGB");
+    colorspaces->addItem("HSL");
+    colorspaces->addItem("HSV");
+    colorspaces->addItem("YCbCr.601");
+    colorspaces->addItem("YCbCr.709");
+    colorspaces->addItem("YCbCg");
+    colorspaces->addItem("CMY");
+
     auto layout = new QVBoxLayout();
 
-    layout->addWidget(label);
+    layout->addWidget(pathLabel);
     layout->addWidget(picturePath);
+
+    layout->addWidget(colorspaceLabel);
+    layout->addWidget(colorspaces);
     layout->addWidget(openButton);
 
     setLayout(layout);
@@ -27,6 +41,8 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
         try {
             file->read(path);
             this->close();
+            auto colorspace = layout->itemAt(3)->widget();
+            auto colorspaceChoice = colorspaces->currentText();
             auto oldPicture = mainWindow->centralWidget();
             auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
             mainWindow->setCentralWidget(picture);

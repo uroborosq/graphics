@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QComboBox>
 #include "Pnm.h"
 #include "QMain.h"
 
