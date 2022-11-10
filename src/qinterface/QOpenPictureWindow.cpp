@@ -15,7 +15,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
     auto openButton = new QPushButton("Открыть");
     openButton->setAutoDefault(true);
 
-    auto colorspaceLabel = new QLabel("Выберите цветовое пространство");
+    auto colorspaceLabel = new QLabel("Выберите цветовое пространство изображения");
     auto colorspaces = new QComboBox();
     colorspaces->addItem("RGB");
     colorspaces->addItem("HSL");
@@ -32,6 +32,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
 
     layout->addWidget(colorspaceLabel);
     layout->addWidget(colorspaces);
+
     layout->addWidget(openButton);
 
     setLayout(layout);
@@ -40,13 +41,12 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
         auto path = picturePath->text().toStdString();
         try {
             file->read(path);
-            this->close();
-            auto colorspace = layout->itemAt(3)->widget();
             auto colorspaceChoice = colorspaces->currentText();
             auto oldPicture = mainWindow->centralWidget();
             auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
             mainWindow->setCentralWidget(picture);
             delete oldPicture;
+            this->close();
         }
         catch (const std::invalid_argument &e) {
             auto messageBox = new QMessageBox();

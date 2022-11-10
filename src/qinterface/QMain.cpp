@@ -30,8 +30,16 @@ QMain::QMain(Pnm* file){
         saveWindow->show();
     });
 
+    auto colorspaceChange = new QAction("Изменить цветовое пространство");
+    colorspaceChange->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+    connect(colorspaceChange, &QAction::triggered, [&file](){
+        auto changeColorspaceWindow = new QChangeColorspaceWindow();
+        changeColorspaceWindow->show();
+    });
+
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
+    fileMenu->addAction(colorspaceChange);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));

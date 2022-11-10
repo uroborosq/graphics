@@ -31,7 +31,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/colorspaces/YCbCr_601ColorSpace.h src/colorspaces/YCbCr_601ColorSpace.cpp
         include/colorspaces/YCbCr_709ColorSpace.h src/colorspaces/YCbCr_709ColorSpace.cpp
         include/colorspaces/YCoCgColorSpace.h src/colorspaces/YCoCgColorSpace.cpp
-        )
+        include/qinterface/QChangeColorspaceWindow.h src/qinterface/QChangeColorspaceWindow.cpp)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
 
