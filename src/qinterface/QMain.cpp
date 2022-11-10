@@ -18,7 +18,7 @@ QMain::QMain(Pnm* file){
 
     auto openFile = new QAction("Открыть");
     openFile->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
-    connect(openFile, &QAction::triggered, [&file, layout, picture, this](){
+    connect(openFile, &QAction::triggered, [file, layout, picture, this](){
         auto openWindow = new QOpenPictureWindow(file, this);
         openWindow->show();
     });
