@@ -1,6 +1,7 @@
 #include "QChangeColorspaceWindow.h"
+#include "QImageWidget.h"
 
-QChangeColorspaceWindow::QChangeColorspaceWindow() {
+QChangeColorspaceWindow::QChangeColorspaceWindow(Pnm* file, QMain* mainWindow) {
     this->resize(200, 100);
 
     auto colorspaceLabel = new QLabel("Выберите цветовое пространство изображения");
@@ -95,7 +96,68 @@ QChangeColorspaceWindow::QChangeColorspaceWindow() {
     });
 
     connect(confirmButton, &QPushButton::clicked, [=]() {
+        auto colorspace = colorspaces->currentIndex();
+        auto channels = QComboBox(layout->itemAt(3)->widget());
+        auto colorchannel = channels.currentIndex();
+        colorchannel = 3;
+
+        // RGB
+        if (colorspace == 0) {
+            auto data = file->data;
+            auto filteredData = select_color_channel(data, colorchannel);
+            auto oldImage = mainWindow->takeCentralWidget();
+            delete oldImage;
+            auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
+            mainWindow->setCentralWidget(newImage);
+        }
+
+        // HSL
+        if (colorspace == 1) {
+            auto converter = HSLColorSpace();
+            ChangeImageColorspace(converter, colorchannel, file, mainWindow);
+        }
+
+        // HSV
+        if (colorspace == 2) {
+            auto converter = HSVColorSpace();
+            ChangeImageColorspace(converter, colorchannel, file, mainWindow);
+        }
+
+        // YCbCr.601
+        if (colorspace == 3) {
+            auto converter = YCbCr_601ColorSpace();
+            ChangeImageColorspace(converter, colorchannel, file, mainWindow);
+        }
+
+        // YCbCr.709
+        if (colorspace == 4) {
+            auto converter = YCbCr_709ColorSpace();
+            ChangeImageColorspace(converter, colorchannel, file, mainWindow);
+        }
+
+        // YCbCg
+        if (colorspace == 5) {
+            auto converter = YCoCgColorSpace();
+            ChangeImageColorspace(converter, colorchannel, file, mainWindow);
+        }
+
+        // CMY
+        if (colorspace == 6) {
+            auto converter = CMYColorSpace();
+            ChangeImageColorspace(converter, colorchannel, file, mainWindow);
+        }
+
         this->close();
-        delete this;
     });
+}
+
+void QChangeColorspaceWindow::ChangeImageColorspace(AbstractColorSpace& converter, int colorchannel, Pnm* file, QMain* mainWindow) {
+    auto data = file->data;
+    converter.from_rgb(data);
+    auto filteredData = select_color_channel(data, colorchannel);
+    converter.to_rgb(*filteredData);
+    auto oldImage = mainWindow->takeCentralWidget();
+    delete oldImage;
+    auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
+    mainWindow->setCentralWidget(newImage);
 }

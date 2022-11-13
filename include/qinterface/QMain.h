@@ -11,7 +11,6 @@
 #include <QMenu>
 #include <QMenuBar>
 #include "Pnm.h"
-#include "QChangeColorspaceWindow.h"
 
 class QMain : public QMainWindow {
 public:
