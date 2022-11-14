@@ -11,10 +11,16 @@
 #include <QMenu>
 #include <QMenuBar>
 #include "Pnm.h"
+#include "Pixels.h"
 
 class QMain : public QMainWindow {
+private:
+    Pixels* pixels;
+
 public:
-    QMain(Pnm* file);
+    QMain(Pixels*);
+    void openOpenWindow();
+    void openColorSpaceAndChannelWindow();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H

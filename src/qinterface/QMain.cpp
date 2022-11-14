@@ -5,38 +5,41 @@
 #include "Pnm.h"
 #include "QChangeColorspaceWindow.h"
 
-QMain::QMain(Pnm* file){
+void QMain::openOpenWindow() {
+    auto openWindow = new QOpenPictureWindow(pixels, this);
+    openWindow->show();
+}
 
+void QMain::openColorSpaceAndChannelWindow() {
+    auto changeColorspaceWindow = new QChangeColorspaceWindow(pixels, this);
+    changeColorspaceWindow->show();
+}
+
+
+QMain::QMain(Pixels* pixels_){
+    pixels = pixels_;
     this->resize(200, 300);
     auto layout = new QVBoxLayout();
 
     auto saveButton = new QPushButton("Сохранить как...");
     saveButton->setAutoDefault(true);
 
-    //auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
+    auto picture = new QImageWidget(pixels);
 
     auto fileMenu = new QMenu("Файл");
 
     auto openFile = new QAction("Открыть");
     openFile->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
-    connect(openFile, &QAction::triggered, [file, this](){
-        auto openWindow = new QOpenPictureWindow(file, this);
-        openWindow->show();
-    });
 
     auto saveFile = new QAction("Сохранить как");
     saveFile->setShortcut(QKeySequence(Qt::CTRL | static_cast<Qt::Key>(Qt::SHIFT) + Qt::Key_S));
-    connect(saveFile, &QAction::triggered, [file](){
-        auto saveWindow = new QSavePictureWindow(file);
+    connect(saveFile, &QAction::triggered, this, [this](){
+        auto saveWindow = new QSavePictureWindow(pixels);
         saveWindow->show();
     });
 
     auto colorspaceChange = new QAction("Изменить цветовое пространство");
     colorspaceChange->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
-    connect(colorspaceChange, &QAction::triggered, [file, this](){
-        auto changeColorspaceWindow = new QChangeColorspaceWindow(file, this);
-        changeColorspaceWindow->show();
-    });
 
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
@@ -53,11 +56,15 @@ QMain::QMain(Pnm* file){
     menuBar->addAction(close);
 
     this->setMenuBar(menuBar);
-    //this->setCentralWidget(picture);
+    this->setCentralWidget(picture);
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
-        auto saveWindow = new QSavePictureWindow(file);
+        auto saveWindow = new QSavePictureWindow(pixels);
         saveWindow->show();
     });
+    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
+    connect(openFile, &QAction::triggered, this, &QMain::openOpenWindow);
 
 }
+
+

@@ -16,10 +16,10 @@ enum ColorSpace {
     RGB,
     HSL,
     HSV,
-    CMY,
     YCbCr_601,
     YCbCr_709,
     YCoCg,
+    CMY,
 };
 
 AbstractColorSpace* chooseConverter(const ColorSpace&);

@@ -17,11 +17,11 @@
 #include "selectcolorchannel.h"
 #include "QImageWidget.h"
 #include "QMain.h"
+#include "Pixels.h"
 
 class QChangeColorspaceWindow : public QWidget {
 public:
-    explicit QChangeColorspaceWindow(Pnm* file, QMain* mainWindow);
-    void ChangeImageColorspace(AbstractColorSpace& converter, int colorchannel, Pnm* file, QMain* mainWindow);
+    explicit QChangeColorspaceWindow(Pixels*, QMain* mainWindow);
 };
 
 #endif //HOROSHOEDITOR_QCHANGECOLORSPACEWINDOW_H

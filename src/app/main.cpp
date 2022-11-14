@@ -10,16 +10,11 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-    Pnm* file = new Pnm("1.pnm");
+    Pixels* pixels = new Pixels();
 
-    auto* pixels = new Pixels(file->data, file->width, file->height, file->tag, ColorSpace::RGB, ColorChannel::Все);
+    auto interface = new QMain(pixels);
+    interface->show();
 
-//    auto interface = new QMain(file);
-//    interface->show();
-    pixels->setColorSpace(ColorSpace::CMY);
-    pixels->setColorChannel(ColorChannel::Третий);
-    auto* widget = new QImageWidget(pixels);
-    widget->show();
     return QApplication::exec();
 
 }

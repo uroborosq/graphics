@@ -24,3 +24,27 @@ std::vector<float>* select_color_channel(const std::vector<float>& pixels, const
 
     return filtered_pixels;
 }
+
+std::vector<float>* remove_other_channels(const std::vector<float>& pixels, const ColorChannel& colorChannel)
+{
+    auto* filtered_pixels = new std::vector<float>();
+    if (colorChannel == ColorChannel::Все)
+    {
+        for (float pixel : pixels)
+        {
+            filtered_pixels->push_back(pixel);
+        }
+        return filtered_pixels;
+    }
+
+    for (std::size_t i = colorChannel - 1; i < filtered_pixels->size(); i += 3)
+    {
+        for (float pixel : pixels)
+        {
+            filtered_pixels->push_back(pixel);
+        }
+        return filtered_pixels;
+    }
+
+    return filtered_pixels;
+}

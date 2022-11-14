@@ -8,6 +8,11 @@
 
 Pixels::Pixels() {
     values = std::vector<float>();
+    colorSpace = ColorSpace::RGB;
+    colorChannel = ColorChannel::Все;
+    width = 0;
+    height = 0;
+    format = PnmFormat::P6;
 }
 
 Pixels::Pixels(const std::vector<float> &values_, const int& width_, const int& height_, char* tag_, const ColorSpace& colorSpace_, const ColorChannel& colorChannel_) {

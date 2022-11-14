@@ -1,11 +1,9 @@
 #include "QImageWidget.h"
-#include "ColorChannelEnum.h"
 QImageWidget::QImageWidget(Pixels* pixels)
 {
     auto height = pixels->getHeight();
     auto width = pixels->getWidth();
-    std::vector<float> values;
-    values = pixels->getValues();
+    std::vector<float> values = pixels->getValues();
 
     if (pixels->getColorSpace() != ColorSpace::RGB)
     {

@@ -1,8 +1,9 @@
 #include <QMessageBox>
 #include "QSavePictureWindow.h"
 #include "Pnm.h"
+#include "selectcolorchannel.h"
 
-QSavePictureWindow::QSavePictureWindow(Pnm* file) {
+QSavePictureWindow::QSavePictureWindow(Pixels* pixels) {
 
     this->resize(250, 100);
     auto savePathLine = new QLineEdit();
@@ -34,7 +35,20 @@ QSavePictureWindow::QSavePictureWindow(Pnm* file) {
         try {
             auto colorspaceChoice = colorspaces->currentIndex();
             auto savePicturePath = savePathLine->text().toStdString();
-            file->write(savePicturePath);
+            Pnm file;
+            file.tag[0] = 'P';
+            if (pixels->getTag() == PnmFormat::P5)
+                file.tag[1] = '5';
+            else
+            {
+                if (pixels->getColorChannel() == ColorChannel::Все)
+                    file.tag[1] = '6';
+                else
+                    file.tag[1] = '5';
+            }
+
+            file.data = *remove_other_channels(pixels->getValues(), pixels->getColorChannel());
+            file.write(savePicturePath);
             this->close();
         }
         catch (const std::invalid_argument& e){

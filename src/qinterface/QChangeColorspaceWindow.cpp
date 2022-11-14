@@ -1,7 +1,7 @@
 #include "QChangeColorspaceWindow.h"
 #include "QImageWidget.h"
 
-QChangeColorspaceWindow::QChangeColorspaceWindow(Pnm* file, QMain* mainWindow) {
+QChangeColorspaceWindow::QChangeColorspaceWindow(Pixels* pixels, QMain* mainWindow) {
     this->resize(200, 100);
 
     auto colorspaceLabel = new QLabel("Выберите цветовое пространство изображения");
@@ -96,76 +96,19 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pnm* file, QMain* mainWindow) {
     });
 
     connect(confirmButton, &QPushButton::clicked, [=]() {
-        auto colorspace = colorspaces->currentIndex();
-        auto channels = (QComboBox*)layout->itemAt(3)->widget();
-        auto colorchannel = channels->currentIndex();
-        if (colorchannel != 0) {
-            colorchannel--;
+        auto colorSpace = ColorSpace(colorspaces->currentIndex());
+        auto colorChannel  = ColorChannel(((QComboBox*)layout->itemAt(3)->widget())->currentIndex());
 
-            // RGB
-            if (colorspace == 0) {
-                auto data = file->data;
-//                auto filteredData = select_color_channel(data, colorchannel);
-//                auto oldImage = mainWindow->takeCentralWidget();
-//                delete oldImage;
-//                auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
-//                mainWindow->setCentralWidget(newImage);
-            }
+        auto oldImage = mainWindow->takeCentralWidget();
+        delete oldImage;
 
-            // HSL
-            if (colorspace == 1) {
-                auto converter = HSLColorSpace();
-                ChangeImageColorspace(converter, colorchannel, file, mainWindow);
-            }
+        pixels->setColorSpace(colorSpace);
+        pixels->setColorChannel(colorChannel);
 
-            // HSV
-            if (colorspace == 2) {
-                auto converter = HSVColorSpace();
-                ChangeImageColorspace(converter, colorchannel, file, mainWindow);
-            }
-
-            // YCbCr.601
-            if (colorspace == 3) {
-                auto converter = YCbCr_601ColorSpace();
-                ChangeImageColorspace(converter, colorchannel, file, mainWindow);
-            }
-
-            // YCbCr.709
-            if (colorspace == 4) {
-                auto converter = YCbCr_709ColorSpace();
-                ChangeImageColorspace(converter, colorchannel, file, mainWindow);
-            }
-
-            // YCbCg
-            if (colorspace == 5) {
-                auto converter = YCoCgColorSpace();
-                ChangeImageColorspace(converter, colorchannel, file, mainWindow);
-            }
-
-            // CMY
-            if (colorspace == 6) {
-                auto converter = CMYColorSpace();
-                ChangeImageColorspace(converter, colorchannel, file, mainWindow);
-            }
-        }
-        else {
-//            auto oldImage = mainWindow->takeCentralWidget();
-//            delete oldImage;
-//            auto newImage = new QImageWidget(file->data, file->height, file->width, file->tag);
-//            mainWindow->setCentralWidget(newImage);
-        }
+        auto newImage = new QImageWidget(pixels);
+        mainWindow->setCentralWidget(newImage);
 
         this->close();
     });
 }
 
-void QChangeColorspaceWindow::ChangeImageColorspace(AbstractColorSpace& converter, int colorchannel, Pnm* file, QMain* mainWindow) {
-    auto data = file->data;
-    converter.from_rgb(data);
-//    auto filteredData = select_color_channel(data, colorchannel);
-//    converter.to_rgb(*filteredData);
-//    auto oldImage = mainWindow->takeCentralWidget();
-//    delete oldImage;
-//    auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
-    //mainWindow->setCentralWidget(newImage);
-}
