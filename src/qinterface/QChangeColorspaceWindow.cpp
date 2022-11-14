@@ -99,18 +99,17 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pnm* file, QMain* mainWindow) {
         auto colorspace = colorspaces->currentIndex();
         auto channels = (QComboBox*)layout->itemAt(3)->widget();
         auto colorchannel = channels->currentIndex();
-//        colorchannel = 3;
         if (colorchannel != 0) {
             colorchannel--;
 
             // RGB
             if (colorspace == 0) {
                 auto data = file->data;
-                auto filteredData = select_color_channel(data, colorchannel);
-                auto oldImage = mainWindow->takeCentralWidget();
-                delete oldImage;
-                auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
-                mainWindow->setCentralWidget(newImage);
+//                auto filteredData = select_color_channel(data, colorchannel);
+//                auto oldImage = mainWindow->takeCentralWidget();
+//                delete oldImage;
+//                auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
+//                mainWindow->setCentralWidget(newImage);
             }
 
             // HSL
@@ -150,10 +149,10 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pnm* file, QMain* mainWindow) {
             }
         }
         else {
-            auto oldImage = mainWindow->takeCentralWidget();
-            delete oldImage;
-            auto newImage = new QImageWidget(file->data, file->height, file->width, file->tag);
-            mainWindow->setCentralWidget(newImage);
+//            auto oldImage = mainWindow->takeCentralWidget();
+//            delete oldImage;
+//            auto newImage = new QImageWidget(file->data, file->height, file->width, file->tag);
+//            mainWindow->setCentralWidget(newImage);
         }
 
         this->close();
@@ -163,10 +162,10 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pnm* file, QMain* mainWindow) {
 void QChangeColorspaceWindow::ChangeImageColorspace(AbstractColorSpace& converter, int colorchannel, Pnm* file, QMain* mainWindow) {
     auto data = file->data;
     converter.from_rgb(data);
-    auto filteredData = select_color_channel(data, colorchannel);
-    converter.to_rgb(*filteredData);
-    auto oldImage = mainWindow->takeCentralWidget();
-    delete oldImage;
-    auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
-    mainWindow->setCentralWidget(newImage);
+//    auto filteredData = select_color_channel(data, colorchannel);
+//    converter.to_rgb(*filteredData);
+//    auto oldImage = mainWindow->takeCentralWidget();
+//    delete oldImage;
+//    auto newImage = new QImageWidget(*filteredData, file->height, file->width, file->tag);
+    //mainWindow->setCentralWidget(newImage);
 }

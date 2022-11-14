@@ -13,26 +13,26 @@ QMain::QMain(Pnm* file){
     auto saveButton = new QPushButton("Сохранить как...");
     saveButton->setAutoDefault(true);
 
-    auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
+    //auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
 
     auto fileMenu = new QMenu("Файл");
 
     auto openFile = new QAction("Открыть");
-    openFile->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+    openFile->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
     connect(openFile, &QAction::triggered, [file, this](){
         auto openWindow = new QOpenPictureWindow(file, this);
         openWindow->show();
     });
 
     auto saveFile = new QAction("Сохранить как");
-    saveFile->setShortcut(QKeySequence(Qt::CTRL + static_cast<Qt::Key>(Qt::SHIFT) + Qt::Key_S));
+    saveFile->setShortcut(QKeySequence(Qt::CTRL | static_cast<Qt::Key>(Qt::SHIFT) + Qt::Key_S));
     connect(saveFile, &QAction::triggered, [file](){
         auto saveWindow = new QSavePictureWindow(file);
         saveWindow->show();
     });
 
     auto colorspaceChange = new QAction("Изменить цветовое пространство");
-    colorspaceChange->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+    colorspaceChange->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
     connect(colorspaceChange, &QAction::triggered, [file, this](){
         auto changeColorspaceWindow = new QChangeColorspaceWindow(file, this);
         changeColorspaceWindow->show();
@@ -53,7 +53,7 @@ QMain::QMain(Pnm* file){
     menuBar->addAction(close);
 
     this->setMenuBar(menuBar);
-    this->setCentralWidget(picture);
+    //this->setCentralWidget(picture);
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
         auto saveWindow = new QSavePictureWindow(file);

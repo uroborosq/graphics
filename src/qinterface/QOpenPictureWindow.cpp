@@ -43,8 +43,8 @@ QOpenPictureWindow::QOpenPictureWindow(Pnm *file, QMain* mainWindow) {
             file->read(path);
             auto colorspaceChoice = colorspaces->currentText();
             auto oldPicture = mainWindow->centralWidget();
-            auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
-            mainWindow->setCentralWidget(picture);
+//            auto picture = new QImageWidget(file->data, file->height, file->width, file->tag);
+//            mainWindow->setCentralWidget(picture);
             delete oldPicture;
             this->close();
         }

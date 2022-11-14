@@ -1,24 +1,35 @@
 #include "QImageWidget.h"
-
-QImageWidget::QImageWidget(std::vector<float> pixels, const int& height, const int& width, char* tag)
+#include "ColorChannelEnum.h"
+QImageWidget::QImageWidget(Pixels* pixels)
 {
-    auto image = QImage(width, height, QImage::Format_RGB888);
+    auto height = pixels->getHeight();
+    auto width = pixels->getWidth();
+    std::vector<float> values;
+    values = pixels->getValues();
 
-    if (tag[1] == '6') {
+    if (pixels->getColorSpace() != ColorSpace::RGB)
+    {
+       auto converter = chooseConverter(pixels->getColorSpace());
+       values = converter->to_rgb(values);
+    }
+
+    auto image = QImage(pixels->getWidth(), pixels->getHeight(), QImage::Format_RGB888);
+
+    if (pixels->getTag() == PnmFormat::P6) {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 auto offset = i * width * 3 + j * 3;
-                auto value = qRgb(uint_fast8_t(pixels[offset]), uint_fast8_t(pixels[offset + 1]), uint_fast8_t(pixels[offset + 2]));
+                auto value = qRgb(uint_fast8_t(values[offset]), uint_fast8_t(values[offset + 1]), uint_fast8_t(values[offset + 2]));
                 image.setPixel(j, i, value);
             }
         }
     }
-    else if (tag[1] == '5')
+    else if (pixels->getTag() == PnmFormat::P5)
     {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 auto offset = i * width + j;
-                auto pixel_value = uint_fast8_t(pixels[offset]);
+                auto pixel_value = uint_fast8_t(values[offset]);
                 auto value = qRgb(pixel_value, pixel_value, pixel_value);
                 image.setPixel(j, i, value);
             }

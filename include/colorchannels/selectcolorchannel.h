@@ -5,5 +5,6 @@
 #ifndef HOROSHOEDITOR_SELECTCOLORCHANNEL_H
 #define HOROSHOEDITOR_SELECTCOLORCHANNEL_H
 #include <vector>
-std::vector<float>* select_color_channel(const std::vector<float>&, int);
+#include "ColorChannelEnum.h"
+std::vector<float>* select_color_channel(const std::vector<float>&, const ColorChannel&);
 #endif //HOROSHOEDITOR_SELECTCOLORCHANNEL_H
