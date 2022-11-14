@@ -11,31 +11,21 @@ QSavePictureWindow::QSavePictureWindow(Pixels* pixels) {
     auto saveButton = new QPushButton("Сохранить");
     saveButton->setAutoDefault(true);
 
-    auto colorspaceLabel = new QLabel("Выберите цветовое пространство изображения");
-    auto colorspaces = new QComboBox();
-    colorspaces->addItem("RGB");
-    colorspaces->addItem("HSL");
-    colorspaces->addItem("HSV");
-    colorspaces->addItem("YCbCr.601");
-    colorspaces->addItem("YCbCr.709");
-    colorspaces->addItem("YCbCg");
-    colorspaces->addItem("CMY");
-
     auto layout = new QVBoxLayout();
     layout->addWidget(saveLabel);
     layout->addWidget(savePathLine);
 
-    layout->addWidget(colorspaceLabel);
-    layout->addWidget(colorspaces);
 
     layout->addWidget(saveButton);
     setLayout(layout);
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
         try {
-            auto colorspaceChoice = colorspaces->currentIndex();
             auto savePicturePath = savePathLine->text().toStdString();
             Pnm file;
+            file.width = pixels->getWidth();
+            file.height = pixels->getHeight();
+            file.max = 255;
             file.tag[0] = 'P';
             if (pixels->getTag() == PnmFormat::P5)
                 file.tag[1] = '5';

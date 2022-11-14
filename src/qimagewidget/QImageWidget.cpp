@@ -17,7 +17,7 @@ QImageWidget::QImageWidget(Pixels* pixels)
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 auto offset = i * width * 3 + j * 3;
-                auto value = qRgb(uint_fast8_t(values[offset]), uint_fast8_t(values[offset + 1]), uint_fast8_t(values[offset + 2]));
+                auto value = qRgb(uint8_t(std::round(values[offset])), uint8_t(std::round(values[offset + 1])), uint8_t(std::round(values[offset + 2])));
                 image.setPixel(j, i, value);
             }
         }
@@ -27,7 +27,7 @@ QImageWidget::QImageWidget(Pixels* pixels)
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 auto offset = i * width + j;
-                auto pixel_value = uint_fast8_t(values[offset]);
+                auto pixel_value = uint8_t(values[offset]);
                 auto value = qRgb(pixel_value, pixel_value, pixel_value);
                 image.setPixel(j, i, value);
             }
