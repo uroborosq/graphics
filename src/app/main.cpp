@@ -1,35 +1,12 @@
-#include <iostream>
 #include <QApplication>
-#include "QOpenPictureWindow.h"
-#include "Pnm.h"
 #include "QMain.h"
-
+#include "Pixels.h"
 int main(int argc, char *argv[]) {
-//// Можно потестить этим
-//    QApplication app(argc, argv);
-//    Pnm *file = new Pnm(R"(C:\Progi\project-horosho\cg22-project-horosho\sample1.pnm)");
-//    auto data = file->data;
-//
-//    auto hsl = YCbCr_709ColorSpace();
-//
-//    hsl.from_rgb(data);
-//
-//    auto filtered_data = select_color_channel(data, 3);
-//
-//    hsl.to_rgb(*filtered_data);
-//
-//    auto widget = QImageWidget(*filtered_data, file->height, file->width, file->tag);
-//    widget.show();
-//
-//    std::cout << std::endl;
-//
-//
-//    return QApplication::exec();
-
 
     QApplication app(argc, argv);
-    Pnm* file = new Pnm();
-    auto interface = new QMain(file);
+    auto* pixels = new Pixels();
+
+    auto interface = new QMain(pixels);
     interface->show();
 
     return QApplication::exec();

@@ -1,12 +1,14 @@
-#ifndef ___QIMAGEWIDGET_H
-#define ___QIMAGEWIDGET_H
+#ifndef _QIMAGEWIDGET_H
+#define _QIMAGEWIDGET_H
 
 #include <QLabel>
+#include "PnmFormat.h"
+#include "Pixels.h"
 
 class QImageWidget : public QLabel
 {
 public:
-    QImageWidget(std::vector<float>, const int&, const int&, char*);
+    QImageWidget(Pixels *);
 };
 
 #endif //___QIMAGEWIDGET_H

@@ -2,7 +2,7 @@
 // Created by UroborosQ on 03.11.2022.
 //
 
-#include "../../include/colorspaces/HSLColorSpace.h"
+#include "HSLColorSpace.h"
 #include "cmath"
 
 std::vector<float>& HSLColorSpace::to_rgb(std::vector<float> &pixels) {

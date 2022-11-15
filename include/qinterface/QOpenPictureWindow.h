@@ -7,13 +7,23 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QComboBox>
 #include "Pnm.h"
 #include "QMain.h"
 
 
 class QOpenPictureWindow : public QWidget {
+private:
+    Pixels* pixels;
+    QMain* mainWindow;
+    QLineEdit* picturePath;
+    QComboBox* colorspaces;
+    void openPicture();
+
 public:
-    explicit QOpenPictureWindow(Pnm* file, QMain* mainWindow);
+    explicit QOpenPictureWindow(Pixels*, QMain* mainWindow);
+
+
 };
 
 #endif //HOROSHOEDITOR_QOPENPICTUREWINDOW_H
