@@ -25,7 +25,6 @@ private:
 public:
     explicit QOpenPictureWindow(Pixels*, QMain* mainWindow);
 
-
 };
 
 #endif //HOROSHOEDITOR_QOPENPICTUREWINDOW_H

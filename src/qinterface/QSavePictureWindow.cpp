@@ -15,36 +15,36 @@ QSavePictureWindow::QSavePictureWindow(Pixels* pixels) {
     layout->addWidget(saveLabel);
     layout->addWidget(savePathLine);
 
-
     layout->addWidget(saveButton);
     setLayout(layout);
 
-    connect(saveButton, &QPushButton::clicked, this, [=]() {
-        try {
-            auto savePicturePath = savePathLine->text().toStdString();
-            Pnm file;
-            file.width = pixels->getWidth();
-            file.height = pixels->getHeight();
-            file.max = 255;
-            file.tag[0] = 'P';
-            if (pixels->getTag() == PnmFormat::P5)
-                file.tag[1] = '5';
-            else
-            {
-                if (pixels->getColorChannel() == ColorChannel::Все)
-                    file.tag[1] = '6';
-                else
-                    file.tag[1] = '5';
-            }
+    connect(saveButton, &QPushButton::clicked, this, &QSavePictureWindow::savePicture);
+}
 
-            file.data = *remove_other_channels(pixels->getValues(), pixels->getColorChannel());
-            file.write(savePicturePath);
-            this->close();
+void QSavePictureWindow::savePicture() {
+    auto savePicturePath = savePathLine->text().toStdString();
+    try {
+        Pnm file;
+        file.width = pixels->getWidth();
+        file.height = pixels->getHeight();
+        file.max = 255;
+        file.tag[0] = 'P';
+        if (pixels->getTag() == PnmFormat::P5)
+            file.tag[1] = '5';
+        else {
+            if (pixels->getColorChannel() == ColorChannel::Все)
+                file.tag[1] = '6';
+            else
+                file.tag[1] = '5';
         }
-        catch (const std::invalid_argument& e){
-            auto box = new QMessageBox();
-            box->setText(e.what());
-            box->exec();
-        }
-    });
+
+        file.data = *remove_other_channels(pixels->getValues(), pixels->getColorChannel());
+        file.write(savePicturePath);
+        this->close();
+    }
+    catch (const std::invalid_argument& e){
+        auto box = new QMessageBox();
+        box->setText(e.what());
+        box->exec();
+    }
 }
