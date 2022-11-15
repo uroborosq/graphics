@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QComboBox>
+#include <QFileDialog>
 #include "Pnm.h"
 #include "QMain.h"
 
@@ -19,6 +20,7 @@ private:
     QLineEdit* picturePath;
     QComboBox* colorspaces;
     void openPicture();
+    void findPicture();
 
 public:
     explicit QOpenPictureWindow(Pixels*, QMain* mainWindow);

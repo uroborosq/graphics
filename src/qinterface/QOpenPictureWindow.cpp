@@ -13,6 +13,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pixels* pixels_, QMain* mainWindow_) {
     mainWindow = mainWindow_;
     auto pathLabel = new QLabel("Введите путь к файлу");
     picturePath = new QLineEdit();
+    auto browseButton = new QPushButton("Найти файл");
     auto openButton = new QPushButton("Открыть");
     openButton->setAutoDefault(true);
 
@@ -30,6 +31,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pixels* pixels_, QMain* mainWindow_) {
 
     layout->addWidget(pathLabel);
     layout->addWidget(picturePath);
+    layout->addWidget(browseButton);
 
     layout->addWidget(colorspaceLabel);
     layout->addWidget(colorspaces);
@@ -38,6 +40,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pixels* pixels_, QMain* mainWindow_) {
 
     setLayout(layout);
 
+    connect(browseButton, &QPushButton::clicked, this, &QOpenPictureWindow::findPicture);
     connect(openButton, &QPushButton::clicked, this, &QOpenPictureWindow::openPicture);
 }
 
@@ -61,4 +64,20 @@ void QOpenPictureWindow::openPicture() {
     }
 }
 
+void QOpenPictureWindow::findPicture() {
+
+    QString filename =  QFileDialog::getOpenFileName(
+            this,
+            "Open Document",
+            QDir::currentPath(),
+            "PNM files (*.pnm)");
+
+    if( !filename.isNull() )
+    {
+        qDebug() << "selected file path : " << filename.toUtf8();
+    }
+
+    auto pathText = (QLineEdit*)layout()->itemAt(1)->widget();
+    pathText->setText(filename);
+}
 
