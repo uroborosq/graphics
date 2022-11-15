@@ -20,7 +20,10 @@ private:
 public:
     QMain(Pixels*);
     void openOpenWindow();
+    void openSaveWindow();
     void openColorSpaceAndChannelWindow();
+    void openAssignGammaWindow();
+    void openConvertGammaWindow();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H
