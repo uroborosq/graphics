@@ -3,33 +3,39 @@
 QConvertGammaWindow::QConvertGammaWindow() {
     this->resize(200, 100);
 
-    auto sourceSpaceGroupBox = new QGroupBox("Source space");
-    auto sourceSpaceLayout = new QHBoxLayout();
-    auto profileLabel = new QLabel("Profile: ");
-    auto sourceSpaceValue = new QLabel("sRGB IEC61966-2.1");
-    sourceSpaceLayout->addWidget(profileLabel);
-    sourceSpaceLayout->addWidget(sourceSpaceValue);
-    sourceSpaceGroupBox->setLayout(sourceSpaceLayout);
+    auto grid = new QGridLayout();
 
-    auto destinationSpaceGroupBox = new QGroupBox("Destination space");
+    auto sourceSpaceGroupBox = new QGroupBox("Текущее значение гаммы");
+    auto sourceSpaceLayout = new QHBoxLayout();
+    auto sourceProfileLabel = new QLabel("Значение: ");
+    sourceSpaceLabel = new QLabel();
+    sourceSpaceLabel->setText("2.2");
+    sourceSpaceLayout->addWidget(sourceProfileLabel);
+    sourceSpaceLayout->addWidget(this->sourceSpaceLabel);
+    sourceSpaceGroupBox->setLayout(sourceSpaceLayout);
+    grid->addWidget(sourceSpaceGroupBox, 0, 0);
+
+    auto destinationSpaceGroupBox = new QGroupBox("Задать гамму");
     auto destinationSpaceLayout = new QHBoxLayout();
-    auto destinationSpaceValue = new QComboBox();
-    destinationSpaceValue->addItem("Working RGB - sRGB IEC61966-2.1");
-    destinationSpaceLayout->addWidget(profileLabel);
-    destinationSpaceLayout->addWidget(destinationSpaceValue);
+    auto destinationProfileLabel = new QLabel("Значение: ");
+    destinationSpaceSpinBox = new QDoubleSpinBox();
+    destinationSpaceSpinBox->setValue(0);
+    destinationSpaceSpinBox->setMinimum(0);
+    destinationSpaceSpinBox->setSingleStep(0.2);
+    destinationSpaceLayout->addWidget(destinationProfileLabel);
+    destinationSpaceLayout->addWidget(destinationSpaceSpinBox);
     destinationSpaceGroupBox->setLayout(destinationSpaceLayout);
+    grid->addWidget(destinationSpaceGroupBox, 1, 0);
 
     auto okButton = new QPushButton("OK");
-
-    auto grid = new QGridLayout();
-    grid->addWidget(sourceSpaceGroupBox, 0, 0);
-    grid->addWidget(destinationSpaceGroupBox, 1, 0);
     grid->addWidget(okButton, 2, 0);
 
     setLayout(grid);
 
-    connect(okButton, &QPushButton::clicked, [=]() {
-        this->close();
-    });
+    connect(okButton, &QPushButton::clicked, this, &QConvertGammaWindow::changeGammaValue);
+}
 
+void QConvertGammaWindow::changeGammaValue() {
+    sourceSpaceLabel->setText(QString::number(destinationSpaceSpinBox->value()));
+    this->close();
 }
