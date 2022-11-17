@@ -18,7 +18,13 @@ QImageWidget::QImageWidget() {
     _gammaCorrection = 1 / 2.2;
 }
 
-void QImageWidget::setGamma(const float &newGamma) {
+void QImageWidget::setGamma(float newGamma) {
+    if (newGamma == 0)
+    {
+        newGamma = 1 / 2.2;
+    }
+
+
     if (newGamma < 0) {
         throw std::invalid_argument("Gamma can't be lower than zero");
     }

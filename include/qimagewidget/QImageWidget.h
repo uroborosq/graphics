@@ -19,7 +19,7 @@ private:
 public:
     QImageWidget();
     explicit QImageWidget(Pixels *);
-    void setGamma(const float&);
+    void setGamma(float);
     const float& getGamma() const;
     void updatePixels();
 };

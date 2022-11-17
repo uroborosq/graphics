@@ -81,9 +81,15 @@ const float &Pixels::getGamma() const {
 }
 
 void Pixels::setGamma(const float & newGamma) {
+    auto GammaCorrector = GammaCorrection();
+    if (newGamma == 0)
+    {
+        values = GammaCorrector.changeGamma(values, gamma, newGamma);
+        gamma = 1 / 2.2;
+    }
+
     if (newGamma < 0)
         throw std::invalid_argument("Gamma's value can't be lower than zero");
-    auto GammaCorrector = GammaCorrection();
     values = GammaCorrector.changeGamma(values, gamma, newGamma);
     gamma = newGamma;
 }
