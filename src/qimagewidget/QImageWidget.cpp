@@ -1,33 +1,71 @@
 #include "QImageWidget.h"
-QImageWidget::QImageWidget(Pixels* pixels)
-{
-    auto height = pixels->getHeight();
-    auto width = pixels->getWidth();
-    std::vector<float> values = pixels->getValues();
+#include "GammaCorrection.h"
+#include <iostream>
+QImageWidget::QImageWidget(Pixels *pixels) {
+    _format = pixels->getTag();
+    _height = pixels->getHeight();
+    _width = pixels->getWidth();
+    _displayPixels = pixels->getValues();
+    _gammaCorrection = 1 / 2.2;
 
-    if (pixels->getColorSpace() != ColorSpace::RGB)
-    {
-       auto converter = chooseConverter(pixels->getColorSpace());
-       values = converter->to_rgb(values);
+    convertToRgb(pixels->getColorSpace());
+    proceedGammaCorrection(pixels->getGamma());
+    reloadPixmap();
+}
+
+QImageWidget::QImageWidget() {
+    _displayPixels = std::vector<float>();
+    _gammaCorrection = 1 / 2.2;
+}
+
+void QImageWidget::setGamma(const float &newGamma) {
+    if (newGamma < 0) {
+        throw std::invalid_argument("Gamma can't be lower than zero");
     }
+    auto oldGamma = _gammaCorrection;
+    _gammaCorrection = newGamma;
 
-    auto image = QImage(pixels->getWidth(), pixels->getHeight(), QImage::Format_RGB888);
+    proceedGammaCorrection(oldGamma);
+    reloadPixmap();
+}
 
-    if (pixels->getTag() == PnmFormat::P6) {
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < width; ++j) {
-                auto offset = i * width * 3 + j * 3;
-                auto value = qRgb(uint8_t(std::round(values[offset])), uint8_t(std::round(values[offset + 1])), uint8_t(std::round(values[offset + 2])));
+const float &QImageWidget::getGamma() const {
+    return _gammaCorrection;
+}
+
+void QImageWidget::convertToRgb(const ColorSpace &colorSpace) {
+    if (colorSpace != ColorSpace::RGB) {
+        auto converter = chooseConverter(colorSpace);
+        _displayPixels = converter->to_rgb(_displayPixels);
+    }
+}
+
+void QImageWidget::proceedGammaCorrection(const float& pixelsGamma) {
+    if (pixelsGamma != _gammaCorrection)
+    {
+        auto gammaCorrecter = GammaCorrection();
+        _displayPixels = gammaCorrecter.changeGamma(_displayPixels, pixelsGamma, _gammaCorrection);
+    }
+}
+
+void QImageWidget::reloadPixmap() {
+    auto image = QImage(_width, _height, QImage::Format_RGB888);
+
+    if (_format == PnmFormat::P6) {
+        for (int i = 0; i < _height; ++i) {
+            for (int j = 0; j < _width; ++j) {
+                auto offset = i * _width * 3 + j * 3;
+                auto value = qRgb(uint8_t(std::round(_displayPixels[offset])),
+                                  uint8_t(std::round(_displayPixels[offset + 1])),
+                                  uint8_t(std::round(_displayPixels[offset + 2])));
                 image.setPixel(j, i, value);
             }
         }
-    }
-    else if (pixels->getTag() == PnmFormat::P5)
-    {
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < width; ++j) {
-                auto offset = i * width + j;
-                auto pixel_value = uint8_t(values[offset]);
+    } else if (_format == PnmFormat::P5) {
+        for (int i = 0; i < _height; ++i) {
+            for (int j = 0; j < _width; ++j) {
+                auto offset = i * _width + j;
+                auto pixel_value = uint8_t(_displayPixels[offset]);
                 auto value = qRgb(pixel_value, pixel_value, pixel_value);
                 image.setPixel(j, i, value);
             }

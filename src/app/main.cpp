@@ -12,16 +12,20 @@ int main(int argc, char *argv[]) {
 //    interface->show();
 //
 //    return QApplication::exec();
-//// Можно потестить этим
     QApplication app(argc, argv);
-    Pnm *file = new Pnm(R"(C:\Progi\project-horosho\cg22-project-horosho\sample1.pnm)");
-    auto& data = file->data;
-    auto gc = GammaCorrection();
-    float a = 2;
-    float b = 3;
-    auto newData = gc.changeGamma(data, a, b);
-    auto pixels = Pixels(newData, file->width, file->height, file->tag, ColorSpace(0),ColorChannel(0));
-    auto widget = QImageWidget(&pixels);
+    Pnm *file = new Pnm("2.pnm");
+
+    auto pixels = new Pixels(file->data, file->width, file->height, file->tag, ColorSpace(0),ColorChannel(0), 1 / 2.2);
+
+    pixels->setGamma(0.25);
+
+    auto widget = QImageWidget(pixels);
+    widget.setGamma(3);
+
     widget.show();
+
+
+    widget.show();
+
     return QApplication::exec();
 }

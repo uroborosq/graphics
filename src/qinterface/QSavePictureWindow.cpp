@@ -31,7 +31,7 @@ QSavePictureWindow::QSavePictureWindow(Pixels* pixels) {
                 file.tag[1] = '5';
             else
             {
-                if (pixels->getColorChannel() == ColorChannel::Все)
+                if (pixels->getColorChannel() == ColorChannel::All)
                     file.tag[1] = '6';
                 else
                     file.tag[1] = '5';

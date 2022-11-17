@@ -9,7 +9,7 @@
 
 class GammaCorrection{
 public:
-    std::vector<float>& changeGamma(std::vector<float>&, float&, float&);
+    std::vector<float>& changeGamma(std::vector<float>&,const float&,const float&);
 };
 
 #endif //HOROSHOEDITOR_GAMMACORRECTION_H
