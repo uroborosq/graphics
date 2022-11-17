@@ -70,7 +70,7 @@ void QOpenPictureWindow::findPicture() {
             this,
             "Open Document",
             QDir::currentPath(),
-            "PNM files (*.pnm)");
+            "All files (*.*) ;; PPM files (*.ppm);; PNM files (*.pnm)");
 
     if( !filename.isNull() )
     {
