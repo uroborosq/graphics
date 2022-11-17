@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QDoubleSpinBox>
 
 class QAssignGammaWindow : public QWidget {
 public:

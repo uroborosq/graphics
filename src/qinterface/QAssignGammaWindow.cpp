@@ -3,12 +3,15 @@
 QAssignGammaWindow::QAssignGammaWindow() {
     this->resize(200, 100);
 
-    auto workingRGBButton = new QRadioButton("Working RGB:  sRGB IEC61966-2.1");
-    auto profileButton = new QRadioButton("Profile: ");
+    auto workingRGBButton = new QRadioButton("Интерпретировать как RGB: sRGB IEC61966-2.1");
+    auto profileButton = new QRadioButton("Другое значение: ");
 
+    workingRGBButton->setChecked(true);
 
-    auto gammaBox = new QComboBox();
-    gammaBox->addItem("Adobe RGB(1998)");
+    auto gammaBox = new QDoubleSpinBox();
+    gammaBox->setValue(0);
+    gammaBox->setMinimum(0);
+    gammaBox->setSingleStep(0.2);
 
     auto profileLayout = new QHBoxLayout();
     profileLayout->addWidget(profileButton);
