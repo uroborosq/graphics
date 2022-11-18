@@ -3,10 +3,12 @@
 #include "Pnm.h"
 #include "selectcolorchannel.h"
 
-QSavePictureWindow::QSavePictureWindow(Pixels* pixels) {
+QSavePictureWindow::QSavePictureWindow() {
 
+    isSubmitted = false;
     this->resize(250, 100);
-    auto savePathLine = new QLineEdit();
+
+    savePathLine = new QLineEdit();
     auto saveLabel = new QLabel("Введите путь для сохранения файла");
     auto saveButton = new QPushButton("Сохранить");
     saveButton->setAutoDefault(true);
@@ -21,30 +23,15 @@ QSavePictureWindow::QSavePictureWindow(Pixels* pixels) {
     connect(saveButton, &QPushButton::clicked, this, &QSavePictureWindow::savePicture);
 }
 
-void QSavePictureWindow::savePicture() {
-    auto savePicturePath = savePathLine->text().toStdString();
-    try {
-        Pnm file;
-        file.width = pixels->getWidth();
-        file.height = pixels->getHeight();
-        file.max = 255;
-        file.tag[0] = 'P';
-        if (pixels->getTag() == PnmFormat::P5)
-            file.tag[1] = '5';
-        else {
-            if (pixels->getColorChannel() == ColorChannel::All)
-                file.tag[1] = '6';
-            else
-                file.tag[1] = '5';
-        }
+bool QSavePictureWindow::checkSubmitted() {
+    return isSubmitted;
+}
 
-        file.data = *remove_other_channels(pixels->getValues(), pixels->getColorChannel());
-        file.write(savePicturePath);
-        this->close();
-    }
-    catch (const std::invalid_argument& e){
-        auto box = new QMessageBox();
-        box->setText(e.what());
-        box->exec();
-    }
+void QSavePictureWindow::savePicture() {
+    isSubmitted = true;
+    this->close();
+}
+
+std::string QSavePictureWindow::getPicturePath() {
+    return savePathLine->text().toStdString();
 }

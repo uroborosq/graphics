@@ -8,17 +8,19 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QComboBox>
-#include <QFileDialog>
+#include <QDialog>
 #include "Pnm.h"
 #include "Pixels.h"
 
-class QSavePictureWindow : public QWidget {
+class QSavePictureWindow : public QDialog {
 public:
-    explicit QSavePictureWindow(Pixels*);
+    explicit QSavePictureWindow();
+    std::string getPicturePath();
+    bool checkSubmitted();
 
 private:
-    Pixels* pixels;
     QLineEdit* savePathLine;
+    bool isSubmitted;
     void savePicture();
 
 };

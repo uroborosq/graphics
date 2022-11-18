@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QDialog>
 #include "Pnm.h"
 #include "AbstractColorSpace.h"
 #include "CMYColorSpace.h"
@@ -19,9 +20,18 @@
 #include "QMain.h"
 #include "Pixels.h"
 
-class QChangeColorspaceWindow : public QWidget {
+class QChangeColorspaceWindow : public QDialog {
 public:
-    explicit QChangeColorspaceWindow(Pixels*, QMain* mainWindow);
+    explicit QChangeColorspaceWindow();
+    ColorSpace getColorSpace();
+    ColorChannel getColorChannel();
+    bool checkSubmitted();
+
+private:
+    QComboBox* colorspaces;
+    bool isSubmitted;
+    void changeColorSpace();
+    QComboBox* changeColorChannelBox(int index);
 };
 
 #endif //HOROSHOEDITOR_QCHANGECOLORSPACEWINDOW_H

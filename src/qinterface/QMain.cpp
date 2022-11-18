@@ -8,18 +8,74 @@
 #include "QConvertGammaWindow.h"
 
 void QMain::openOpenWindow() {
-    auto openWindow = new QOpenPictureWindow(pixels, this);
-    openWindow->show();
+    auto openWindow = new QOpenPictureWindow();
+    openWindow->exec();
+    try {
+        if (openWindow->checkSubmitted()) {
+            auto path = openWindow->getPicturePath();
+            auto colorspaceChoice = openWindow->getColorSpace();
+            auto file = Pnm(path);
+            auto oldPicture = this->centralWidget();
+            *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
+            auto picture = new QImageWidget(pixels);
+            this->setCentralWidget(picture);
+
+            delete oldPicture;
+        }
+    }
+    catch (const std::invalid_argument &e) {
+        auto messageBox = new QMessageBox();
+        messageBox->setText(e.what());
+        messageBox->exec();
+    }
 }
 
 void QMain::openSaveWindow() {
-    auto saveWindow = new QSavePictureWindow(pixels);
-    saveWindow->show();
+    auto saveWindow = new QSavePictureWindow();
+    saveWindow->exec();
+    auto savePicturePath = saveWindow->getPicturePath();
+    try {
+        if (saveWindow->checkSubmitted()) {
+            Pnm file;
+            file.width = pixels->getWidth();
+            file.height = pixels->getHeight();
+            file.max = 255;
+            file.tag[0] = 'P';
+            if (pixels->getTag() == PnmFormat::P5)
+                file.tag[1] = '5';
+            else {
+                if (pixels->getColorChannel() == ColorChannel::All)
+                    file.tag[1] = '6';
+                else
+                    file.tag[1] = '5';
+            }
+
+            file.data = *remove_other_channels(pixels->getValues(), pixels->getColorChannel());
+            file.write(savePicturePath);
+        }
+    }
+    catch (const std::invalid_argument& e){
+        auto box = new QMessageBox();
+        box->setText(e.what());
+        box->exec();
+    }
 }
 
 void QMain::openColorSpaceAndChannelWindow() {
-    auto changeColorspaceWindow = new QChangeColorspaceWindow(pixels, this);
-    changeColorspaceWindow->show();
+    auto changeColorspaceWindow = new QChangeColorspaceWindow();
+    changeColorspaceWindow->exec();
+
+    auto colorSpace = changeColorspaceWindow->getColorSpace();
+    auto colorChannel  = changeColorspaceWindow->getColorChannel();
+
+    auto oldImage = this->takeCentralWidget();
+    delete oldImage;
+
+    pixels->setColorSpace(colorSpace);
+    pixels->setColorChannel(colorChannel);
+
+    auto newImage = new QImageWidget(pixels);
+    this->setCentralWidget(newImage);
 }
 
 void QMain::openAssignGammaWindow() {

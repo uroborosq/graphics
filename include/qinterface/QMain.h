@@ -10,6 +10,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMessageBox>
 #include "Pnm.h"
 #include "Pixels.h"
 
