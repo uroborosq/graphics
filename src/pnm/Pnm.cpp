@@ -24,6 +24,7 @@ bool Pnm::readTag(std::ifstream *in) {
 
 void Pnm::read(const std::string &path) {
     std::ifstream in(path, std::ios::in | std::ios::binary);
+    FILE* file = fopen(path.c_str(), "r");
     if (in.fail()) {
         throw std::invalid_argument("FileNotFoundException");
     }
@@ -38,10 +39,13 @@ void Pnm::read(const std::string &path) {
     in.get(space);
     in >> max;
     in.get(space);
+    data = std::vector<float>(height * width * (tag[1] == '5' ? 1 : 3));
+    std::size_t i = 0;
     while (!in.eof())
     {
         in.get(space);
-        data.push_back(float(space));
+        data[i] = (float)(unsigned char)space;
+        i++;
     }
 }
 

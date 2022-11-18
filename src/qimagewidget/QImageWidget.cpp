@@ -13,10 +13,6 @@ QImageWidget::QImageWidget(Pixels *pixels) {
     reloadPixmap();
 }
 
-QImageWidget::QImageWidget() {
-    _displayPixels = std::vector<float>();
-    _gammaCorrection = 1 / 2.2;
-}
 
 void QImageWidget::setGamma(float newGamma) {
     if (newGamma == 0)
@@ -56,17 +52,17 @@ void QImageWidget::proceedGammaCorrection(const float& pixelsGamma) {
 
 void QImageWidget::reloadPixmap() {
     auto image = QImage(_width, _height, QImage::Format_RGB888);
-
     if (_format == PnmFormat::P6) {
         for (int i = 0; i < _height; ++i) {
             for (int j = 0; j < _width; ++j) {
                 auto offset = i * _width * 3 + j * 3;
-                auto value = qRgb(uint8_t(std::round(_displayPixels[offset])),
-                                  uint8_t(std::round(_displayPixels[offset + 1])),
-                                  uint8_t(std::round(_displayPixels[offset + 2])));
+                auto value = qRgb(uint_fast8_t (std::round(_displayPixels[offset])),
+                                  uint_fast8_t(std::round(_displayPixels[offset + 1])),
+                                  uint_fast8_t(std::round(_displayPixels[offset + 2])));
                 image.setPixel(j, i, value);
             }
         }
+
     } else if (_format == PnmFormat::P5) {
         for (int i = 0; i < _height; ++i) {
             for (int j = 0; j < _width; ++j) {
@@ -77,6 +73,6 @@ void QImageWidget::reloadPixmap() {
             }
         }
     }
-    auto pixmap = QPixmap::fromImage(image);
+   auto pixmap = QPixmap::fromImage(image);
     setPixmap(pixmap);
 }

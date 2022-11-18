@@ -17,9 +17,9 @@ Pixels::Pixels() {
     format = PnmFormat::P6;
 }
 
-Pixels::Pixels(const std::vector<float> &values_, const int& width_, const int& height_, const char* tag_,
-               const ColorSpace& colorSpace_=ColorSpace::RGB, const ColorChannel& colorChannel_=ColorChannel::All,
-               const float& gamma_=1 / 2.2) {
+Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, const char *tag_,
+               const ColorSpace &colorSpace_ = ColorSpace::RGB, const ColorChannel &colorChannel_ = ColorChannel::All,
+               const float &gamma_ = 1 / 2.2) {
     values = values_;
     width = width_;
     height = height_;
@@ -30,8 +30,11 @@ Pixels::Pixels(const std::vector<float> &values_, const int& width_, const int& 
 }
 
 const std::vector<float> &Pixels::getValues() {
-    auto filteredPixels = select_color_channel(values, colorChannel);
-    return *filteredPixels;
+    if (colorChannel != ColorChannel::All) {
+        auto filteredPixels = select_color_channel(values, colorChannel);
+        return *filteredPixels;
+    }
+    return values;
 }
 
 const ColorSpace &Pixels::getColorSpace() {
@@ -39,17 +42,14 @@ const ColorSpace &Pixels::getColorSpace() {
 }
 
 void Pixels::setColorSpace(const ColorSpace &colorSpace_) {
-    if (colorSpace != ColorSpace::RGB)
-    {
+    if (colorSpace != ColorSpace::RGB) {
         AbstractColorSpace *converter = chooseConverter(colorSpace);
-        if (converter != nullptr)
-        {
+        if (converter != nullptr) {
             values = converter->to_rgb(values);
         }
     }
     AbstractColorSpace *converter = chooseConverter(colorSpace_);
-    if (converter != nullptr)
-    {
+    if (converter != nullptr) {
         values = converter->from_rgb(values);
     }
 
@@ -72,7 +72,7 @@ const int &Pixels::getHeight() const {
     return height;
 }
 
-const PnmFormat& Pixels::getTag() {
+const PnmFormat &Pixels::getTag() {
     return format;
 }
 
@@ -80,10 +80,9 @@ const float &Pixels::getGamma() const {
     return gamma;
 }
 
-void Pixels::setGamma(const float & newGamma) {
+void Pixels::setGamma(const float &newGamma) {
     auto GammaCorrector = GammaCorrection();
-    if (newGamma == 0)
-    {
+    if (newGamma == 0) {
         values = GammaCorrector.changeGamma(values, gamma, newGamma);
         gamma = 1 / 2.2;
     }
