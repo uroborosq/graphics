@@ -18,18 +18,23 @@ private:
     ColorChannel colorChannel;
     int width;
     int height;
+    float gamma;
     PnmFormat format;
 public:
     Pixels();
-    Pixels(const std::vector<float> &values_, const int& width_, const int& height_, char* tag_, const ColorSpace& colorSpace_, const ColorChannel& colorChannel_);
+    Pixels(const std::vector<float> &values_, const int& width_, const int& height_, const char* tag_,
+           const ColorSpace& colorSpace_, const ColorChannel& colorChannel_,
+           const float& gamma_);
     const std::vector<float>& getValues();
     const ColorSpace& getColorSpace();
     void setColorSpace(const ColorSpace&);
     const ColorChannel& getColorChannel();
     void setColorChannel(const ColorChannel&);
-    const int& getWidth();
-    const int& getHeight();
+    const int& getWidth() const;
+    const int& getHeight() const;
     const PnmFormat& getTag();
+    const float& getGamma() const;
+    void setGamma(const float&);
 };
 
 
