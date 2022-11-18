@@ -11,14 +11,19 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QDoubleSpinBox>
+#include <QDialog>
 
-class QConvertGammaWindow : public QWidget {
+class QConvertGammaWindow : public QDialog {
 public:
-    explicit QConvertGammaWindow();
+    explicit QConvertGammaWindow(double);
+    bool checkSubmited();
+    double getNewGamma();
 
 private:
+    double sourseSpaceValue = 2.2;
     QLabel* sourceSpaceLabel;
     QDoubleSpinBox* destinationSpaceSpinBox;
+    bool isSubmitted;
     void changeGammaValue();
 };
 

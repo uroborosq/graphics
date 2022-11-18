@@ -39,7 +39,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/pixels/ColorSpaceEnum.h src/pixels/ColorSpaceEnum.cpp
         include/pixels/ColorChannelEnum.h
         include/pixels/PnmFormat.h
-        include/qinterface/QAssignGammaWindow.h src/qinterface/QAssignGammaWindow.cpp include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp)
+        include/qinterface/QAssignGammaWindow.h src/qinterface/QAssignGammaWindow.cpp
+        include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp
+        include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)

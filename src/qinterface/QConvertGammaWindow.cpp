@@ -1,17 +1,19 @@
 #include "QConvertGammaWindow.h"
 
-QConvertGammaWindow::QConvertGammaWindow() {
+QConvertGammaWindow::QConvertGammaWindow(double gamma) {
+    isSubmitted = false;
+    sourseSpaceValue = gamma;
     this->resize(200, 100);
 
     auto grid = new QGridLayout();
-
     auto sourceSpaceGroupBox = new QGroupBox("Текущее значение гаммы");
     auto sourceSpaceLayout = new QHBoxLayout();
     auto sourceProfileLabel = new QLabel("Значение: ");
+
     sourceSpaceLabel = new QLabel();
-    sourceSpaceLabel->setText("2.2");
+    sourceSpaceLabel->setText(QString::number(sourseSpaceValue));
     sourceSpaceLayout->addWidget(sourceProfileLabel);
-    sourceSpaceLayout->addWidget(this->sourceSpaceLabel);
+    sourceSpaceLayout->addWidget(sourceSpaceLabel);
     sourceSpaceGroupBox->setLayout(sourceSpaceLayout);
     grid->addWidget(sourceSpaceGroupBox, 0, 0);
 
@@ -36,6 +38,15 @@ QConvertGammaWindow::QConvertGammaWindow() {
 }
 
 void QConvertGammaWindow::changeGammaValue() {
-    sourceSpaceLabel->setText(QString::number(destinationSpaceSpinBox->value()));
+    isSubmitted = true;
     this->close();
+}
+
+bool QConvertGammaWindow::checkSubmited()
+{
+    return isSubmitted;
+}
+
+double QConvertGammaWindow::getNewGamma() {
+    return destinationSpaceSpinBox->value();
 }

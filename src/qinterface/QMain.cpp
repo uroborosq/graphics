@@ -24,12 +24,26 @@ void QMain::openColorSpaceAndChannelWindow() {
 
 void QMain::openAssignGammaWindow() {
     auto assignGammaWindow = new QAssignGammaWindow();
-    assignGammaWindow->show();
+    assignGammaWindow->exec();
+    if (assignGammaWindow->checkSubmited()) {
+        auto oldPicture = this->centralWidget();
+        auto newPicture = new QImageWidget(pixels);
+        newPicture->setGamma(assignGammaWindow->getNewGamma());
+        this->setCentralWidget(newPicture);
+        delete oldPicture;
+    }
 }
 
 void QMain::openConvertGammaWindow() {
-    auto convertGammaWindow = new QConvertGammaWindow();
-    convertGammaWindow->show();
+    auto convertGammaWindow = new QConvertGammaWindow(pixels->getGamma());
+    convertGammaWindow->exec();
+    if (convertGammaWindow->checkSubmited()) {
+        pixels->setGamma(convertGammaWindow->getNewGamma());
+        auto oldPicture = this->centralWidget();
+        auto newPicture = new QImageWidget(pixels);
+        this->setCentralWidget(newPicture);
+        delete oldPicture;
+    }
 }
 
 
