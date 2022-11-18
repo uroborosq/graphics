@@ -16,7 +16,7 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pixels* pixels, QMain* mainWind
 
     auto colorchannelLabel = new QLabel("Выберите цветовой канал");
     auto colorchannels = new QComboBox();
-    colorchannels->addItem("Все");
+    colorchannels->addItem("All");
     colorchannels->addItem("R");
     colorchannels->addItem("G");
     colorchannels->addItem("B");
@@ -41,7 +41,7 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pixels* pixels, QMain* mainWind
         layout->removeWidget(channels);
         delete channels;
         auto newChannels = new QComboBox();
-        newChannels->addItem("Все");
+        newChannels->addItem("All");
 
         // RGB
         if (index == 0) {
