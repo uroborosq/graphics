@@ -13,13 +13,15 @@
 #include <QMessageBox>
 #include "Pnm.h"
 #include "Pixels.h"
+#include "QImageWidget.h"
 
 class QMain : public QMainWindow {
 private:
     Pixels* pixels;
+    QImageWidget* picture;
 
 public:
-    QMain(Pixels*);
+    QMain(Pixels*, QImageWidget*);
     void openOpenWindow();
     void openSaveWindow();
     void openColorSpaceAndChannelWindow();

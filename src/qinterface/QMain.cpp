@@ -15,12 +15,10 @@ void QMain::openOpenWindow() {
             auto path = openWindow->getPicturePath();
             auto colorspaceChoice = openWindow->getColorSpace();
             auto file = Pnm(path);
-            auto oldPicture = this->centralWidget();
             *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
-            auto picture = new QImageWidget(pixels);
+            delete picture;
+            picture = new QImageWidget(pixels);
             this->setCentralWidget(picture);
-
-            delete oldPicture;
         }
     }
     catch (const std::invalid_argument &e) {
@@ -68,25 +66,21 @@ void QMain::openColorSpaceAndChannelWindow() {
     auto colorSpace = changeColorspaceWindow->getColorSpace();
     auto colorChannel  = changeColorspaceWindow->getColorChannel();
 
-    auto oldImage = this->takeCentralWidget();
-    delete oldImage;
+    delete picture;
 
     pixels->setColorSpace(colorSpace);
     pixels->setColorChannel(colorChannel);
 
-    auto newImage = new QImageWidget(pixels);
-    this->setCentralWidget(newImage);
+    picture = new QImageWidget(pixels);
+    this->setCentralWidget(picture);
 }
 
 void QMain::openAssignGammaWindow() {
     auto assignGammaWindow = new QAssignGammaWindow();
     assignGammaWindow->exec();
     if (assignGammaWindow->checkSubmited()) {
-        auto oldPicture = this->centralWidget();
-        auto newPicture = new QImageWidget(pixels);
-        newPicture->setGamma(assignGammaWindow->getNewGamma());
-        this->setCentralWidget(newPicture);
-        delete oldPicture;
+        picture->setGamma(assignGammaWindow->getNewGamma());
+        this->setCentralWidget(picture);
     }
 }
 
@@ -94,17 +88,19 @@ void QMain::openConvertGammaWindow() {
     auto convertGammaWindow = new QConvertGammaWindow(pixels->getGamma());
     convertGammaWindow->exec();
     if (convertGammaWindow->checkSubmited()) {
+        auto gamma = picture->getGamma();
+        delete picture;
         pixels->setGamma(convertGammaWindow->getNewGamma());
-        auto oldPicture = this->centralWidget();
-        auto newPicture = new QImageWidget(pixels);
-        this->setCentralWidget(newPicture);
-        delete oldPicture;
+        picture = new QImageWidget(pixels);
+        picture->setGamma(gamma);
+        this->setCentralWidget(picture);
     }
 }
 
 
-QMain::QMain(Pixels* pixels_){
+QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     pixels = pixels_;
+    picture = picture_;
     this->resize(200, 300);
 
     auto picture = new QImageWidget(pixels);
