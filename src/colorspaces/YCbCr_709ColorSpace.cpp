@@ -6,7 +6,8 @@
 #include <cmath>
 
 std::vector<float> &YCbCr_709ColorSpace::to_rgb(std::vector<float> &pixels){
-    for (std::size_t i = 0; i < pixels.size(); i += 3)
+    auto size = pixels.size();
+    for (std::size_t i = 0; i < size; i += 3)
     {
         float y = pixels[i];
         float cb = pixels[i + 1];
@@ -20,7 +21,8 @@ std::vector<float> &YCbCr_709ColorSpace::to_rgb(std::vector<float> &pixels){
 }
 
 std::vector<float> &YCbCr_709ColorSpace::from_rgb(std::vector<float> &pixels){
-    for (std::size_t i = 0; i < pixels.size(); i += 3)
+    auto size = pixels.size();
+    for (std::size_t i = 0; i < size; i += 3)
     {
         float r = pixels[i];
         float g = pixels[i + 1];

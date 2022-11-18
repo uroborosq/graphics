@@ -8,7 +8,8 @@
 
 std::vector<float> &GammaCorrection::changeGamma(std::vector<float> &pixels, const float &oldGamma,const float &newGamma) {
     auto *newPixels = new std::vector<float>(pixels.size(), 0);
-    for (int i = 0; i < pixels.size(); i++) {
+    auto size = pixels.size();
+    for (int i = 0; i < size; i++) {
         float &pixel = newPixels->at(i);
         pixel = std::pow(std::pow(pixels[i] / 255, 1 / oldGamma), newGamma) * 255;
     }
