@@ -1,11 +1,11 @@
 #include "QChangeColorspaceWindow.h"
 #include "QImageWidget.h"
 
-QChangeColorspaceWindow::QChangeColorspaceWindow(Pixels* pixels, QMain* mainWindow) {
+QChangeColorspaceWindow::QChangeColorspaceWindow() {
     this->resize(200, 100);
 
     auto colorspaceLabel = new QLabel("Выберите цветовое пространство изображения");
-    auto colorspaces = new QComboBox();
+    colorspaces = new QComboBox();
     colorspaces->addItem("RGB");
     colorspaces->addItem("HSL");
     colorspaces->addItem("HSV");
@@ -40,75 +40,82 @@ QChangeColorspaceWindow::QChangeColorspaceWindow(Pixels* pixels, QMain* mainWind
         auto channels = layout->itemAt(3)->widget();
         layout->removeWidget(channels);
         delete channels;
-        auto newChannels = new QComboBox();
-        newChannels->addItem("All");
-
-        // RGB
-        if (index == 0) {
-            newChannels->addItem("R");
-            newChannels->addItem("G");
-            newChannels->addItem("B");
-        }
-
-        // HSL
-        if (index == 1) {
-            newChannels->addItem("H");
-            newChannels->addItem("S");
-            newChannels->addItem("L");
-        }
-
-        // HSV
-        if (index == 2) {
-            newChannels->addItem("H");
-            newChannels->addItem("S");
-            newChannels->addItem("V");
-        }
-
-        // YCbCr.601
-        if (index == 3) {
-            newChannels->addItem("Y");
-            newChannels->addItem("Cb");
-            newChannels->addItem("Cr");
-        }
-
-        // YCbCr.709
-        if (index == 4) {
-            newChannels->addItem("Y");
-            newChannels->addItem("Cb");
-            newChannels->addItem("Cr");
-        }
-
-        // YCbCg
-        if (index == 5) {
-            newChannels->addItem("Y");
-            newChannels->addItem("Cb");
-            newChannels->addItem("Cg");
-        }
-
-        // CMY
-        if (index == 6) {
-            newChannels->addItem("C");
-            newChannels->addItem("M");
-            newChannels->addItem("Y");
-        }
-
-        layout->insertWidget(3, newChannels);
+        layout->insertWidget(3, changeColorChannelBox(index));
     });
 
-    connect(confirmButton, &QPushButton::clicked, [=]() {
-        auto colorSpace = ColorSpace(colorspaces->currentIndex());
-        auto colorChannel  = ColorChannel(((QComboBox*)layout->itemAt(3)->widget())->currentIndex());
-
-        auto oldImage = mainWindow->takeCentralWidget();
-        delete oldImage;
-
-        pixels->setColorSpace(colorSpace);
-        pixels->setColorChannel(colorChannel);
-
-        auto newImage = new QImageWidget(pixels);
-        mainWindow->setCentralWidget(newImage);
-
-        this->close();
-    });
+    connect(confirmButton, &QPushButton::clicked, this, &QChangeColorspaceWindow::changeColorSpace);
 }
 
+QComboBox* QChangeColorspaceWindow::changeColorChannelBox(int index) {
+
+    auto newChannels = new QComboBox();
+    newChannels->addItem("All");
+
+    // RGB
+    if (index == 0) {
+        newChannels->addItem("R");
+        newChannels->addItem("G");
+        newChannels->addItem("B");
+    }
+
+    // HSL
+    if (index == 1) {
+        newChannels->addItem("H");
+        newChannels->addItem("S");
+        newChannels->addItem("L");
+    }
+
+    // HSV
+    if (index == 2) {
+        newChannels->addItem("H");
+        newChannels->addItem("S");
+        newChannels->addItem("V");
+    }
+
+    // YCbCr.601
+    if (index == 3) {
+        newChannels->addItem("Y");
+        newChannels->addItem("Cb");
+        newChannels->addItem("Cr");
+    }
+
+    // YCbCr.709
+    if (index == 4) {
+        newChannels->addItem("Y");
+        newChannels->addItem("Cb");
+        newChannels->addItem("Cr");
+    }
+
+    // YCbCg
+    if (index == 5) {
+        newChannels->addItem("Y");
+        newChannels->addItem("Cb");
+        newChannels->addItem("Cg");
+    }
+
+    // CMY
+    if (index == 6) {
+        newChannels->addItem("C");
+        newChannels->addItem("M");
+        newChannels->addItem("Y");
+    }
+    return newChannels;
+}
+
+void QChangeColorspaceWindow::changeColorSpace() {
+    isSubmitted = true;
+    this->close();
+}
+
+ColorSpace QChangeColorspaceWindow::getColorSpace() {
+    return ColorSpace(colorspaces->currentIndex());
+}
+
+ColorChannel QChangeColorspaceWindow::getColorChannel() {
+    return ColorChannel(((QComboBox*)layout()->itemAt(3)->widget())->currentIndex());
+}
+
+bool QChangeColorspaceWindow::checkSubmitted()
+{
+    return isSubmitted;
+}

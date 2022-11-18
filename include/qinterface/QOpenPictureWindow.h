@@ -8,21 +8,25 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QComboBox>
+#include <QFileDialog>
+#include <QDialog>
 #include "Pnm.h"
 #include "QMain.h"
 
 
-class QOpenPictureWindow : public QWidget {
+class QOpenPictureWindow : public QDialog {
 private:
-    Pixels* pixels;
-    QMain* mainWindow;
     QLineEdit* picturePath;
     QComboBox* colorspaces;
+    bool isSubmitted;
     void openPicture();
+    void findPicture();
 
 public:
-    explicit QOpenPictureWindow(Pixels*, QMain* mainWindow);
-
+    explicit QOpenPictureWindow();
+    std::string getPicturePath();
+    bool checkSubmitted();
+    ColorSpace getColorSpace();
 
 };
 

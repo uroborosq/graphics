@@ -4,25 +4,104 @@
 #include "QOpenPictureWindow.h"
 #include "Pnm.h"
 #include "QChangeColorspaceWindow.h"
+#include "QAssignGammaWindow.h"
+#include "QConvertGammaWindow.h"
 
 void QMain::openOpenWindow() {
-    auto openWindow = new QOpenPictureWindow(pixels, this);
-    openWindow->show();
+    auto openWindow = new QOpenPictureWindow();
+    openWindow->exec();
+    try {
+        if (openWindow->checkSubmitted()) {
+            auto path = openWindow->getPicturePath();
+            auto colorspaceChoice = openWindow->getColorSpace();
+            auto file = Pnm(path);
+            *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
+            delete picture;
+            picture = new QImageWidget(pixels);
+            this->setCentralWidget(picture);
+        }
+    }
+    catch (const std::invalid_argument &e) {
+        auto messageBox = new QMessageBox();
+        messageBox->setText(e.what());
+        messageBox->exec();
+    }
+}
+
+void QMain::openSaveWindow() {
+    auto saveWindow = new QSavePictureWindow();
+    saveWindow->exec();
+    auto savePicturePath = saveWindow->getPicturePath();
+    try {
+        if (saveWindow->checkSubmitted()) {
+            Pnm file;
+            file.width = pixels->getWidth();
+            file.height = pixels->getHeight();
+            file.max = 255;
+            file.tag[0] = 'P';
+            if (pixels->getTag() == PnmFormat::P5)
+                file.tag[1] = '5';
+            else {
+                if (pixels->getColorChannel() == ColorChannel::All)
+                    file.tag[1] = '6';
+                else
+                    file.tag[1] = '5';
+            }
+
+            file.data = *remove_other_channels(pixels->getValues(), pixels->getColorChannel());
+            file.write(savePicturePath);
+        }
+    }
+    catch (const std::invalid_argument& e){
+        auto box = new QMessageBox();
+        box->setText(e.what());
+        box->exec();
+    }
 }
 
 void QMain::openColorSpaceAndChannelWindow() {
-    auto changeColorspaceWindow = new QChangeColorspaceWindow(pixels, this);
-    changeColorspaceWindow->show();
+    auto changeColorspaceWindow = new QChangeColorspaceWindow();
+    changeColorspaceWindow->exec();
+
+    auto colorSpace = changeColorspaceWindow->getColorSpace();
+    auto colorChannel  = changeColorspaceWindow->getColorChannel();
+
+    delete picture;
+
+    pixels->setColorSpace(colorSpace);
+    pixels->setColorChannel(colorChannel);
+
+    picture = new QImageWidget(pixels);
+    this->setCentralWidget(picture);
+}
+
+void QMain::openAssignGammaWindow() {
+    auto assignGammaWindow = new QAssignGammaWindow();
+    assignGammaWindow->exec();
+    if (assignGammaWindow->checkSubmited()) {
+        picture->setGamma(assignGammaWindow->getNewGamma());
+        this->setCentralWidget(picture);
+    }
+}
+
+void QMain::openConvertGammaWindow() {
+    auto convertGammaWindow = new QConvertGammaWindow(pixels->getGamma());
+    convertGammaWindow->exec();
+    if (convertGammaWindow->checkSubmited()) {
+        auto gamma = picture->getGamma();
+        delete picture;
+        pixels->setGamma(convertGammaWindow->getNewGamma());
+        picture = new QImageWidget(pixels);
+        picture->setGamma(gamma);
+        this->setCentralWidget(picture);
+    }
 }
 
 
-QMain::QMain(Pixels* pixels_){
+QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     pixels = pixels_;
+    picture = picture_;
     this->resize(200, 300);
-    auto layout = new QVBoxLayout();
-
-    auto saveButton = new QPushButton("Сохранить как...");
-    saveButton->setAutoDefault(true);
 
     auto picture = new QImageWidget(pixels);
 
@@ -33,17 +112,24 @@ QMain::QMain(Pixels* pixels_){
 
     auto saveFile = new QAction("Сохранить как");
     saveFile->setShortcut(QKeySequence(Qt::CTRL | static_cast<Qt::Key>(Qt::SHIFT) + Qt::Key_S));
-    connect(saveFile, &QAction::triggered, this, [this](){
-        auto saveWindow = new QSavePictureWindow(pixels);
-        saveWindow->show();
-    });
+
+    auto editMenu = new QMenu("Редактировать");
 
     auto colorspaceChange = new QAction("Изменить цветовое пространство");
     colorspaceChange->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
 
+    auto assignGamma = new QAction("Назначить гамму");
+    assignGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+
+    auto convertGamma = new QAction("Преобразовать гамму");
+    convertGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
-    fileMenu->addAction(colorspaceChange);
+
+    editMenu->addAction(colorspaceChange);
+    editMenu->addAction(assignGamma);
+    editMenu->addAction(convertGamma);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -53,17 +139,17 @@ QMain::QMain(Pixels* pixels_){
 
     auto menuBar = new QMenuBar();
     menuBar->addMenu(fileMenu);
+    menuBar->addMenu(editMenu);
     menuBar->addAction(close);
 
     this->setMenuBar(menuBar);
     this->setCentralWidget(picture);
 
-    connect(saveButton, &QPushButton::clicked, this, [=]() {
-        auto saveWindow = new QSavePictureWindow(pixels);
-        saveWindow->show();
-    });
-    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
     connect(openFile, &QAction::triggered, this, &QMain::openOpenWindow);
+    connect(saveFile, &QAction::triggered, this, &QMain::openSaveWindow);
+    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
+    connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
+    connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
 
 }
 

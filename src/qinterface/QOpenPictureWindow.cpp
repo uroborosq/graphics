@@ -1,18 +1,16 @@
-#include <iostream>
 #include <string>
 #include <QMessageBox>
 #include "QOpenPictureWindow.h"
 #include "QImageWidget.h"
-#include "Pnm.h"
 #include "QMain.h"
 
 
-QOpenPictureWindow::QOpenPictureWindow(Pixels* pixels_, QMain* mainWindow_) {
+QOpenPictureWindow::QOpenPictureWindow() {
+    isSubmitted = false;
     this->resize(200, 100);
-    pixels = pixels_;
-    mainWindow = mainWindow_;
     auto pathLabel = new QLabel("Введите путь к файлу");
     picturePath = new QLineEdit();
+    auto browseButton = new QPushButton("Найти файл");
     auto openButton = new QPushButton("Открыть");
     openButton->setAutoDefault(true);
 
@@ -30,6 +28,7 @@ QOpenPictureWindow::QOpenPictureWindow(Pixels* pixels_, QMain* mainWindow_) {
 
     layout->addWidget(pathLabel);
     layout->addWidget(picturePath);
+    layout->addWidget(browseButton);
 
     layout->addWidget(colorspaceLabel);
     layout->addWidget(colorspaces);
@@ -38,27 +37,44 @@ QOpenPictureWindow::QOpenPictureWindow(Pixels* pixels_, QMain* mainWindow_) {
 
     setLayout(layout);
 
+    connect(browseButton, &QPushButton::clicked, this, &QOpenPictureWindow::findPicture);
     connect(openButton, &QPushButton::clicked, this, &QOpenPictureWindow::openPicture);
 }
 
 void QOpenPictureWindow::openPicture() {
-    auto path = picturePath->text().toStdString();
-    try {
-        auto file = Pnm(path);
-        auto colorspaceChoice = ColorSpace(colorspaces->currentIndex());
-        auto oldPicture = mainWindow->centralWidget();
-        *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
-        auto picture = new QImageWidget(pixels);
-        mainWindow->setCentralWidget(picture);
-
-        delete oldPicture;
-        this->close();
-    }
-    catch (const std::invalid_argument &e) {
-        auto messageBox = new QMessageBox();
-        messageBox->setText(e.what());
-        messageBox->exec();
-    }
+    isSubmitted = true;
+    this->close();
 }
+
+void QOpenPictureWindow::findPicture() {
+
+    QString filename =  QFileDialog::getOpenFileName(
+            this,
+            "Open Document",
+            QDir::currentPath(),
+            "All files (*.*) ;; PPM files (*.ppm);; PNM files (*.pnm)");
+
+    if( !filename.isNull() )
+    {
+        qDebug() << "selected file path : " << filename.toUtf8();
+    }
+
+    auto pathText = (QLineEdit*)layout()->itemAt(1)->widget();
+    pathText->setText(filename);
+}
+
+std::string QOpenPictureWindow::getPicturePath() {
+    return picturePath->text().toStdString();
+}
+
+bool QOpenPictureWindow::checkSubmitted()
+{
+    return isSubmitted;
+}
+
+ColorSpace QOpenPictureWindow::getColorSpace() {
+    return ColorSpace(colorspaces->currentIndex());
+}
+
 
 
