@@ -5,7 +5,7 @@
 
 std::vector<float> *select_color_channel(const std::vector<float> &pixels, const ColorChannel &colorChannel) {
     auto *filtered_pixels = new std::vector<float>(pixels.size(), 0);
-    if (colorChannel == ColorChannel::Все) {
+    if (colorChannel == ColorChannel::All) {
         for (std::size_t i = 0; i < pixels.size(); i++) {
             float &pixel = filtered_pixels->at(i);
             pixel = pixels[i];
@@ -23,7 +23,7 @@ std::vector<float> *select_color_channel(const std::vector<float> &pixels, const
 
 std::vector<float> *remove_other_channels(const std::vector<float> &pixels, const ColorChannel &colorChannel) {
     auto *filtered_pixels = new std::vector<float>();
-    if (colorChannel == ColorChannel::Все) {
+    if (colorChannel == ColorChannel::All) {
         for (float pixel: pixels) {
             filtered_pixels->push_back(pixel);
         }

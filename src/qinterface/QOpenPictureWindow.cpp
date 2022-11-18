@@ -50,7 +50,7 @@ void QOpenPictureWindow::openPicture() {
         auto file = Pnm(path);
         auto colorspaceChoice = ColorSpace(colorspaces->currentIndex());
         auto oldPicture = mainWindow->centralWidget();
-        *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::Все);
+        *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
         auto picture = new QImageWidget(pixels);
         mainWindow->setCentralWidget(picture);
 
