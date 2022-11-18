@@ -24,7 +24,6 @@ bool Pnm::readTag(std::ifstream *in) {
 
 void Pnm::read(const std::string &path) {
     std::ifstream in(path, std::ios::in | std::ios::binary);
-    FILE* file = fopen(path.c_str(), "r");
     if (in.fail()) {
         throw std::invalid_argument("FileNotFoundException");
     }
