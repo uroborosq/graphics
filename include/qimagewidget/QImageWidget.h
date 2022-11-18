@@ -17,11 +17,9 @@ private:
     void proceedGammaCorrection(const float&);
     void reloadPixmap();
 public:
-    QImageWidget();
     explicit QImageWidget(Pixels *);
     void setGamma(float);
     const float& getGamma() const;
-    void updatePixels();
 };
 
 #endif //QIMAGEWIDGET_H

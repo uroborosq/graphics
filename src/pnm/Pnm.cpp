@@ -38,10 +38,13 @@ void Pnm::read(const std::string &path) {
     in.get(space);
     in >> max;
     in.get(space);
-    auto tmp = std::vector<uint8_t>((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-    for (const auto& i : tmp)
+    data = std::vector<float>(height * width * (tag[1] == '5' ? 1 : 3));
+    std::size_t i = 0;
+    while (!in.eof())
     {
-        data.push_back(float(i));
+        in.get(space);
+        data[i] = (float)(unsigned char)space;
+        i++;
     }
 }
 
