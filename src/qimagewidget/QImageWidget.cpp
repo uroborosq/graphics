@@ -1,12 +1,14 @@
 #include "QImageWidget.h"
 #include "GammaCorrection.h"
+#include "sRGBColorSpace.h"
 #include <iostream>
+
 QImageWidget::QImageWidget(Pixels *pixels) {
     _format = pixels->getTag();
     _height = pixels->getHeight();
     _width = pixels->getWidth();
     _displayPixels = pixels->getValues();
-    _gammaCorrection = 1 / 2.2;
+    _gammaCorrection = 0;
 
     convertToRgb(pixels->getColorSpace());
     proceedGammaCorrection(pixels->getGamma());
@@ -15,20 +17,16 @@ QImageWidget::QImageWidget(Pixels *pixels) {
 
 
 void QImageWidget::setGamma(float newGamma) {
-    if (newGamma == 0)
-    {
-        newGamma = 1 / 2.2;
-    }
-
-
     if (newGamma < 0) {
         throw std::invalid_argument("Gamma can't be lower than zero");
     }
-    auto oldGamma = _gammaCorrection;
-    _gammaCorrection = newGamma;
+    if (_gammaCorrection != newGamma) {
+        auto oldGamma = _gammaCorrection;
+        _gammaCorrection = newGamma;
 
-    proceedGammaCorrection(oldGamma);
-    reloadPixmap();
+        proceedGammaCorrection(oldGamma);
+        reloadPixmap();
+    }
 }
 
 const float &QImageWidget::getGamma() const {
@@ -38,15 +36,25 @@ const float &QImageWidget::getGamma() const {
 void QImageWidget::convertToRgb(const ColorSpace &colorSpace) {
     if (colorSpace != ColorSpace::RGB) {
         auto converter = chooseConverter(colorSpace);
-        _displayPixels = converter->to_rgb(_displayPixels);
+        _displayPixels = converter->toLinearRGB(_displayPixels);
     }
 }
 
-void QImageWidget::proceedGammaCorrection(const float& pixelsGamma) {
-    if (pixelsGamma != _gammaCorrection)
-    {
-        auto gammaCorrecter = GammaCorrection();
-        _displayPixels = gammaCorrecter.changeGamma(_displayPixels, pixelsGamma, _gammaCorrection);
+void QImageWidget::proceedGammaCorrection(const float &pixelsGamma) {
+    auto gammaCorrector = GammaCorrection();
+    if (pixelsGamma != _gammaCorrection) {
+        // если мы хотим показать в какой-то гамме а у нас sRGB
+        if (pixelsGamma == 0) {
+            _displayPixels = sRGBColorSpace().toLinearRGB(_displayPixels);
+            _displayPixels = gammaCorrector.changeGamma(_displayPixels, 1, _gammaCorrection);
+            // если мы хотим показать в sRGB а у нас какая то гамма
+        } else if (_gammaCorrection == 0) {
+
+            _displayPixels = gammaCorrector.changeGamma(_displayPixels, pixelsGamma, 1);
+            _displayPixels = sRGBColorSpace().fromLinearRGB(_displayPixels);
+        } else {
+            _displayPixels = gammaCorrector.changeGamma(_displayPixels, pixelsGamma, _gammaCorrection);
+        }
     }
 }
 
@@ -56,7 +64,7 @@ void QImageWidget::reloadPixmap() {
         for (int i = 0; i < _height; ++i) {
             for (int j = 0; j < _width; ++j) {
                 auto offset = i * _width * 3 + j * 3;
-                auto value = qRgb(uint_fast8_t (std::round(_displayPixels[offset])),
+                auto value = qRgb(uint_fast8_t(std::round(_displayPixels[offset])),
                                   uint_fast8_t(std::round(_displayPixels[offset + 1])),
                                   uint_fast8_t(std::round(_displayPixels[offset + 2])));
                 image.setPixel(j, i, value);
@@ -73,6 +81,6 @@ void QImageWidget::reloadPixmap() {
             }
         }
     }
-   auto pixmap = QPixmap::fromImage(image);
+    auto pixmap = QPixmap::fromImage(image);
     setPixmap(pixmap);
 }

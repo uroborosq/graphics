@@ -34,6 +34,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/colorspaces/YCbCr_601ColorSpace.h src/colorspaces/YCbCr_601ColorSpace.cpp
         include/colorspaces/YCbCr_709ColorSpace.h src/colorspaces/YCbCr_709ColorSpace.cpp
         include/colorspaces/YCoCgColorSpace.h src/colorspaces/YCoCgColorSpace.cpp
+        include/colorspaces/sRGBColorSpace.h src/colorspaces/sRGBColorSpace.cpp
         include/qinterface/QChangeColorspaceWindow.h src/qinterface/QChangeColorspaceWindow.cpp
         include/pixels/Pixels.h src/pixels/Pixels.cpp
         include/pixels/ColorSpaceEnum.h src/pixels/ColorSpaceEnum.cpp

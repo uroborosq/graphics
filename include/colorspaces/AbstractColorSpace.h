@@ -8,8 +8,8 @@
 
 class AbstractColorSpace {
 public:
-    virtual std::vector<float>& to_rgb(std::vector<float>&)= 0;
-    virtual std::vector<float>& from_rgb(std::vector<float>&)= 0;
+    virtual std::vector<float>& toLinearRGB(std::vector<float>&)= 0;
+    virtual std::vector<float>& fromLinearRGB(std::vector<float>&)= 0;
 };
 
 
