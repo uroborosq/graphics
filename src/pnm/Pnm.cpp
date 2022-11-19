@@ -38,9 +38,10 @@ void Pnm::read(const std::string &path) {
     in.get(space);
     in >> max;
     in.get(space);
-    data = std::vector<float>(height * width * (tag[1] == '5' ? 1 : 3));
+    auto size = height * width * (tag[1] == '5' ? 1 : 3);
+    data = std::vector<float>(size);
     std::size_t i = 0;
-    while (!in.eof())
+    while (!in.eof() && i < size)
     {
         in.get(space);
         data[i] = (float)(unsigned char)space;
