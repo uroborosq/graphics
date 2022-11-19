@@ -10,15 +10,12 @@ QLineParametersSelectionWindow::QLineParametersSelectionWindow() {
     auto changeColorButton = new QPushButton("Поменять цвет");
     auto lineThicknessTextLabel = new QLabel("Толщина линии (px):");
     lineThicknessValue = new QSpinBox();
-    auto lineTransparencyTextLabel = new QLabel("Прозрачность линии:");
+    auto lineTransparencyTextLabel = new QLabel("Прозрачность линии (%):");
     auto sliderLayout = new QGridLayout();
     lineTransparencyValue = new QSlider(Qt::Horizontal);
     auto transparenceZero = new QLabel("0");
-    auto transparenceTwo = new QLabel("0.2");
-    auto transparenceFour = new QLabel("0.4");
-    auto transparenceSix = new QLabel("0.6");
-    auto transparenceEight = new QLabel("0.8");
-    auto transparenceOne = new QLabel("1");
+    auto transparenceOne = new QLabel("100");
+    showTransparencyValueLabel = new QLabel("100%");
     auto okButton = new QPushButton("OK");
 
     colorLabel->setStyleSheet("QLabel { background-color :"+color.name()+" }");
@@ -26,17 +23,14 @@ QLineParametersSelectionWindow::QLineParametersSelectionWindow() {
     lineThicknessValue->setValue(1);
     lineThicknessValue->setMinimum(1);
 
-    lineTransparencyValue->setRange(0, 10);
-    lineTransparencyValue->setValue(10);
+    lineTransparencyValue->setRange(0, 100);
+    lineTransparencyValue->setValue(100);
     lineTransparencyValue->setPageStep(1);
 
-    sliderLayout->addWidget(lineTransparencyValue, 0, 0, 1, 10);
+    sliderLayout->addWidget(lineTransparencyValue, 0, 0, 1, 1);
+    sliderLayout->addWidget(showTransparencyValueLabel, 0, 1, 1, 1);
     sliderLayout->addWidget(transparenceZero, 1, 0, 1, 1);
-    sliderLayout->addWidget(transparenceTwo, 1, 2, 1, 1);
-    sliderLayout->addWidget(transparenceFour, 1, 4, 1, 1);
-    sliderLayout->addWidget(transparenceSix, 1, 6, 1, 1);
-    sliderLayout->addWidget(transparenceEight, 1, 8, 1, 1);
-    sliderLayout->addWidget(transparenceOne, 1, 10, 1, 1);
+    sliderLayout->addWidget(transparenceOne, 1, 1, 1, 1);
 
     layout->addWidget(currentColorTextLabel);
     layout->addWidget(colorLabel);
@@ -51,6 +45,7 @@ QLineParametersSelectionWindow::QLineParametersSelectionWindow() {
 
     connect(changeColorButton, &QPushButton::clicked, this, &QLineParametersSelectionWindow::changeColor);
     connect(okButton, &QPushButton::clicked, this, &QLineParametersSelectionWindow::setLineParameters);
+    connect(lineTransparencyValue, &QSlider::valueChanged, this, &QLineParametersSelectionWindow::showTransparencyValue);
 }
 
 bool QLineParametersSelectionWindow::checkSubmitted() {
@@ -61,6 +56,11 @@ void QLineParametersSelectionWindow::changeColor() {
     color = QColorDialog::getColor(color, this );
     colorLabel->setStyleSheet("QLabel { background-color :"+color.name()+" }");
 }
+
+void QLineParametersSelectionWindow::showTransparencyValue() {
+    showTransparencyValueLabel->setText(QString::number(lineTransparencyValue->value()) + "%");
+}
+
 
 void QLineParametersSelectionWindow::setLineParameters() {
     isSubmitted = true;
@@ -73,4 +73,8 @@ QColor QLineParametersSelectionWindow::getColor() {
 
 int QLineParametersSelectionWindow::getLineThickness() {
     return lineThicknessValue->value();
+}
+
+double QLineParametersSelectionWindow::getLineTransparency() {
+    return (double )lineTransparencyValue->value()/100;
 }

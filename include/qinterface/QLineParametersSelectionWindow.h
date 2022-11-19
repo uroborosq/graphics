@@ -19,8 +19,10 @@ private:
     QLabel* colorLabel;
     QSpinBox* lineThicknessValue;
     QSlider* lineTransparencyValue;
+    QLabel* showTransparencyValueLabel;
     bool isSubmitted;
     void changeColor();
+    void showTransparencyValue();
 
 public:
     QLineParametersSelectionWindow();
@@ -28,6 +30,7 @@ public:
     void setLineParameters();
     QColor getColor();
     int getLineThickness();
+    double getLineTransparency();
 
 };
 
