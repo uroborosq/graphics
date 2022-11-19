@@ -6,6 +6,7 @@
 #include "QChangeColorspaceWindow.h"
 #include "QAssignGammaWindow.h"
 #include "QConvertGammaWindow.h"
+#include "QLineParametersSelectionWindow.h"
 
 void QMain::openOpenWindow() {
     auto openWindow = new QOpenPictureWindow();
@@ -97,6 +98,13 @@ void QMain::openConvertGammaWindow() {
     }
 }
 
+void QMain::openLineParametersWindow() {
+    auto lineParametersWindow = new QLineParametersSelectionWindow();
+    lineParametersWindow->exec();
+    if (lineParametersWindow->checkSubmitted()) {
+    }
+}
+
 
 QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     pixels = pixels_;
@@ -124,12 +132,16 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     auto convertGamma = new QAction("Преобразовать гамму");
     convertGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
 
+    auto lineParameters = new QAction("Изменить параметры линии");
+    lineParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
 
     editMenu->addAction(colorspaceChange);
     editMenu->addAction(assignGamma);
     editMenu->addAction(convertGamma);
+    editMenu->addAction(lineParameters);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -150,6 +162,7 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
     connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
     connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
+    connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
 
 }
 
