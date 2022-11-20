@@ -7,9 +7,11 @@
 
 #include "Pixels.h"
 
-class AbstractDrawLine{
+class AbstractDrawLine {
 public:
-    virtual std::vector<float>& drawLine(Pixels*, const int&, const float&, const long long&, const long long&, std::vector<float>&);
+    virtual std::vector<float> &
+    drawLine(std::vector<float> &pixels, const int &fileWidth, const int &fileHeight, const int &, const float &,
+             const long long &, const long long &, const long long &, const long long &,std::vector<float> &);
 };
 
 #endif //HOROSHOEDITOR_ABSTRACTDRAWLINE_H

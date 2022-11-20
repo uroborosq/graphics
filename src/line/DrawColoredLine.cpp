@@ -11,20 +11,15 @@ float countTransparency(const float &transparency, double newPixel, const float 
 }
 
 std::vector<float> &
-DrawColoredLine::drawLine(Pixels *pixels, const int &width, const float &transparency,
-                          const long long &startPixel,
-                          const long long &lastPixel, std::vector<float> &color) {
-    auto size = pixels->getValues().size();
+DrawColoredLine::drawLine(std::vector<float> &pixels, const int& fileWidth, const int& fileHeight, const int &width, const float &transparency,
+                          const long long &x0, const long long &y0, const long long &x1, const long long &y1, std::vector<float> &color) {
+    auto size = pixels.size();
     unsigned int colorSize = color.size();
     auto *newValues = new std::vector<float>(size);
-    auto y0 = startPixel / pixels->getWidth();
-    auto x0 = startPixel % pixels->getWidth();
-    auto y1 = lastPixel / pixels->getWidth();
-    auto x1 = lastPixel % pixels->getWidth();
 
     for (int i = 0; i < size; i++) {
         float &pixel = newValues->at(i);
-        pixel = pixels->getValues()[i];
+        pixel = pixels[i];
     }
 
     auto dx = abs(int(x1 - x0));
@@ -33,58 +28,58 @@ DrawColoredLine::drawLine(Pixels *pixels, const int &width, const float &transpa
     if (dy < dx) {
         double gradient = (float) dy / (float) dx;
         double intery1 = std::max((double) y0 + gradient - (int) (width / 2), 0.0);
-        double intery2 = std::min(intery1 + width, (double) pixels->getHeight());
+        double intery2 = std::min(intery1 + width, (double) fileHeight);
 
         for (long long x = x0 + 1; x1 - x0 > 0 ? x < x1 : x > x1; x1 - x0 > 0 ? x++ : x--) {
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at(((long long) floor(intery1) * pixels->getWidth() + x) * colorSize + j);
+                float &pixel = newValues->at(((long long) floor(intery1) * fileWidth + x) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (1 - (intery1 - floor(intery1))) +
                                                         newValues->at(
-                                                                ((long long) floor(intery1) * pixels->getWidth() + x) *
+                                                                ((long long) floor(intery1) * fileWidth + x) *
                                                                 colorSize +
                                                                 j) *
-                                                        (intery1 - floor(intery1)), pixels->getValues().at(
-                        ((long long) floor(intery1) * pixels->getWidth() + x) * colorSize + j));
+                                                        (intery1 - floor(intery1)), pixels.at(
+                        ((long long) floor(intery1) * fileWidth + x) * colorSize + j));
             }
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at(((long long) floor(intery1 + 1) * pixels->getWidth() + x) * colorSize + j);
+                float &pixel = newValues->at(((long long) floor(intery1 + 1) * fileWidth + x) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (intery1 - floor(intery1)) +
                                                         newValues->at(
-                                                                ((long long) floor(intery1 + 1) * pixels->getWidth() +
+                                                                ((long long) floor(intery1 + 1) * fileWidth +
                                                                  x) *
                                                                 colorSize + j) *
-                                                        (1 - intery1 + floor(intery1)), pixels->getValues().at(
-                        ((long long) floor(intery1 + 1) * pixels->getWidth() + x) * colorSize + j));
+                                                        (1 - intery1 + floor(intery1)), pixels.at(
+                        ((long long) floor(intery1 + 1) * fileWidth + x) * colorSize + j));
             }
             intery1 = intery1 + gradient;
 
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at(((long long) floor(intery2) * pixels->getWidth() + x) * colorSize + j);
+                float &pixel = newValues->at(((long long) floor(intery2) * fileWidth + x) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (1 - (intery2 - floor(intery2))) +
                                                         newValues->at(
-                                                                ((long long) floor(intery2) * pixels->getWidth() + x) *
+                                                                ((long long) floor(intery2) * fileWidth + x) *
                                                                 colorSize +
                                                                 j) *
-                                                        (intery2 - floor(intery2)), pixels->getValues().at(
-                        ((long long) floor(intery2) * pixels->getWidth() + x) * colorSize + j));
+                                                        (intery2 - floor(intery2)), pixels.at(
+                        ((long long) floor(intery2) * fileWidth + x) * colorSize + j));
             }
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at(((long long) floor(intery2 + 1) * pixels->getWidth() + x) * colorSize + j);
+                float &pixel = newValues->at(((long long) floor(intery2 + 1) * fileWidth + x) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (intery2 - floor(intery2)) +
                                                         newValues->at(
-                                                                ((long long) floor(intery2 + 1) * pixels->getWidth() +
+                                                                ((long long) floor(intery2 + 1) * fileWidth +
                                                                  x) *
                                                                 colorSize + j) *
-                                                        (1 - intery2 + floor(intery2)), pixels->getValues().at(
-                        ((long long) floor(intery2 + 1) * pixels->getWidth() + x) * colorSize + j));
+                                                        (1 - intery2 + floor(intery2)), pixels.at(
+                        ((long long) floor(intery2 + 1) * fileWidth + x) * colorSize + j));
             }
             intery2 = intery2 + gradient;
 
             for (long long it = (long long) floor(intery1) + 1; it <= (long long) floor(intery1 + width); it++) {
                 for (int j = 0; j < colorSize; j++) {
-                    float &pixel = newValues->at((long long) (it * pixels->getWidth() + x) * colorSize + j);
-                    pixel = countTransparency(transparency, color[j], pixels->getValues().at(
-                            (long long) (it * pixels->getWidth() + x) * colorSize + j));
+                    float &pixel = newValues->at((long long) (it * fileWidth + x) * colorSize + j);
+                    pixel = countTransparency(transparency, color[j], pixels.at(
+                            (long long) (it * fileWidth + x) * colorSize + j));
                 }
             }
         }
@@ -92,58 +87,58 @@ DrawColoredLine::drawLine(Pixels *pixels, const int &width, const float &transpa
         float gradient = (float) dx / (float) dy;
 
         double interx1 = std::max((double) x0 + gradient - (int) (width / 2), 0.0);
-        double interx2 = std::min(interx1 + width, (double) pixels->getWidth());
+        double interx2 = std::min(interx1 + width, (double) fileWidth);
 
         for (long long y = y0 + 1; y1 - y0 > 0 ? y < y1 : y > y1; y1 - y0 > 0 ? y++ : y--) {
 
 
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at((y * pixels->getWidth() + (long long) floor(interx1)) * colorSize + j);
+                float &pixel = newValues->at((y * fileWidth + (long long) floor(interx1)) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (1 - (interx1 - floor(interx1))) +
                                                         newValues->at(
-                                                                (y * pixels->getWidth() + (long long) floor(interx1)) *
+                                                                (y * fileWidth + (long long) floor(interx1)) *
                                                                 colorSize +
                                                                 j) *
-                                                        (interx1 - floor(interx1)), pixels->getValues().at(
-                        (y * pixels->getWidth() + (long long) floor(interx1)) * colorSize + j));
+                                                        (interx1 - floor(interx1)), pixels.at(
+                        (y * fileWidth + (long long) floor(interx1)) * colorSize + j));
             }
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at((y * pixels->getWidth() + (long long) floor(interx1 + 1)) * colorSize + j);
+                float &pixel = newValues->at((y * fileWidth + (long long) floor(interx1 + 1)) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (interx1 - floor(interx1)) +
-                                                        newValues->at((y * pixels->getWidth() +
+                                                        newValues->at((y * fileWidth +
                                                                        (long long) floor(interx1 + 1)) *
                                                                       colorSize + j) *
-                                                        (1 - interx1 + floor(interx1)), pixels->getValues().at(
-                        (y * pixels->getWidth() + (long long) floor(interx1 + 1)) * colorSize + j));
+                                                        (1 - interx1 + floor(interx1)), pixels.at(
+                        (y * fileWidth + (long long) floor(interx1 + 1)) * colorSize + j));
             }
             interx1 = interx1 + gradient;
 
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at((y * pixels->getWidth() + (long long) floor(interx2)) * colorSize + j);
+                float &pixel = newValues->at((y * fileWidth + (long long) floor(interx2)) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (1 - (interx2 - floor(interx2))) +
                                                         newValues->at(
-                                                                (y * pixels->getWidth() + (long long) floor(interx2)) *
+                                                                (y * fileWidth + (long long) floor(interx2)) *
                                                                 colorSize +
                                                                 j) *
-                                                        (interx2 - floor(interx2)), pixels->getValues().at(
-                        (y * pixels->getWidth() + (long long) floor(interx2)) * colorSize + j));
+                                                        (interx2 - floor(interx2)), pixels.at(
+                        (y * fileWidth + (long long) floor(interx2)) * colorSize + j));
             }
             for (int j = 0; j < colorSize; j++) {
-                float &pixel = newValues->at((y * pixels->getWidth() + (long long) floor(interx2 + 1)) * colorSize + j);
+                float &pixel = newValues->at((y * fileWidth + (long long) floor(interx2 + 1)) * colorSize + j);
                 pixel = countTransparency(transparency, color[j] * (interx2 - floor(interx2)) +
-                                                        newValues->at((y * pixels->getWidth() +
+                                                        newValues->at((y * fileWidth +
                                                                        (long long) floor(interx2 + 1)) *
                                                                       colorSize + j) *
-                                                        (1 - interx2 + floor(interx2)), pixels->getValues().at(
-                        (y * pixels->getWidth() + (long long) floor(interx2 + 1)) * colorSize + j));
+                                                        (1 - interx2 + floor(interx2)), pixels.at(
+                        (y * fileWidth + (long long) floor(interx2 + 1)) * colorSize + j));
             }
             interx2 = interx2 + gradient;
 
             for (long long it = (long long) floor(interx1) + 1; it <= (long long) floor(interx1) + width; it++) {
                 for (int j = 0; j < colorSize; j++) {
-                    float &pixel = newValues->at((y * pixels->getWidth() + it) * colorSize + j);
-                    pixel = countTransparency(transparency, color[j], pixels->getValues().at(
-                            (y * pixels->getWidth() + it) * colorSize + j));
+                    float &pixel = newValues->at((y * fileWidth + it) * colorSize + j);
+                    pixel = countTransparency(transparency, color[j], pixels.at(
+                            (y * fileWidth + it) * colorSize + j));
                 }
             }
         }
