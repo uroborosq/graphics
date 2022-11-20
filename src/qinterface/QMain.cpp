@@ -18,7 +18,7 @@ void QMain::openOpenWindow() {
             auto file = Pnm(path);
             *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
             delete picture;
-            picture = new QImageWidget(pixels);
+            picture = new QImageWidget(pixels, this);
             this->setCentralWidget(picture);
         }
     }
@@ -72,7 +72,7 @@ void QMain::openColorSpaceAndChannelWindow() {
     pixels->setColorSpace(colorSpace);
     pixels->setColorChannel(colorChannel);
 
-    picture = new QImageWidget(pixels);
+    picture = new QImageWidget(pixels, this);
     this->setCentralWidget(picture);
 }
 
@@ -92,7 +92,7 @@ void QMain::openConvertGammaWindow() {
         auto gamma = picture->getGamma();
         delete picture;
         pixels->setGamma(convertGammaWindow->getNewGamma());
-        picture = new QImageWidget(pixels);
+        picture = new QImageWidget(pixels, this);
         picture->setGamma(gamma);
         this->setCentralWidget(picture);
     }
@@ -111,7 +111,7 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     picture = picture_;
     this->resize(200, 300);
 
-    auto picture = new QImageWidget(pixels);
+    auto picture = new QImageWidget(pixels, this);
 
     auto fileMenu = new QMenu("Файл");
 

@@ -16,10 +16,14 @@ private:
     void convertToRgb(const ColorSpace&);
     void proceedGammaCorrection(const float&);
     void reloadPixmap();
+Q_OBJECT
+signals:
 public:
-    explicit QImageWidget(Pixels *);
+    explicit QImageWidget(Pixels *, QWidget* parent, Qt::WindowFlags f = static_cast<Qt::WindowType>(0));
     void setGamma(float);
     const float& getGamma() const;
+protected:
+    void mousePressEvent( QMouseEvent* ev ) override;
 };
 
 #endif //QIMAGEWIDGET_H
