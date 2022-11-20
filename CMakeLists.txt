@@ -20,6 +20,7 @@ include_directories(include/colorspaces)
 include_directories(include/colorchannels)
 include_directories(include/pixels)
 include_directories(include/gamma)
+include_directories(include/line)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -42,7 +43,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QAssignGammaWindow.h src/qinterface/QAssignGammaWindow.cpp
         include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp
-        include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp)
+        include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
+        include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp)
+
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)

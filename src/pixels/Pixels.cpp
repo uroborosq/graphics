@@ -18,8 +18,8 @@ Pixels::Pixels() {
 }
 
 Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, const char *tag_,
-               const ColorSpace &colorSpace_ = ColorSpace::RGB, const ColorChannel &colorChannel_ = ColorChannel::All,
-               const float &gamma_ = 1 / 2.2) {
+               const ColorSpace &colorSpace_, const ColorChannel &colorChannel_,
+               const float &gamma_) {
     values = values_;
     width = width_;
     height = height_;
