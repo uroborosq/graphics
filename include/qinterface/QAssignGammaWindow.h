@@ -12,7 +12,7 @@
 
 class QAssignGammaWindow : public QDialog {
 public:
-    explicit QAssignGammaWindow();
+    explicit QAssignGammaWindow(const float& currentGamma);
     bool checkSubmited();
     double getNewGamma();
 
@@ -21,7 +21,6 @@ private:
     QDoubleSpinBox* gammaBox;
     double sRGB = 0;
     bool isSubmitted;
-    void changeGammaValue();
 };
 
 #endif //HOROSHOEDITOR_QASSIGNGAMMAWINDOW_H

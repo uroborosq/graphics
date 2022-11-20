@@ -3,6 +3,19 @@
 #include "sRGBColorSpace.h"
 #include <iostream>
 
+QImageWidget::QImageWidget(Pixels *pixels, float gamma) {
+    _format = pixels->getTag();
+    _height = pixels->getHeight();
+    _width = pixels->getWidth();
+    _displayPixels = pixels->getValues();
+    _gammaCorrection = gamma;
+
+    convertToRgb(pixels->getColorSpace());
+    proceedGammaCorrection(pixels->getGamma());
+    reloadPixmap();
+}
+
+
 QImageWidget::QImageWidget(Pixels *pixels) {
     _format = pixels->getTag();
     _height = pixels->getHeight();
@@ -59,6 +72,8 @@ void QImageWidget::proceedGammaCorrection(const float &pixelsGamma) {
 }
 
 void QImageWidget::reloadPixmap() {
+//    if (_gammaCorrection != 0)
+//        _displayPixels = sRGBColorSpace().fromLinearRGB(_displayPixels);
     auto image = QImage(_width, _height, QImage::Format_RGB888);
     if (_format == PnmFormat::P6) {
         for (int i = 0; i < _height; ++i) {
@@ -84,3 +99,5 @@ void QImageWidget::reloadPixmap() {
     auto pixmap = QPixmap::fromImage(image);
     setPixmap(pixmap);
 }
+
+

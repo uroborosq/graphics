@@ -6,10 +6,10 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    Pnm file("2.pnm");
-    auto* pixels = new Pixels(file.data, file.width, file.height, file.tag, ColorSpace::RGB, ColorChannel::All, 0);
 
-    auto interface = new QMain(pixels, new QImageWidget(pixels));
+    auto* pixels = new Pixels();
+    auto* picture = new QImageWidget(pixels);
+    auto interface = new QMain(pixels, picture);
     interface->show();
     return QApplication::exec();
 }
