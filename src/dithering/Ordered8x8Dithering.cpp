@@ -3,17 +3,17 @@
 //
 #include <cmath>
 #include "Ordered8x8Dithering.h"
+#include "NearestColor.h"
 
-std::vector<float> &Ordered8x8Dithering::proceed(std::vector<float> &pixels, int width, int height) {
+
+std::vector<float> &Ordered8x8Dithering::proceed(std::vector<float> &pixels, int width, int colorsNumber) {
     auto size = pixels.size();
-    for (std::size_t i = 0; i < size; i++){
-            auto x = i / width / 3;
-            auto y = i % (width * 3 );
-            auto element = thresholdMatrix[(x % 8) * 8 + (y % 8)];
-            element = 255.0 / 64.0 * (element+1)  - 0.5;
-            auto newColor = int(std::round(pixels[i] + element));
-            pixels[i] = newColor >= 0 ? newColor % 255 : 0;
-            auto lol = pixels[i];
-        }
+    for (std::size_t i = 0; i < size; i++) {
+        auto newColor = std::round(
+                (pixels[i] / 255.0 + thresholdMatrix[(i / width / 3) % 8][(i % (width * 3)) % 8] / 64.0 - 0.5) * 255);
+        pixels[i] = nearestColor(colorsNumber, newColor >= 0 ? newColor > 255 ? 255 : newColor : 0);
+    }
     return pixels;
 }
+
+
