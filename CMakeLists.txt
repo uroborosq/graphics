@@ -20,6 +20,7 @@ include_directories(include/colorspaces)
 include_directories(include/colorchannels)
 include_directories(include/pixels)
 include_directories(include/gamma)
+include_directories(include/dithering)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -41,7 +42,8 @@ add_executable(horoshoeditor src/app/main.cpp
         include/pixels/PnmFormat.h
         include/qinterface/QAssignGammaWindow.h src/qinterface/QAssignGammaWindow.cpp
         include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp
-        include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp)
+        include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp include/dithering/AbstractDithering.h
+        include/dithering/Ordered8x8Dithering.h src/dithering/Ordered8x8Dithering.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
