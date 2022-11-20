@@ -21,6 +21,7 @@ include_directories(include/colorchannels)
 include_directories(include/pixels)
 include_directories(include/gamma)
 include_directories(include/dithering)
+include_directories(include/line)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -35,6 +36,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/colorspaces/YCbCr_601ColorSpace.h src/colorspaces/YCbCr_601ColorSpace.cpp
         include/colorspaces/YCbCr_709ColorSpace.h src/colorspaces/YCbCr_709ColorSpace.cpp
         include/colorspaces/YCoCgColorSpace.h src/colorspaces/YCoCgColorSpace.cpp
+        include/colorspaces/sRGBColorSpace.h src/colorspaces/sRGBColorSpace.cpp
         include/qinterface/QChangeColorspaceWindow.h src/qinterface/QChangeColorspaceWindow.cpp
         include/pixels/Pixels.h src/pixels/Pixels.cpp
         include/pixels/ColorSpaceEnum.h src/pixels/ColorSpaceEnum.cpp
@@ -43,7 +45,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QAssignGammaWindow.h src/qinterface/QAssignGammaWindow.cpp
         include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp include/dithering/AbstractDithering.h
-        include/dithering/Ordered8x8Dithering.h src/dithering/Ordered8x8Dithering.cpp)
+        include/dithering/Ordered8x8Dithering.h src/dithering/Ordered8x8Dithering.cpp
+        include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp
+        include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)

@@ -9,9 +9,9 @@
 
 class YCbCr_709ColorSpace : public AbstractColorSpace {
 public:
-    std::vector<float> &to_rgb(std::vector<float> &) override;
+    std::vector<float> &toLinearRGB(std::vector<float> &) override;
 
-    std::vector<float> &from_rgb(std::vector<float> &) override;
+    std::vector<float> &fromLinearRGB(std::vector<float> &) override;
 
 };
 

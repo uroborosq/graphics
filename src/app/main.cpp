@@ -14,8 +14,4 @@ int main(int argc, char *argv[]) {
     auto pixels = new Pixels(file.data, file.width, file.height, file.tag, ColorSpace::RGB, ColorChannel::All, 0);
 
 
-
-    auto interface = new QMain(pixels, new QImageWidget(pixels));
-    interface->show();
-    return QApplication::exec();
 }
