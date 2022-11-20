@@ -1,9 +1,10 @@
 #include "QChangeColorspaceWindow.h"
 #include "QImageWidget.h"
 
-QChangeColorspaceWindow::QChangeColorspaceWindow() {
+QChangeColorspaceWindow::QChangeColorspaceWindow(const ColorSpace& currentColorSpace,
+        const ColorChannel& currentColorChannel) {
     this->resize(200, 100);
-
+    isSubmitted = false;
     auto colorspaceLabel = new QLabel("Выберите цветовое пространство изображения");
     colorspaces = new QComboBox();
     colorspaces->addItem("RGB");
@@ -15,12 +16,10 @@ QChangeColorspaceWindow::QChangeColorspaceWindow() {
     colorspaces->addItem("CMY");
 
     auto colorchannelLabel = new QLabel("Выберите цветовой канал");
-    auto colorchannels = new QComboBox();
-    colorchannels->addItem("All");
-    colorchannels->addItem("R");
-    colorchannels->addItem("G");
-    colorchannels->addItem("B");
+    auto colorchannels = changeColorChannelBox(currentColorSpace, currentColorChannel);
 
+    colorspaces->setCurrentIndex(currentColorSpace);
+    colorchannels->setCurrentIndex(currentColorChannel);
     auto confirmButton = new QPushButton("Выбрать");
     confirmButton->setAutoDefault(true);
 
@@ -36,17 +35,17 @@ QChangeColorspaceWindow::QChangeColorspaceWindow() {
 
     setLayout(layout);
 
-    connect(colorspaces, QOverload<int>::of(&QComboBox::currentIndexChanged),[=](int index){
+    connect(colorspaces, &QComboBox::currentIndexChanged,[=](int index){
         auto channels = layout->itemAt(3)->widget();
         layout->removeWidget(channels);
         delete channels;
-        layout->insertWidget(3, changeColorChannelBox(index));
+        layout->insertWidget(3, changeColorChannelBox(index, currentColorChannel));
     });
 
     connect(confirmButton, &QPushButton::clicked, this, &QChangeColorspaceWindow::changeColorSpace);
 }
 
-QComboBox* QChangeColorspaceWindow::changeColorChannelBox(int index) {
+QComboBox* QChangeColorspaceWindow::changeColorChannelBox(int index, const ColorChannel& currentColorChannel) {
 
     auto newChannels = new QComboBox();
     newChannels->addItem("All");
@@ -99,6 +98,8 @@ QComboBox* QChangeColorspaceWindow::changeColorChannelBox(int index) {
         newChannels->addItem("M");
         newChannels->addItem("Y");
     }
+
+
     return newChannels;
 }
 

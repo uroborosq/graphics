@@ -17,6 +17,7 @@ private:
     void proceedGammaCorrection(const float&);
     void reloadPixmap();
 public:
+    explicit QImageWidget(Pixels*, float gamma);
     explicit QImageWidget(Pixels *);
     void setGamma(float);
     const float& getGamma() const;

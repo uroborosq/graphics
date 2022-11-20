@@ -5,7 +5,7 @@
 #include "HSLColorSpace.h"
 #include "cmath"
 
-std::vector<float>& HSLColorSpace::to_rgb(std::vector<float> &pixels) {
+std::vector<float>& HSLColorSpace::toLinearRGB(std::vector<float> &pixels) {
     auto size = pixels.size();
     for (std::size_t i = 0; i < size; i += 3)
     {
@@ -54,7 +54,7 @@ std::vector<float>& HSLColorSpace::to_rgb(std::vector<float> &pixels) {
     return pixels;
 }
 
-std::vector<float>& HSLColorSpace::from_rgb(std::vector<float> &pixels) {
+std::vector<float>& HSLColorSpace::fromLinearRGB(std::vector<float> &pixels) {
     auto size = pixels.size();
     for (std::size_t i = 0; i < size; i += 3)
     {

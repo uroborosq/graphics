@@ -5,7 +5,7 @@
 #include "YCoCgColorSpace.h"
 #include <cmath>
 
-std::vector<float> &YCoCgColorSpace::to_rgb(std::vector<float> &pixels){
+std::vector<float> &YCoCgColorSpace::toLinearRGB(std::vector<float> &pixels){
     auto size = pixels.size();
     for (std::size_t i = 0; i < size; i += 3)
     {
@@ -20,7 +20,7 @@ std::vector<float> &YCoCgColorSpace::to_rgb(std::vector<float> &pixels){
     return pixels;
 }
 
-std::vector<float> &YCoCgColorSpace::from_rgb(std::vector<float> &pixels){
+std::vector<float> &YCoCgColorSpace::fromLinearRGB(std::vector<float> &pixels){
     auto size = pixels.size();
     for (std::size_t i = 0; i < size; i += 3)
     {

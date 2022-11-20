@@ -8,8 +8,8 @@
 
 class HSVColorSpace : public AbstractColorSpace{
 public:
-    std::vector<float>& to_rgb(std::vector<float>&) override;
-    std::vector<float>& from_rgb(std::vector<float>&) override;
+    std::vector<float>& toLinearRGB(std::vector<float>&) override;
+    std::vector<float>& fromLinearRGB(std::vector<float>&) override;
 private:
     static void assign_pixels(std::size_t, std::vector<float>&, const float& ,const float&,const float&);
 
