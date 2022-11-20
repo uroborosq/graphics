@@ -11,7 +11,7 @@ class DrawColoredLine : public AbstractDrawLine {
 public:
     std::vector<float> &
     drawLine(std::vector<float> &pixels, const int &fileWidth, const int &fileHeight, const int &, const float &,
-             const long long &, const long long &, const long long &, const long long &, std::vector<float> &) override;
+             long long &, long long &, long long &, long long &, std::vector<float> &) override;
 
 };
 
