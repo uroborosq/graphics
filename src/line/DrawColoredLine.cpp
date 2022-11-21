@@ -18,15 +18,6 @@ DrawColoredLine::drawLine(std::vector<float> &pixels, const int &fileWidth, cons
     unsigned int colorSize = color.size();
     auto *newValues = new std::vector<float>(size);
 
-    if (x0 > x1 && y0 > y1) {
-        std::swap(x0, x1);
-        std::swap(y0, y1);
-    }
-    else if (x0 > x1 && y0 < y1) {
-        std::swap(x0, x1);
-        std::swap(y0, y1);
-    }
-
     for (int i = 0; i < size; i++) {
         float &pixel = newValues->at(i);
         pixel = pixels[i];
@@ -63,7 +54,7 @@ DrawColoredLine::drawLine(std::vector<float> &pixels, const int &fileWidth, cons
                             ((long long) floor(intery1 + 1) * fileWidth + x) * colorSize + j));
                 }
             }
-            intery1 = intery1 + gradient;
+
             if (floor(intery2) > 0 && ceil(intery2) < fileHeight) {
                 for (int j = 0; j < colorSize; j++) {
                     float &pixel = newValues->at(((long long) floor(intery2) * fileWidth + x) * colorSize + j);
@@ -88,16 +79,18 @@ DrawColoredLine::drawLine(std::vector<float> &pixels, const int &fileWidth, cons
                             ((long long) floor(intery2 + 1) * fileWidth + x) * colorSize + j));
                 }
             }
-            intery2 = intery2 + gradient;
 
-            for (long long it = std::max((long long) floor(intery1) + 1, (long long) 0);
-                 it < std::min((long long) floor(intery1 + width), (long long) fileHeight); it++) {
+            for (long long it = std::max((long long) floor(intery1 + 1), (long long) 0);
+                 it <= std::min((long long) floor(intery2), (long long) fileHeight - 1); it++) {
                 for (int j = 0; j < colorSize; j++) {
                     float &pixel = newValues->at((long long) (it * fileWidth + x) * colorSize + j);
                     pixel = countTransparency(transparency, color[j], pixels.at(
                             (long long) (it * fileWidth + x) * colorSize + j));
                 }
             }
+
+            intery1 = intery1 + gradient;
+            intery2 = intery2 + gradient;
         }
     } else {
         float gradient = (float) abs(dx) / abs(dy) * (dx / abs(dx));
@@ -129,7 +122,6 @@ DrawColoredLine::drawLine(std::vector<float> &pixels, const int &fileWidth, cons
                             (y * fileWidth + (long long) floor(interx1 + 1)) * colorSize + j));
                 }
             }
-            interx1 = interx1 + gradient;
             if (floor(interx2) > 0 && ceil(interx2) < fileWidth) {
                 for (int j = 0; j < colorSize; j++) {
                     float &pixel = newValues->at((y * fileWidth + (long long) floor(interx2)) * colorSize + j);
@@ -153,16 +145,18 @@ DrawColoredLine::drawLine(std::vector<float> &pixels, const int &fileWidth, cons
                             (y * fileWidth + (long long) floor(interx2 + 1)) * colorSize + j));
                 }
             }
-            interx2 = interx2 + gradient;
 
-            for (long long it = std::max((long long) floor(interx1) + 1, (long long) 0);
-                 it < std::min((long long) floor(interx1) + width, (long long) fileWidth); it++) {
+            for (long long it = std::max((long long) floor(interx1), (long long) 0);
+                 it <= std::min((long long) floor(interx2), (long long) fileWidth - 1); it++) {
                 for (int j = 0; j < colorSize; j++) {
                     float &pixel = newValues->at((y * fileWidth + it) * colorSize + j);
                     pixel = countTransparency(transparency, color[j], pixels.at(
                             (y * fileWidth + it) * colorSize + j));
                 }
             }
+
+            interx1 = interx1 + gradient;
+            interx2 = interx2 + gradient;
         }
     }
     return *newValues;
