@@ -1,7 +1,9 @@
 #include "QImageWidget.h"
 #include "GammaCorrection.h"
 #include <iostream>
-QImageWidget::QImageWidget(Pixels *pixels) {
+#include <QSinglePointEvent>
+
+QImageWidget::QImageWidget(Pixels *pixels, QWidget* parent, Qt::WindowFlags f) : QLabel(parent, f) {
     _format = pixels->getTag();
     _height = pixels->getHeight();
     _width = pixels->getWidth();
@@ -75,4 +77,19 @@ void QImageWidget::reloadPixmap() {
     }
    auto pixmap = QPixmap::fromImage(image);
     setPixmap(pixmap);
+}
+
+void QImageWidget::mousePressEvent(QMouseEvent *event) {
+    auto hm = (QSinglePointEvent*)event;
+    QPoint p = hm->position().toPoint();
+    _mousePressXCoordinate = p.x();
+    _mousePressYCoordinate = p.y();
+}
+
+int QImageWidget::getMousePressXCoordinate() {
+    return _mousePressXCoordinate;
+}
+
+int QImageWidget::getMousePressYCoordinate() {
+    return _mousePressYCoordinate;
 }

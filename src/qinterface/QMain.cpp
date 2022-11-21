@@ -7,6 +7,7 @@
 #include "QAssignGammaWindow.h"
 #include "QConvertGammaWindow.h"
 #include "QLineParametersSelectionWindow.h"
+#include "QDrawLineWindow.h"
 
 void QMain::openOpenWindow() {
     auto openWindow = new QOpenPictureWindow();
@@ -18,7 +19,7 @@ void QMain::openOpenWindow() {
             auto file = Pnm(path);
             *pixels = Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 1 / 2.2);
             delete picture;
-            picture = new QImageWidget(pixels);
+            picture = new QImageWidget(pixels, this);
             this->setCentralWidget(picture);
         }
     }
@@ -72,7 +73,7 @@ void QMain::openColorSpaceAndChannelWindow() {
     pixels->setColorSpace(colorSpace);
     pixels->setColorChannel(colorChannel);
 
-    picture = new QImageWidget(pixels);
+    picture = new QImageWidget(pixels, this);
     this->setCentralWidget(picture);
 }
 
@@ -92,10 +93,15 @@ void QMain::openConvertGammaWindow() {
         auto gamma = picture->getGamma();
         delete picture;
         pixels->setGamma(convertGammaWindow->getNewGamma());
-        picture = new QImageWidget(pixels);
+        picture = new QImageWidget(pixels, this);
         picture->setGamma(gamma);
         this->setCentralWidget(picture);
     }
+}
+
+void QMain::openDrawLineWindow() {
+    auto drawLineWindow = new QDrawLineWindow(picture);
+    drawLineWindow->show();
 }
 
 void QMain::openLineParametersWindow() {
@@ -109,9 +115,9 @@ void QMain::openLineParametersWindow() {
 QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     pixels = pixels_;
     picture = picture_;
-    this->resize(200, 300);
+    this->resize(300, 300);
 
-    auto picture = new QImageWidget(pixels);
+    auto picture = new QImageWidget(pixels, this);
 
     auto fileMenu = new QMenu("Файл");
 
@@ -132,8 +138,16 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     auto convertGamma = new QAction("Преобразовать гамму");
     convertGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
 
+    auto drawLineMenu = new QMenu("Рисовать");
+
+    auto drawLine = new QAction("Нарисовать линию");
+    drawLine->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
+
     auto lineParameters = new QAction("Изменить параметры линии");
     lineParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+
+    drawLineMenu->addAction(drawLine);
+    drawLineMenu->addAction(lineParameters);
 
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
@@ -141,7 +155,7 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     editMenu->addAction(colorspaceChange);
     editMenu->addAction(assignGamma);
     editMenu->addAction(convertGamma);
-    editMenu->addAction(lineParameters);
+    editMenu->addMenu(drawLineMenu);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -162,6 +176,7 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
     connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
     connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
+    connect(drawLine, &QAction::triggered, this, &QMain::openDrawLineWindow);
     connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
 
 }

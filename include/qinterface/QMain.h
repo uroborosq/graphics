@@ -27,6 +27,7 @@ public:
     void openColorSpaceAndChannelWindow();
     void openAssignGammaWindow();
     void openConvertGammaWindow();
+    void openDrawLineWindow();
     void openLineParametersWindow();
 };
 
