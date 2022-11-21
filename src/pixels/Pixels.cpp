@@ -7,6 +7,7 @@
 #include "selectcolorchannel.h"
 #include "GammaCorrection.h"
 #include "sRGBColorSpace.h"
+#include "DitheringMethodFactory.h"
 
 
 Pixels::Pixels() {
@@ -28,14 +29,20 @@ Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &
     colorSpace = colorSpace_;
     colorChannel = colorChannel_;
     gamma = gamma_;
+    dithering = None;
 }
 
-const std::vector<float> &Pixels::getValues() {
-    if (colorChannel != ColorChannel::All) {
-        auto filteredPixels = select_color_channel(values, colorChannel);
-        return *filteredPixels;
+std::vector<float> Pixels::getValues() {
+    std::vector<float> valuesToSend = values;
+    if (dithering != Dithering::None) {
+        valuesToSend = DitheringMethodFactory::create(dithering)->proceed(valuesToSend, width, ditheringDepth, format == P6);
     }
-    return values;
+
+    if (colorChannel != ColorChannel::All) {
+        valuesToSend = select_color_channel(valuesToSend, colorChannel);
+    }
+
+    return valuesToSend;
 }
 
 const ColorSpace &Pixels::getColorSpace() {
@@ -89,14 +96,25 @@ void Pixels::setGamma(const float &newGamma) {
     if (newGamma == 0 and gamma != 0) {
         values = GammaCorrector.changeGamma(values, gamma, 1);
         values = sRGBColorSpace().fromLinearRGB(values);
-    }  else if (gamma == 0 and newGamma != 0) {
+    } else if (gamma == 0 and newGamma != 0) {
         values = sRGBColorSpace().toLinearRGB(values);
         values = GammaCorrector.changeGamma(values, 1, newGamma);
-    }
-    else if (gamma != newGamma) {
+    } else if (gamma != newGamma) {
         values = GammaCorrector.changeGamma(values, gamma, newGamma);
     }
     gamma = newGamma;
+}
+
+void Pixels::setDithering(const Dithering &dithering_, int ditheringDepth_) {
+    if (ditheringDepth_ > 8 or ditheringDepth_ < 1)
+        throw std::invalid_argument("depth must be between 1 and 8");
+    ditheringDepth = ditheringDepth_;
+    dithering = dithering_;
+
+}
+
+const Dithering &Pixels::getDithering() {
+    return dithering;
 }
 
 

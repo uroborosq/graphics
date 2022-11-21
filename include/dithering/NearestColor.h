@@ -5,6 +5,6 @@
 #ifndef HOROSHOEDITOR_NEARESTCOLOR_H
 #define HOROSHOEDITOR_NEARESTCOLOR_H
 
-int nearestColor(int bit, double pixel_color);
+float nearestColor(int bit, double pixel_color);
 
 #endif //HOROSHOEDITOR_NEARESTCOLOR_H
