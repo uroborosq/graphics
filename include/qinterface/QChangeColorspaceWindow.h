@@ -22,7 +22,7 @@
 
 class QChangeColorspaceWindow : public QDialog {
 public:
-    explicit QChangeColorspaceWindow();
+    explicit QChangeColorspaceWindow(const ColorSpace& currentColorSpace, const ColorChannel& currentColorChannel);
     ColorSpace getColorSpace();
     ColorChannel getColorChannel();
     bool checkSubmitted();
@@ -31,7 +31,7 @@ private:
     QComboBox* colorspaces;
     bool isSubmitted;
     void changeColorSpace();
-    QComboBox* changeColorChannelBox(int index);
+    QComboBox* changeColorChannelBox(int index, const ColorChannel& currentColorChannel);
 };
 
 #endif //HOROSHOEDITOR_QCHANGECOLORSPACEWINDOW_H

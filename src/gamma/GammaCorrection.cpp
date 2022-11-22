@@ -7,6 +7,8 @@
 #include <cmath>
 
 std::vector<float> &GammaCorrection::changeGamma(std::vector<float> &pixels, const float &oldGamma,const float &newGamma) {
+    if (oldGamma == 0 or newGamma == 0)
+        exit(228);
     auto *newPixels = new std::vector<float>(pixels.size(), 0);
     auto size = pixels.size();
     for (int i = 0; i < size; i++) {

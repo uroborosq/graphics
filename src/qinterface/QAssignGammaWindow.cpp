@@ -1,18 +1,23 @@
 #include "QAssignGammaWindow.h"
 
-QAssignGammaWindow::QAssignGammaWindow() {
+QAssignGammaWindow::QAssignGammaWindow(const float &currentGamma) {
     isSubmitted = false;
     this->resize(200, 100);
 
-    auto workingRGBButton = new QRadioButton("Интерпретировать как RGB: sRGB IEC61966-2.1");
-    workingRGBButton->setChecked(true);
-
+    auto workingRGBButton = new QRadioButton("sRGB");
     profileButton = new QRadioButton("Другое значение: ");
 
     gammaBox = new QDoubleSpinBox();
-    gammaBox->setValue(0);
     gammaBox->setMinimum(0);
-    gammaBox->setSingleStep(0.2);
+    gammaBox->setSingleStep(0.1);
+
+    if (currentGamma == 0) {
+        workingRGBButton->setChecked(true);
+        gammaBox->setValue(0);
+    } else {
+        gammaBox->setValue(currentGamma);
+        profileButton->setChecked(true);
+    }
 
     auto profileLayout = new QHBoxLayout();
     profileLayout->addWidget(profileButton);
@@ -33,16 +38,14 @@ QAssignGammaWindow::QAssignGammaWindow() {
     });
 }
 
-bool QAssignGammaWindow::checkSubmited()
-{
+bool QAssignGammaWindow::checkSubmited() {
     return isSubmitted;
 }
 
 double QAssignGammaWindow::getNewGamma() {
     if (profileButton->isChecked()) {
         return gammaBox->value();
-    }
-    else{
+    } else {
         return sRGB;
     }
 }

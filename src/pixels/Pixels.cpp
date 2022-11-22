@@ -6,6 +6,7 @@
 #include "Pixels.h"
 #include "selectcolorchannel.h"
 #include "GammaCorrection.h"
+#include "sRGBColorSpace.h"
 
 
 Pixels::Pixels() {
@@ -45,12 +46,12 @@ void Pixels::setColorSpace(const ColorSpace &colorSpace_) {
     if (colorSpace != ColorSpace::RGB) {
         AbstractColorSpace *converter = chooseConverter(colorSpace);
         if (converter != nullptr) {
-            values = converter->to_rgb(values);
+            values = converter->toLinearRGB(values);
         }
     }
     AbstractColorSpace *converter = chooseConverter(colorSpace_);
     if (converter != nullptr) {
-        values = converter->from_rgb(values);
+        values = converter->fromLinearRGB(values);
     }
 
     colorSpace = colorSpace_;
@@ -81,15 +82,20 @@ const float &Pixels::getGamma() const {
 }
 
 void Pixels::setGamma(const float &newGamma) {
-    auto GammaCorrector = GammaCorrection();
-    if (newGamma == 0) {
-        values = GammaCorrector.changeGamma(values, gamma, newGamma);
-        gamma = 1 / 2.2;
-    }
-
     if (newGamma < 0)
         throw std::invalid_argument("Gamma's value can't be lower than zero");
-    values = GammaCorrector.changeGamma(values, gamma, newGamma);
+
+    auto GammaCorrector = GammaCorrection();
+    if (newGamma == 0 and gamma != 0) {
+        values = GammaCorrector.changeGamma(values, gamma, 1);
+        values = sRGBColorSpace().fromLinearRGB(values);
+    }  else if (gamma == 0 and newGamma != 0) {
+        values = sRGBColorSpace().toLinearRGB(values);
+        values = GammaCorrector.changeGamma(values, 1, newGamma);
+    }
+    else if (gamma != newGamma) {
+        values = GammaCorrector.changeGamma(values, gamma, newGamma);
+    }
     gamma = newGamma;
 }
 
