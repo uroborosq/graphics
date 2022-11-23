@@ -7,8 +7,9 @@
 #include <vector>
 class AbstractDrawLine {
 public:
-    virtual std::vector<float> &drawLine(std::vector<float> &pixels, const int &fileWidth, const int &fileHeight, const int &, const float &,
-             const long long &, const long long &, const long long &, const long long &,std::vector<float> &)= 0;
+    virtual std::vector<float> &
+    drawLine(std::vector<float> &pixels, const int &fileWidth, const int &fileHeight, const int &, const float &,
+             long long &, long long &, long long &, long long &,std::vector<float> &)= 0;
 };
 
 #endif //HOROSHOEDITOR_ABSTRACTDRAWLINE_H
