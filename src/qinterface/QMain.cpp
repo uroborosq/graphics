@@ -101,8 +101,9 @@ void QMain::openConvertGammaWindow() {
 }
 
 void QMain::openDrawLineWindow() {
-    auto drawLineWindow = new QDrawLineWindow(pixels, picture, this, lineColor, lineThickness, lineTransparency);
+    auto drawLineWindow = new QDrawLineWindow(pixels, &picture, this, lineColor, lineThickness, lineTransparency);
     drawLineWindow->show();
+
 }
 
 void QMain::openLineParametersWindow() {
@@ -118,10 +119,9 @@ void QMain::openLineParametersWindow() {
 
 QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     pixels = pixels_;
-    picture = picture_;
+    picture = new QImageWidget(pixels_, this);
     this->resize(300, 300);
 
-    auto picture = new QImageWidget(pixels, this);
 
     auto fileMenu = new QMenu("Файл");
 
