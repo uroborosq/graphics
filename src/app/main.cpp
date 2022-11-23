@@ -3,6 +3,7 @@
 #include "Pixels.h"
 #include "QImageWidget.h"
 
+
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     auto* pixels = new Pixels();
@@ -11,3 +12,4 @@ int main(int argc, char *argv[]) {
     interface->show();
     return QApplication::exec();
 }
+
