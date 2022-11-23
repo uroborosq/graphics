@@ -1,7 +1,3 @@
-//
-// Created by kotyangensss on 19.11.2022.
-//
-
 #include <cmath>
 #include "DrawColoredLine.h"
 
@@ -10,9 +6,10 @@ float countTransparency(const float &transparency, double newPixel, const float 
     return (float) newPixel * (1 - transparency) + prevPixel * transparency;
 }
 
-std::vector<float> &DrawColoredLine::drawLine(std::vector<float> &pixels, const int& fileWidth, const int& fileHeight, const int &width, const float &transparency,
+std::vector<float> &
+DrawColoredLine::drawLine(std::vector<float> &pixels, const int &fileWidth, const int &fileHeight, const int &width,
+                          const float &transparency,
                           const long long &x0, const long long &y0, const long long &x1, const long long &y1, std::vector<float> &color) {
-
     auto size = pixels.size();
     unsigned int colorSize = color.size();
     auto *newValues = new std::vector<float>(size);
