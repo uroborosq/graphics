@@ -47,7 +47,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp include/dithering/AbstractDithering.h
         include/dithering/Ordered8x8Dithering.h src/dithering/Ordered8x8Dithering.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp
-        include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp include/dithering/NearestColor.h src/dithering/NearestColor.cpp include/dithering/RandomDithering.h src/dithering/RandomDithering.cpp include/dithering/FloydSteinbergDithering.h src/dithering/FloydSteinbergDithering.cpp include/dithering/BordersController.h src/dithering/BordersController.cpp include/dithering/AtkinsonDithering.h src/dithering/AtkinsonDithering.cpp include/dithering/DitheringEnum.h include/dithering/DitheringMethodFactory.h src/dithering/DitheringMethodFactory.cpp)
+        include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
+        include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
+        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)

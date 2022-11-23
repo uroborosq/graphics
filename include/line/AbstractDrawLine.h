@@ -4,9 +4,7 @@
 
 #ifndef HOROSHOEDITOR_ABSTRACTDRAWLINE_H
 #define HOROSHOEDITOR_ABSTRACTDRAWLINE_H
-
-#include "Pixels.h"
-
+#include <vector>
 class AbstractDrawLine {
 public:
     virtual std::vector<float> &

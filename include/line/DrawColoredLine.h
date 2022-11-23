@@ -1,7 +1,3 @@
-//
-// Created by optim on 19.11.2022.
-//
-
 #ifndef HOROSHOEDITOR_DRAWCOLOREDLINE_H
 #define HOROSHOEDITOR_DRAWCOLOREDLINE_H
 

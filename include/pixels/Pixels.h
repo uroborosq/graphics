@@ -1,7 +1,3 @@
-//
-// Created by uroborosq on 14.11.22.
-//
-
 #ifndef HOROSHOEDITOR_PIXELS_H
 #define HOROSHOEDITOR_PIXELS_H
 
@@ -10,6 +6,7 @@
 #include "ColorSpaceEnum.h"
 #include "ColorChannelEnum.h"
 #include "AbstractColorSpace.h"
+#include "AbstractDrawLine.h"
 #include "PnmFormat.h"
 #include "DitheringEnum.h"
 
@@ -41,7 +38,9 @@ public:
     void setGamma(const float&);
     void setDithering(const Dithering& dithering_, int ditheringDepth_);
     const Dithering& getDithering();
+
 };
 
 
 #endif //HOROSHOEDITOR_PIXELS_H
+    

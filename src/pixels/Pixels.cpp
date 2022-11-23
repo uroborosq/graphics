@@ -116,5 +116,10 @@ void Pixels::setDithering(const Dithering &dithering_, int ditheringDepth_) {
 const Dithering &Pixels::getDithering() {
     return dithering;
 }
+void Pixels::drawLine(AbstractDrawLine *drawer, const long long &x0, const long long &y0, const long long &x1, const long long &y1,
+                 std::vector<float> &color, const int &lineWidth, const float& transparency) {
+    values = drawer->drawLine(values, width, height, lineWidth, transparency, x0, y0, x1, y1, color);
+}
+
 
 
