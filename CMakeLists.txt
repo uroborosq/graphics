@@ -22,6 +22,7 @@ include_directories(include/pixels)
 include_directories(include/gamma)
 include_directories(include/dithering)
 include_directories(include/line)
+include_directories(include/gradient)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -47,8 +48,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp include/dithering/AbstractDithering.h
         include/dithering/Ordered8x8Dithering.h src/dithering/Ordered8x8Dithering.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp
-        include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
         include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
+        include/gradient/Gradient.h src/gradient/Gradient.cpp
+        include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
         include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
