@@ -10,6 +10,7 @@
 #include "ColorSpaceEnum.h"
 #include "ColorChannelEnum.h"
 #include "AbstractColorSpace.h"
+#include "AbstractDrawLine.h"
 #include "PnmFormat.h"
 class Pixels {
 private:
@@ -24,7 +25,7 @@ public:
     Pixels();
     Pixels(const std::vector<float> &values_, const int& width_, const int& height_, const char* tag_,
            const ColorSpace& colorSpace_ = ColorSpace::RGB, const ColorChannel& colorChannel_ = ColorChannel::All,
-           const float& gamma_ = 1/2.2);
+           const float& gamma_ = 0);
     const std::vector<float>& getValues();
     const ColorSpace& getColorSpace();
     void setColorSpace(const ColorSpace&);
@@ -35,6 +36,8 @@ public:
     const PnmFormat& getTag();
     const float& getGamma() const;
     void setGamma(const float&);
+    void drawLine(AbstractDrawLine* drawer, const long long& x0, const long long& y0, const long long& x1, const long long& y1,
+                  std::vector<float>& color, const int& width, const float& transparency);
 };
 
 
