@@ -19,6 +19,9 @@ class QMain : public QMainWindow {
 private:
     Pixels* pixels;
     QImageWidget* picture;
+    QColor lineColor = Qt::red;
+    int lineThickness = 1;
+    float lineTransparency = 1;
 
 public:
     QMain(Pixels*, QImageWidget*);
@@ -27,6 +30,8 @@ public:
     void openColorSpaceAndChannelWindow();
     void openAssignGammaWindow();
     void openConvertGammaWindow();
+    void openDrawLineWindow();
+    void openLineParametersWindow();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H
