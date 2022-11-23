@@ -11,8 +11,8 @@ std::vector<float>& select_color_channel(std::vector<float> &pixels, const Color
 
    for (std::size_t i = 0; i < size; i++)
    {
-       if (i != colorChannel - 1)
-        pixels[i] = 0;
+       if (i % 3 != colorChannel - 1)
+           pixels[i] = 0;
    }
 
     return pixels;

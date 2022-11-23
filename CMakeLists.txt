@@ -47,6 +47,14 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp include/dithering/AbstractDithering.h
         include/dithering/Ordered8x8Dithering.h src/dithering/Ordered8x8Dithering.cpp
+        include/dithering/AbstractDithering.h
+        include/dithering/AtkinsonDithering.h src/dithering/AtkinsonDithering.cpp
+        include/dithering/BordersController.h src/dithering/BordersController.cpp
+        include/dithering/DitheringMethodFactory.h src/dithering/DitheringMethodFactory.cpp
+        include/dithering/FloydSteinbergDithering.h src/dithering/FloydSteinbergDithering.cpp
+        include/dithering/NearestColor.h src/dithering/NearestColor.cpp
+        include/dithering/RandomDithering.h src/dithering/RandomDithering.cpp
+        include/dithering/DitheringEnum.h
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp
         include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
         include/gradient/Gradient.h src/gradient/Gradient.cpp

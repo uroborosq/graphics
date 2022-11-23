@@ -17,6 +17,8 @@ Pixels::Pixels() {
     width = 0;
     height = 0;
     format = PnmFormat::P6;
+    dithering = None;
+    gamma = 0;
 }
 
 Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, const char *tag_,

@@ -38,7 +38,8 @@ public:
     void setGamma(const float&);
     void setDithering(const Dithering& dithering_, int ditheringDepth_);
     const Dithering& getDithering();
-
+    void drawLine(AbstractDrawLine *drawer, const long long &x0, const long long &y0, const long long &x1, const long long &y1,
+                          std::vector<float> &color, const int &lineWidth, const float& transparency);
 };
 
 
