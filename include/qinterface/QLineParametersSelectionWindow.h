@@ -30,7 +30,7 @@ public:
     void setLineParameters();
     QColor getColor();
     int getLineThickness();
-    double getLineTransparency();
+    float getLineTransparency();
 
 };
 

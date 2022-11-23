@@ -8,6 +8,7 @@
 #include "QConvertGammaWindow.h"
 #include "QLineParametersSelectionWindow.h"
 #include "QDrawLineWindow.h"
+#include "DrawColoredLine.h"
 
 void QMain::openOpenWindow() {
     auto openWindow = new QOpenPictureWindow();
@@ -100,7 +101,7 @@ void QMain::openConvertGammaWindow() {
 }
 
 void QMain::openDrawLineWindow() {
-    auto drawLineWindow = new QDrawLineWindow(picture);
+    auto drawLineWindow = new QDrawLineWindow(pixels, picture, this, lineColor, lineThickness, lineTransparency);
     drawLineWindow->show();
 }
 
@@ -108,6 +109,9 @@ void QMain::openLineParametersWindow() {
     auto lineParametersWindow = new QLineParametersSelectionWindow();
     lineParametersWindow->exec();
     if (lineParametersWindow->checkSubmitted()) {
+        lineColor = lineParametersWindow->getColor();
+        lineThickness = lineParametersWindow->getLineThickness();
+        lineTransparency = lineParametersWindow->getLineTransparency();
     }
 }
 

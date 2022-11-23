@@ -10,6 +10,8 @@
 #include <QMouseEvent>
 #include <QWidget>
 #include "QImageWidget.h"
+#include "Pixels.h"
+#include "QMain.h"
 
 class QDrawLineWindow : public QWidget {
 private:
@@ -17,13 +19,18 @@ private:
     QLabel* firstPointYValue;
     QLabel* secondPointXValue;
     QLabel* secondPointYValue;
+    Pixels* _pixels;
     QImageWidget* _picture;
+    QMain* _mainWindow;
+    QColor _color;
+    int _lineThickness;
+    float _lineTransparency;
     void drawLine();
     void chooseFirstPoint();
     void chooseSecondPoint();
 
 public:
-    QDrawLineWindow(QImageWidget*);
+    QDrawLineWindow(Pixels*, QImageWidget*, QMain*, QColor, int, float);
 };
 
 #endif //HOROSHOEDITOR_QDRAWLINEWINDOW_H

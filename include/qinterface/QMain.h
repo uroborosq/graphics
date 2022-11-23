@@ -19,6 +19,9 @@ class QMain : public QMainWindow {
 private:
     Pixels* pixels;
     QImageWidget* picture;
+    QColor lineColor;
+    int lineThickness;
+    float lineTransparency;
 
 public:
     QMain(Pixels*, QImageWidget*);

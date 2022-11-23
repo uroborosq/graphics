@@ -75,6 +75,6 @@ int QLineParametersSelectionWindow::getLineThickness() {
     return lineThicknessValue->value();
 }
 
-double QLineParametersSelectionWindow::getLineTransparency() {
-    return (double )lineTransparencyValue->value()/100;
+float QLineParametersSelectionWindow::getLineTransparency() {
+    return (float)lineTransparencyValue->value()/100;
 }

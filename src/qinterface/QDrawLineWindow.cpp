@@ -1,9 +1,15 @@
 #include "QDrawLineWindow.h"
+#include "DrawColoredLine.h"
 
-QDrawLineWindow::QDrawLineWindow(QImageWidget* picture) {
+QDrawLineWindow::QDrawLineWindow(Pixels* pixels, QImageWidget* picture, QMain* mainWindow, QColor color, int lineThickness, float lineTransparency) {
     this->resize(200, 100);
 
+    _pixels = pixels;
     _picture = picture;
+    _mainWindow = mainWindow;
+    _color = color;
+    _lineThickness = lineThickness;
+    _lineTransparency = lineTransparency;
 
     auto choosePointsLabel = new QLabel("Выберите точки начала и конца линии:");
     auto firstPointLabel = new QLabel("Первая точка: ");
@@ -61,5 +67,15 @@ void QDrawLineWindow::chooseSecondPoint() {
 }
 
 void QDrawLineWindow::drawLine() {
+    auto drawer = new DrawColoredLine();
+    auto x0 = firstPointXValue->text().toLongLong();
+    auto y0 = firstPointYValue->text().toLongLong();
+    auto x1 = secondPointXValue->text().toLongLong();
+    auto y1 = secondPointYValue->text().toLongLong();
+    std::vector<float>color{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
+    _pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);
+    delete _picture;
+    _picture = new QImageWidget(_pixels, _mainWindow);
+    _mainWindow->setCentralWidget(_picture);
     this->close();
 }
