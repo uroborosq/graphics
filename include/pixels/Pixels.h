@@ -1,7 +1,3 @@
-//
-// Created by uroborosq on 14.11.22.
-//
-
 #ifndef HOROSHOEDITOR_PIXELS_H
 #define HOROSHOEDITOR_PIXELS_H
 
@@ -42,3 +38,4 @@ public:
 
 
 #endif //HOROSHOEDITOR_PIXELS_H
+    

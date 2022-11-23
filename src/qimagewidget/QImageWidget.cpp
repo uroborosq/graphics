@@ -2,26 +2,16 @@
 #include "GammaCorrection.h"
 #include "sRGBColorSpace.h"
 #include <iostream>
+#include <QSinglePointEvent>
 
-QImageWidget::QImageWidget(Pixels *pixels, float gamma) {
-    _format = pixels->getTag();
-    _height = pixels->getHeight();
-    _width = pixels->getWidth();
-    _displayPixels = pixels->getValues();
-    _gammaCorrection = gamma;
-
-    convertToRgb(pixels->getColorSpace());
-    proceedGammaCorrection(pixels->getGamma());
-    reloadPixmap();
-}
-
-
-QImageWidget::QImageWidget(Pixels *pixels) {
+QImageWidget::QImageWidget(Pixels *pixels, QWidget* parent, Qt::WindowFlags f) : QLabel(parent, f) {
     _format = pixels->getTag();
     _height = pixels->getHeight();
     _width = pixels->getWidth();
     _displayPixels = pixels->getValues();
     _gammaCorrection = 0;
+    _mousePressXCoordinate = 0;
+    _mousePressYCoordinate = 0;
 
     convertToRgb(pixels->getColorSpace());
     proceedGammaCorrection(pixels->getGamma());
@@ -72,8 +62,6 @@ void QImageWidget::proceedGammaCorrection(const float &pixelsGamma) {
 }
 
 void QImageWidget::reloadPixmap() {
-//    if (_gammaCorrection != 0)
-//        _displayPixels = sRGBColorSpace().fromLinearRGB(_displayPixels);
     auto image = QImage(_width, _height, QImage::Format_RGB888);
     if (_format == PnmFormat::P6) {
         for (int i = 0; i < _height; ++i) {
@@ -100,4 +88,18 @@ void QImageWidget::reloadPixmap() {
     setPixmap(pixmap);
 }
 
+void QImageWidget::mousePressEvent(QMouseEvent *event) {
+    auto hm = (QSinglePointEvent*)event;
+    QPoint p = hm->position().toPoint();
+    _mousePressXCoordinate = p.x();
+    _mousePressYCoordinate = p.y();
+    event->accept();
+}
 
+int QImageWidget::getMousePressXCoordinate() {
+    return _mousePressXCoordinate;
+}
+
+int QImageWidget::getMousePressYCoordinate() {
+    return _mousePressYCoordinate;
+}
