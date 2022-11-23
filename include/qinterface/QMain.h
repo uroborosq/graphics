@@ -19,9 +19,9 @@ class QMain : public QMainWindow {
 private:
     Pixels* pixels;
     QImageWidget* picture;
-    QColor lineColor;
-    int lineThickness;
-    float lineTransparency;
+    QColor lineColor = Qt::red;
+    int lineThickness = 1;
+    float lineTransparency = 1;
 
 public:
     QMain(Pixels*, QImageWidget*);

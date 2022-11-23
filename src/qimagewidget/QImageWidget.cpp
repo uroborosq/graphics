@@ -10,6 +10,8 @@ QImageWidget::QImageWidget(Pixels *pixels, QWidget* parent, Qt::WindowFlags f) :
     _width = pixels->getWidth();
     _displayPixels = pixels->getValues();
     _gammaCorrection = 0;
+    _mousePressXCoordinate = 0;
+    _mousePressYCoordinate = 0;
 
     convertToRgb(pixels->getColorSpace());
     proceedGammaCorrection(pixels->getGamma());
@@ -91,6 +93,7 @@ void QImageWidget::mousePressEvent(QMouseEvent *event) {
     QPoint p = hm->position().toPoint();
     _mousePressXCoordinate = p.x();
     _mousePressYCoordinate = p.y();
+    event->accept();
 }
 
 int QImageWidget::getMousePressXCoordinate() {

@@ -15,14 +15,14 @@ QDrawLineWindow::QDrawLineWindow(Pixels* pixels, QImageWidget* picture, QMain* m
     auto firstPointLabel = new QLabel("Первая точка: ");
     auto firstPointXLabel = new QLabel("x: ");
     auto firstPointYLabel = new QLabel(" y: ");
-    firstPointXValue = new QLabel();
-    firstPointYValue = new QLabel();
+    firstPointXValue = new QLabel("0");
+    firstPointYValue = new QLabel("0");
     auto firstPointChooseButton = new QPushButton("Выбрать точку");
     auto secondPointLabel = new QLabel("Вторая точка: ");
     auto secondPointXLabel = new QLabel("x: ");
     auto secondPointYLabel = new QLabel(" y: ");
-    secondPointXValue = new QLabel();
-    secondPointYValue = new QLabel();
+    secondPointXValue = new QLabel("0");
+    secondPointYValue = new QLabel("0");
     auto secondPointChooseButton = new QPushButton("Выбрать точку");
     auto drawButton = new QPushButton("Нарисовать линию");
 
@@ -53,12 +53,26 @@ QDrawLineWindow::QDrawLineWindow(Pixels* pixels, QImageWidget* picture, QMain* m
 
     connect(firstPointChooseButton, &QPushButton::clicked, this, &QDrawLineWindow::chooseFirstPoint);
     connect(secondPointChooseButton, &QPushButton::clicked, this, &QDrawLineWindow::chooseSecondPoint);
-    connect(drawButton, &QPushButton::clicked, this, &QDrawLineWindow::drawLine);
+    connect(drawButton, &QPushButton::clicked, this, [=]() {
+        auto drawer = new DrawColoredLine();
+        auto x0 = firstPointXValue->text().toLongLong();
+        auto y0 = firstPointYValue->text().toLongLong();
+        auto x1 = secondPointXValue->text().toLongLong();
+        auto y1 = secondPointYValue->text().toLongLong();
+        std::vector<float>color{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
+        pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);
+        delete picture;
+        picture = new QImageWidget(pixels, _mainWindow);
+        _mainWindow->setCentralWidget(picture);
+        this->close();
+    });
 }
 
 void QDrawLineWindow::chooseFirstPoint() {
-    firstPointXValue->setText(QString::number(_picture->getMousePressXCoordinate()));
-    firstPointYValue->setText(QString::number(_picture->getMousePressYCoordinate()));
+    auto x = _picture->getMousePressXCoordinate();
+    auto y = _picture->getMousePressYCoordinate();
+    firstPointXValue->setText(QString::number(x));
+    firstPointYValue->setText(QString::number(y));
 }
 
 void QDrawLineWindow::chooseSecondPoint() {
@@ -67,15 +81,15 @@ void QDrawLineWindow::chooseSecondPoint() {
 }
 
 void QDrawLineWindow::drawLine() {
-    auto drawer = new DrawColoredLine();
-    auto x0 = firstPointXValue->text().toLongLong();
-    auto y0 = firstPointYValue->text().toLongLong();
-    auto x1 = secondPointXValue->text().toLongLong();
-    auto y1 = secondPointYValue->text().toLongLong();
-    std::vector<float>color{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
-    _pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);
-    delete _picture;
-    _picture = new QImageWidget(_pixels, _mainWindow);
-    _mainWindow->setCentralWidget(_picture);
-    this->close();
+//    auto drawer = new DrawColoredLine();
+//    auto x0 = firstPointXValue->text().toLongLong();
+//    auto y0 = firstPointYValue->text().toLongLong();
+//    auto x1 = secondPointXValue->text().toLongLong();
+//    auto y1 = secondPointYValue->text().toLongLong();
+//    std::vector<float>color{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
+//    _pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);
+//    delete _picture;
+//    _picture = new QImageWidget(_pixels, _mainWindow);
+//    _mainWindow->setCentralWidget(_picture);
+//    this->close();
 }
