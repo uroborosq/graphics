@@ -78,8 +78,7 @@ void QDrawLineWindow::draw()
     std::vector<float>color{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
     _pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);
     delete *_picture;
-
-        *_picture = new QImageWidget(_pixels, _mainWindow);;
+    *_picture = new QImageWidget(_pixels, _mainWindow);
     _mainWindow->setCentralWidget(*_picture);
 
     this->close();

@@ -13,7 +13,7 @@
 #include "Pixels.h"
 #include "QMain.h"
 
-class QDrawLineWindow : public QDialog {
+class QDrawLineWindow : public QWidget {
 private:
     QLabel* firstPointXValue;
     QLabel* firstPointYValue;
