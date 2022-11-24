@@ -16,8 +16,8 @@ QGradientGenerationWindow::QGradientGenerationWindow(int fileWidth, int fileHeig
     auto rightColorTextLabel = new QLabel("Выберите цвет конца градиента");
     rightColorLabel = new QLabel();
     auto changeRightColorButton = new QPushButton("Поменять цвет");
-    auto ditheringButton = new QPushButton("Дизеринг");
     auto gradientButton = new QPushButton("Построить градиент");
+    auto ditheringButton = new QPushButton("Дизеринг");
 
 
     leftColorLabel->setStyleSheet("QLabel { background-color :"+leftColor.name()+" }");
