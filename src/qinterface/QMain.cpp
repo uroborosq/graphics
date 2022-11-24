@@ -9,6 +9,7 @@
 #include "QLineParametersSelectionWindow.h"
 #include "QDrawLineWindow.h"
 #include "DrawColoredLine.h"
+#include "QGradientGenerationWindow.h"
 
 void QMain::openOpenWindow() {
     auto openWindow = new QOpenPictureWindow();
@@ -116,6 +117,15 @@ void QMain::openLineParametersWindow() {
     }
 }
 
+void QMain::openDitheringParametersWindow() {
+
+}
+
+void QMain::openGradientGenerationWindow() {
+    auto gradientGenerationWindow = new QGradientGenerationWindow(pixels->getWidth(), pixels->getHeight());
+    gradientGenerationWindow->exec();
+}
+
 
 QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     pixels = pixels_;
@@ -150,8 +160,19 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     auto lineParameters = new QAction("Изменить параметры линии");
     lineParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
 
+    auto ditheringMenu = new QMenu("Дизеринг");
+
+    auto ditheringParameters = new QAction("Изменить параметры дизеринга");
+    ditheringParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Z));
+
+    auto gradientGeneration = new QAction("Сгенерировать изображение с горизонтальным градиентом");
+    gradientGeneration->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
+
     drawLineMenu->addAction(drawLine);
     drawLineMenu->addAction(lineParameters);
+
+    ditheringMenu->addAction(ditheringParameters);
+    ditheringMenu->addAction(gradientGeneration);
 
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
@@ -160,6 +181,7 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     editMenu->addAction(assignGamma);
     editMenu->addAction(convertGamma);
     editMenu->addMenu(drawLineMenu);
+    editMenu->addMenu(ditheringMenu);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -182,7 +204,8 @@ QMain::QMain(Pixels* pixels_, QImageWidget* picture_){
     connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
     connect(drawLine, &QAction::triggered, this, &QMain::openDrawLineWindow);
     connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
-
+    connect(ditheringParameters, &QAction::triggered, this, &QMain::openDitheringParametersWindow);
+    connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
 }
 
 

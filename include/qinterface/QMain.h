@@ -32,6 +32,8 @@ public:
     void openConvertGammaWindow();
     void openDrawLineWindow();
     void openLineParametersWindow();
+    void openDitheringParametersWindow();
+    void openGradientGenerationWindow();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H
