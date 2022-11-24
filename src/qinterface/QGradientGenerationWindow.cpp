@@ -29,8 +29,8 @@ QGradientGenerationWindow::QGradientGenerationWindow(int fileWidth, int fileHeig
     layout->addWidget(rightColorTextLabel);
     layout->addWidget(rightColorLabel);
     layout->addWidget(changeRightColorButton);
-    layout->addWidget(ditheringButton);
     layout->addWidget(gradientButton);
+    layout->addWidget(ditheringButton);
 
     setLayout(layout);
 
