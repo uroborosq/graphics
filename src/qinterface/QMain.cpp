@@ -9,6 +9,7 @@
 #include "QLineParametersSelectionWindow.h"
 #include "QDrawLineWindow.h"
 #include "DrawColoredLine.h"
+#include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 
 void QMain::openOpenWindow() {
@@ -104,7 +105,6 @@ void QMain::openConvertGammaWindow() {
 void QMain::openDrawLineWindow() {
     auto drawLineWindow = new QDrawLineWindow(pixels, &picture, this, lineColor, lineThickness, lineTransparency);
     drawLineWindow->show();
-
 }
 
 void QMain::openLineParametersWindow() {
@@ -118,7 +118,37 @@ void QMain::openLineParametersWindow() {
 }
 
 void QMain::openDitheringParametersWindow() {
-
+    auto ditheringParametersWindow = new QDitheringParametersWindow(pixels, this);
+    ditheringParametersWindow->exec();
+    auto ditheringPixels = ditheringParametersWindow->getDitheringPixels();
+    auto saveWindow = new QSavePictureWindow();
+    saveWindow->exec();
+    auto savePicturePath = saveWindow->getPicturePath();
+    try {
+        if (saveWindow->checkSubmitted()) {
+            Pnm file;
+            file.width = ditheringPixels->getWidth();
+            file.height = ditheringPixels->getHeight();
+            file.max = 255;
+            file.tag[0] = 'P';
+            if (ditheringPixels->getTag() == PnmFormat::P5)
+                file.tag[1] = '5';
+            else {
+                if (ditheringPixels->getColorChannel() == ColorChannel::All)
+                    file.tag[1] = '6';
+                else
+                    file.tag[1] = '5';
+            }
+            ditheringPixels->setGamma(0);
+            file.data = remove_other_channels(ditheringPixels->getValues(), ditheringPixels->getColorChannel());
+            file.write(savePicturePath);
+        }
+    }
+    catch (const std::invalid_argument& e){
+        auto box = new QMessageBox();
+        box->setText(e.what());
+        box->exec();
+    }
 }
 
 void QMain::openGradientGenerationWindow() {
