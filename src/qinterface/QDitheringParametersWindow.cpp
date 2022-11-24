@@ -81,3 +81,7 @@ int QDitheringParametersWindow::getBitDepth() {
 Pixels* QDitheringParametersWindow::getDitheringPixels() {
     return _pixels;
 }
+
+QImageWidget* QDitheringParametersWindow::getDitheringPicture() {
+    return _ditheringPicture;
+}

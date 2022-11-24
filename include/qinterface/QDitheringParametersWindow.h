@@ -31,6 +31,7 @@ public:
     QDitheringParametersWindow(Pixels*, QMain*);
     bool checkSubmitted();
     Pixels* getDitheringPixels();
+    QImageWidget* getDitheringPicture();
 };
 
 #endif //HOROSHOEDITOR_QDITHERINGPARAMETERSWINDOW_H

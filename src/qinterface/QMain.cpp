@@ -153,7 +153,7 @@ void QMain::openDitheringParametersWindow() {
 
 void QMain::openGradientGenerationWindow() {
     auto gradientGenerationWindow = new QGradientGenerationWindow(pixels->getWidth(), pixels->getHeight());
-    gradientGenerationWindow->exec();
+    gradientGenerationWindow->show();
 }
 
 

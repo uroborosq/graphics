@@ -1,7 +1,7 @@
 #ifndef HOROSHOEDITOR_QGRADIENTGENERATIONWINDOW_H
 #define HOROSHOEDITOR_QGRADIENTGENERATIONWINDOW_H
 
-#include <QDialog>
+#include <QWidget>
 #include <QLabel>
 #include <QPushButton>
 #include <QColor>
@@ -9,7 +9,7 @@
 #include <QColorDialog>
 #include "QImageWidget.h"
 
-class QGradientGenerationWindow : public QDialog {
+class QGradientGenerationWindow : public QWidget {
 private:
     bool isSubmitted;
     int width;
@@ -19,8 +19,10 @@ private:
     QLabel* leftColorLabel;
     QLabel* rightColorLabel;
     Pixels *pixels;
+    QImageWidget *picture;
     void changeLeftColor();
     void changeRightColor();
+    void setDithering();
     void generateGradientPicture();
 
 public:
