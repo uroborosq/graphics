@@ -66,17 +66,6 @@ void QGradientGenerationWindow::changeRightColor() {
     rightColorLabel->setStyleSheet("QLabel { background-color :" + rightColor.name() + " }");
 }
 
-void QGradientGenerationWindow::setDithering() {
-    if (pixels != nullptr) {
-        auto ditheringParametersWindow = new QDitheringParametersWindow(pixels, nullptr);
-        ditheringParametersWindow->exec();
-        delete pixels;
-        pixels = ditheringParametersWindow->getDitheringPixels();
-        picture->close();
-        picture = ditheringParametersWindow->getDitheringPicture();
-        picture->show();
-    }
-};
 
 void QGradientGenerationWindow::generateGradientPicture() {
     if (picture != nullptr) {
