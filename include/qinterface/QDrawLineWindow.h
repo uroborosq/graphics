@@ -23,6 +23,7 @@ private:
     QImageWidget** _picture;
     QMain* _mainWindow;
     QColor _color;
+    QSpinBox* graySpin;
     int _lineThickness;
     float _lineTransparency;
     void chooseFirstPoint();

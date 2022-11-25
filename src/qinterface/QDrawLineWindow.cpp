@@ -1,3 +1,4 @@
+#include <QSpinBox>
 #include "QDrawLineWindow.h"
 #include "DrawColoredLine.h"
 
@@ -29,7 +30,10 @@ QDrawLineWindow::QDrawLineWindow(Pixels* pixels, QImageWidget** picture, QMain* 
     auto layout = new QVBoxLayout();
     auto firstPointLayout = new QHBoxLayout();
     auto secondPointLayout = new QHBoxLayout();
-
+    auto grayLabel = new QLabel("Цвет для серой картинки");
+    graySpin = new QSpinBox();
+    graySpin->setMaximum(255);
+    graySpin->setMinimum(0);
     firstPointLayout->addWidget(firstPointLabel);
     firstPointLayout->addWidget(firstPointXLabel);
     firstPointLayout->addWidget(firstPointXValue);
@@ -47,6 +51,8 @@ QDrawLineWindow::QDrawLineWindow(Pixels* pixels, QImageWidget** picture, QMain* 
     layout->addWidget(firstPointChooseButton);
     layout->addLayout(secondPointLayout);
     layout->addWidget(secondPointChooseButton);
+    layout->addWidget(grayLabel);
+    layout->addWidget(graySpin);
     layout->addWidget(drawButton);
 
     setLayout(layout);
@@ -75,7 +81,12 @@ void QDrawLineWindow::draw()
     auto y0 = firstPointYValue->text().toLongLong();
     auto x1 = secondPointXValue->text().toLongLong();
     auto y1 = secondPointYValue->text().toLongLong();
-    std::vector<float>color{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
+    std::vector<float> color;
+    if (_pixels->getTag() == PnmFormat::P6)
+    color = std::vector<float>{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
+    else if (_pixels->getTag() == PnmFormat::P5)
+        color = std::vector<float>{static_cast<float>(graySpin->value())};
+
     _pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);
     delete *_picture;
     *_picture = new QImageWidget(_pixels, _mainWindow);
