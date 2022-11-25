@@ -17,10 +17,10 @@ private:
     int _mousePressYCoordinate = 0;
     void convertToRgb(const ColorSpace&);
     void proceedGammaCorrection(const float&);
-    void reloadPixmap();
 Q_OBJECT
 signals:
 public:
+    void reloadPixmap();
     explicit QImageWidget(Pixels *, QWidget* parent, Qt::WindowFlags f = static_cast<Qt::WindowType>(0));
     void setGamma(float);
     const float& getGamma() const;

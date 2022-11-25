@@ -61,7 +61,10 @@ void QDitheringParametersWindow::showPreview() {
 }
 
 void QDitheringParametersWindow::setDithering() {
+     auto algorithm = getAlgorithm();
+    auto bitDepth = getBitDepth();
     isSubmitted = true;
+    _pixels->setDithering(algorithm, bitDepth);
     _ditheringPicture->close();
     this->close();
 }

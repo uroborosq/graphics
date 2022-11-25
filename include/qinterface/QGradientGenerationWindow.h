@@ -9,13 +9,14 @@
 #include <QColorDialog>
 #include "QImageWidget.h"
 
-class QGradientGenerationWindow : public QWidget {
+class QGradientGenerationWindow : public QDialog {
 private:
     bool isSubmitted;
-    int width;
-    int height;
+    QPushButton* gradientButton;
+    QSpinBox* widthBox;
+    QSpinBox* heightBox;
     QColor leftColor = Qt::red;
-    QColor rightColor = Qt::red;
+    QColor rightColor = Qt::blue;
     QLabel* leftColorLabel;
     QLabel* rightColorLabel;
     Pixels *pixels;
@@ -24,10 +25,11 @@ private:
     void changeRightColor();
     void setDithering();
     void generateGradientPicture();
-
+    void generateGrayscaleGradient();
 public:
     QGradientGenerationWindow(int, int);
     bool checkSubmitted();
+    Pixels* getGradient();
 };
 
 #endif //HOROSHOEDITOR_QGRADIENTGENERATIONWINDOW_H

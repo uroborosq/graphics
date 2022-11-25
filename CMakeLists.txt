@@ -59,7 +59,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
         include/gradient/Gradient.h src/gradient/Gradient.cpp
         include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
-        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp)
+        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
