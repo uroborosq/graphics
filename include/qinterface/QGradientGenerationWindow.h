@@ -23,7 +23,6 @@ private:
     QImageWidget *picture;
     void changeLeftColor();
     void changeRightColor();
-    void setDithering();
     void generateGradientPicture();
     void generateGrayscaleGradient();
 public:

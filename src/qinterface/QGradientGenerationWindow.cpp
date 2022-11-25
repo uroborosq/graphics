@@ -23,7 +23,6 @@ QGradientGenerationWindow::QGradientGenerationWindow(int fileWidth, int fileHeig
     rightColorLabel = new QLabel();
     auto changeRightColorButton = new QPushButton("Поменять цвет");
     gradientButton = new QPushButton("Показать превью");
-    auto ditheringButton = new QPushButton("Дизеринг");
     auto grayscaleGradientButton = new QPushButton("Построить черно-белый градиент от 0 до 255");
     auto submit = new QPushButton("Подтвердить");
 
@@ -38,7 +37,6 @@ QGradientGenerationWindow::QGradientGenerationWindow(int fileWidth, int fileHeig
     layout->addWidget(changeRightColorButton);
     layout->addWidget(widthBox);
     layout->addWidget(heightBox);
-    layout->addWidget(ditheringButton);
     layout->addWidget(gradientButton);
     layout->addWidget(grayscaleGradientButton);
     layout->addWidget(submit);
@@ -47,7 +45,6 @@ QGradientGenerationWindow::QGradientGenerationWindow(int fileWidth, int fileHeig
 
     connect(changeLeftColorButton, &QPushButton::clicked, this, &QGradientGenerationWindow::changeLeftColor);
     connect(changeRightColorButton, &QPushButton::clicked, this, &QGradientGenerationWindow::changeRightColor);
-    connect(ditheringButton, &QPushButton::clicked, this, &QGradientGenerationWindow::setDithering);
     connect(gradientButton, &QPushButton::clicked, this, &QGradientGenerationWindow::generateGradientPicture);
     connect(grayscaleGradientButton, &QPushButton::clicked, this,
             &QGradientGenerationWindow::generateGrayscaleGradient);
