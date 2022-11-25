@@ -57,7 +57,8 @@ void QMain::openSaveWindow() {
                     file.tag[1] = '5';
             }
             currentPixels->setGamma(0);
-            file.data = remove_other_channels(currentPixels->getValues(), currentPixels->getColorChannel());
+            file.data = currentPixels->getValues();
+            file.data = remove_other_channels(file.data, currentPixels->getColorChannel());
             file.write(savePicturePath);
         }
     }
