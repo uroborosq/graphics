@@ -18,15 +18,14 @@ std::vector<float>& select_color_channel(std::vector<float> &pixels, const Color
     return pixels;
 }
 
-std::vector<float>& remove_other_channels(const std::vector<float> &pixels, const ColorChannel &colorChannel) {
+std::vector<float>& remove_other_channels(std::vector<float> &pixels, const ColorChannel &colorChannel) {
     auto size = pixels.size();
-    auto* filtered_pixels = new std::vector<float>(size);
+    auto filtered_pixels = new std::vector<float>();
     if (colorChannel == ColorChannel::All) {
-        for (float pixel: pixels) {
-            filtered_pixels->push_back(pixel);
-        }
+        *filtered_pixels = pixels;
         return *filtered_pixels;
     }
+    
     for (std::size_t i = colorChannel - 1; i < size; i += 3) {
         filtered_pixels->push_back(pixels[i]);
     }

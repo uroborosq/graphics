@@ -10,6 +10,6 @@
 
 std::vector<float> &select_color_channel(std::vector<float> &, const ColorChannel &);
 
-std::vector<float> &remove_other_channels(const std::vector<float> &, const ColorChannel &);
+std::vector<float> &remove_other_channels(std::vector<float> &, const ColorChannel &);
 
 #endif //HOROSHOEDITOR_SELECTCOLORCHANNEL_H
