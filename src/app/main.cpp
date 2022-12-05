@@ -1,17 +1,14 @@
-#include <iostream>
-#include <random>
 #include <QApplication>
+#include "QMain.h"
+#include "Pixels.h"
 #include "QImageWidget.h"
-#include "QOpenPictureWindow.h"
-#include "Pnm.h"
 
 
-int main(int argc, char* argv[]) {
-
+int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    Pnm* file = new Pnm();
-    auto interface = new QOpenPictureWindow(file);
+    auto* pixels = new Pixels();
+    auto interface = new QMain(pixels, nullptr);
     interface->show();
-
     return QApplication::exec();
 }
+

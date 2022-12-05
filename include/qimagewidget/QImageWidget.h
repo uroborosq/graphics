@@ -1,12 +1,33 @@
-#ifndef ___QIMAGEWIDGET_H
-#define ___QIMAGEWIDGET_H
+#ifndef QIMAGEWIDGET_H
+#define QIMAGEWIDGET_H
 
 #include <QLabel>
+#include "PnmFormat.h"
+#include "Pixels.h"
 
 class QImageWidget : public QLabel
 {
+private:
+    int _width;
+    int _height;
+    PnmFormat _format;
+    std::vector<float> _displayPixels;
+    float _gammaCorrection;
+    int _mousePressXCoordinate = 0;
+    int _mousePressYCoordinate = 0;
+    void convertToRgb(const ColorSpace&);
+    void proceedGammaCorrection(const float&);
+Q_OBJECT
+signals:
 public:
-    QImageWidget(std::vector<uint8_t>, const int&, const int&, char*);
+    void reloadPixmap();
+    explicit QImageWidget(Pixels *, QWidget* parent, Qt::WindowFlags f = static_cast<Qt::WindowType>(0));
+    void setGamma(float);
+    const float& getGamma() const;
+    int getMousePressXCoordinate();
+    int getMousePressYCoordinate();
+protected:
+    void mousePressEvent( QMouseEvent* ev ) override;
 };
 
-#endif //___QIMAGEWIDGET_H
+#endif //QIMAGEWIDGET_H

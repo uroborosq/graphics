@@ -9,12 +9,12 @@
 
 
 class Pnm {
-public :
+public:
     int height;
     int width;
     int max;
     char tag[2];
-    std::vector<uint8_t> data;
+    std::vector<float> data;
     Pnm();
     explicit Pnm(const std::string &path);
     void write(const std::string &path);

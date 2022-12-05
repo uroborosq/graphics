@@ -8,8 +8,8 @@ void Pnm::write(const std::string &path) {
     std::ofstream out(path, std::ios::out | std::ios::binary);
     if (out.is_open()) {
         out << tag << ' ' << width << ' ' << height << ' ' << max << ' ';
-        for (uint8_t ch: data) {
-            out << ch;
+        for (float & ch: data) {
+            out << char(ch);
         }
     } else {
         throw std::invalid_argument("Не получается получить доступ к файлу");
@@ -38,12 +38,20 @@ void Pnm::read(const std::string &path) {
     in.get(space);
     in >> max;
     in.get(space);
-    data = std::vector<uint8_t>((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    auto size = height * width * (tag[1] == '5' ? 1 : 3);
+    data = std::vector<float>(size);
+    std::size_t i = 0;
+    while (!in.eof() && i < size)
+    {
+        in.get(space);
+        data[i] = (float)(unsigned char)space;
+        i++;
+    }
 }
 
 Pnm::Pnm() {
 height = -1;
 width = -1;
-data = std::vector<uint8_t>();
+data = std::vector<float>();
 }
 
