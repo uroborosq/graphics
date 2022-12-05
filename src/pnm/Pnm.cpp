@@ -7,7 +7,7 @@ Pnm::Pnm(const std::string &path) {
 void Pnm::write(const std::string &path) {
     std::ofstream out(path, std::ios::out | std::ios::binary);
     if (out.is_open()) {
-        out << tag << ' ' << width << ' ' << height << ' ' << max << ' ';
+        out << tag[0] << tag[1] << ' ' << width << ' ' << height << ' ' << max << ' ';
         for (float & ch: data) {
             out << char(ch);
         }
