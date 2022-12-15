@@ -17,4 +17,3 @@ std::vector<float> &GammaCorrection::changeGamma(std::vector<float> &pixels, con
     }
     return *newPixels;
 }
-

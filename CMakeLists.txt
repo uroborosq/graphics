@@ -10,12 +10,14 @@ ENDIF()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Gui)
+find_package(ZLIB)
+
 qt_standard_project_setup()
 include_directories(include/colorchannels)
 include_directories(include/colorspaces/)
 include_directories(include/qimagewidget/)
 include_directories(include/qinterface/)
-include_directories(include/pnm/)
+include_directories(include/file/)
 include_directories(include/colorspaces)
 include_directories(include/colorchannels)
 include_directories(include/pixels)
@@ -24,8 +26,9 @@ include_directories(include/dithering)
 include_directories(include/line)
 include_directories(include/gradient)
 
-add_executable(horoshoeditor src/app/main.cpp
-        include/pnm/Pnm.h src/pnm/Pnm.cpp
+add_executable(
+        horoshoeditor src/app/main.cpp
+        include/file/Pnm.h src/file/Pnm.cpp
         include/qimagewidget/QImageWidget.h src/qimagewidget/QImageWidget.cpp
         include/qinterface/QOpenPictureWindow.h src/qinterface/QOpenPictureWindow.cpp
         include/qinterface/QMain.h src/qinterface/QMain.cpp
@@ -42,7 +45,6 @@ add_executable(horoshoeditor src/app/main.cpp
         include/pixels/Pixels.h src/pixels/Pixels.cpp
         include/pixels/ColorSpaceEnum.h src/pixels/ColorSpaceEnum.cpp
         include/pixels/ColorChannelEnum.h
-        include/pixels/PnmFormat.h
         include/qinterface/QAssignGammaWindow.h src/qinterface/QAssignGammaWindow.cpp
         include/qinterface/QConvertGammaWindow.h src/qinterface/QConvertGammaWindow.cpp
         include/gamma/GammaCorrection.h src/gamma/GammaCorrection.cpp include/dithering/AbstractDithering.h
@@ -59,10 +61,11 @@ add_executable(horoshoeditor src/app/main.cpp
         include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
         include/gradient/Gradient.h src/gradient/Gradient.cpp
         include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
-        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp)
+        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp include/file/AbstractFile.h include/file/Png.h src/file/Png.cpp include/file/FileImageInfo.h include/file/FileFormat.h)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
+target_link_libraries(horoshoeditor PRIVATE ZLIB::ZLIB)
 
 set_target_properties(horoshoeditor PROPERTIES
         WIN32_EXECUTABLE ON

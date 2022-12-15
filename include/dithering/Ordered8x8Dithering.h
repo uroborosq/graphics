@@ -20,7 +20,7 @@ private:
                               {10, 58, 6,  54, 9,  57, 5,  53},
                               {42, 26, 38, 22, 41, 25, 37, 21}};
 public:
-    std::vector<float> &proceed(std::vector<float> &pixels, int width, int depth, bool isColorful) override;
+    std::vector<float> &proceed(std::vector<float> &pixels, int width, int depth, int numOfChannels) override;
 };
 
 

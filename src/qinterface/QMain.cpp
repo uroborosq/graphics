@@ -20,8 +20,10 @@ void QMain::openOpenWindow() {
         if (openWindow->checkSubmitted()) {
             auto path = openWindow->getPicturePath();
             auto colorspaceChoice = openWindow->getColorSpace();
-            auto file = Pnm(path);
-            auto tmp = new Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 0);
+            Pnm file;
+            auto data  = file.read(path);
+            auto info = file.getImageInfo();
+            auto tmp = new Pixels(data, info.width, info.height, info.fileFormat, info.channels, colorspaceChoice, ColorChannel::All, 0);
             currentPixels = tmp;
 
             delete picture;
@@ -44,22 +46,16 @@ void QMain::openSaveWindow() {
     try {
         if (saveWindow->checkSubmitted()) {
             Pnm file;
-            file.width = currentPixels->getWidth();
-            file.height = currentPixels->getHeight();
-            file.max = 255;
-            file.tag[0] = 'P';
-            if (currentPixels->getTag() == PnmFormat::P5)
-                file.tag[1] = '5';
-            else {
-                if (currentPixels->getColorChannel() == ColorChannel::All)
-                    file.tag[1] = '6';
-                else
-                    file.tag[1] = '5';
-            }
+            FileImageInfo info{};
+            info.width = currentPixels->getWidth();
+            info.height = currentPixels->getHeight();
+            info.pallet = 255;
+            info.fileFormat = currentPixels->getTag();
+            auto tmp = currentPixels->getGamma();
             currentPixels->setGamma(0);
-            file.data = currentPixels->getValues();
-            file.data = remove_other_channels(file.data, currentPixels->getColorChannel());
-            file.write(savePicturePath);
+            auto data = remove_other_channels(currentPixels->getValues(), currentPixels->getColorChannel());
+            file.write(savePicturePath, data, info);
+            currentPixels->setGamma(tmp);
         }
     }
     catch (const std::invalid_argument &e) {
