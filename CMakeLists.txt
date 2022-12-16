@@ -23,6 +23,7 @@ include_directories(include/gamma)
 include_directories(include/dithering)
 include_directories(include/line)
 include_directories(include/gradient)
+include_directories(include/interpolations)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -59,7 +60,16 @@ add_executable(horoshoeditor src/app/main.cpp
         include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
         include/gradient/Gradient.h src/gradient/Gradient.cpp
         include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
-        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp)
+        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp
+        include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp
+        include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp
+        include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp
+        include/interpolations/AbstractInterpolation.h
+        include/interpolations/NearestNeighbourInterpolation.h src/interpolations/NearestNeighbourInterpolation.cpp
+        include/interpolations/BilinearInterpolation.h src/interpolations/BilinearInterpolation.cpp
+        include/interpolations/LanczosInterpolation.h src/interpolations/LanczosInterpolation.cpp
+        include/interpolations/BCSplinesInterpolation.h src/interpolations/BCSplinesInterpolation.cpp
+        )
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
