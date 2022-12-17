@@ -23,6 +23,8 @@ include_directories(include/gamma)
 include_directories(include/dithering)
 include_directories(include/line)
 include_directories(include/gradient)
+include_directories(include/filtration)
+include_directories(include/qinterface/filtrationwindows)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -68,7 +70,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/filtrationwindows/QMedianFiltrationWindow.h src/qinterface/filtrationwindows/QMedianFiltrationWindow.cpp
         include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h src/qinterface/filtrationwindows/QGaussianFiltrationWindow.cpp
         include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h src/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.cpp
-        include/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.h src/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.cpp)
+        include/qinterface/filtrationwindows/QContrastAdaptiveSharpeningFiltrationWindow.h src/qinterface/filtrationwindows/QContrastAdaptiveSharpeningFiltrationWindow.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
