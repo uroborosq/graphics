@@ -10,7 +10,7 @@
 class QMedianFiltrationWindow : public QDialog {
 private:
     bool isSubmitted;
-    QSpinBox* medianBox = new QSpinBox();
+    QSpinBox* radiusBox = new QSpinBox();
     void addFilter();
 
 public:

@@ -4,15 +4,18 @@ QMedianFiltrationWindow::QMedianFiltrationWindow() {
     isSubmitted = false;
     this->resize(200, 100);
 
-    auto layout = new QHBoxLayout();
-    auto medianLabel = new QLabel("Задайте радиус ядра");
-    medianBox = new QSpinBox();
-    medianBox->setMinimum(1);
-    medianBox->setSingleStep(1);
+    auto layout = new QVBoxLayout();
+    auto medianLayout = new QHBoxLayout();
+    auto medianLabel = new QLabel("Задайте радиус ядра ");
+    radiusBox = new QSpinBox();
+    radiusBox->setMinimum(1);
+    radiusBox->setSingleStep(1);
     auto okButton = new QPushButton("Применить");
 
-    layout->addWidget(medianLabel);
-    layout->addWidget(medianBox);
+    medianLayout->addWidget(medianLabel);
+    medianLayout->addWidget(radiusBox);
+
+    layout->addItem(medianLayout);
     layout->addWidget(okButton);
 
     setLayout(layout);
@@ -30,5 +33,5 @@ void QMedianFiltrationWindow::addFilter() {
 }
 
 int QMedianFiltrationWindow::getRadius() {
-    return medianBox->value();
+    return radiusBox->value();
 }
