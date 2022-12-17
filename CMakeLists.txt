@@ -63,11 +63,11 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp
         include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp
         include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp
-        include/qinterface/QFiltrationWindow.h src/qinterface/QFiltrationWindow.cpp
         include/filtration/FiltrationEnum.h
         include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h src/qinterface/filtrationwindows/QTresholdFiltrationWindow.cpp
         include/qinterface/filtrationwindows/QMedianFiltrationWindow.h src/qinterface/filtrationwindows/QMedianFiltrationWindow.cpp
-        include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h src/qinterface/filtrationwindows/QGaussianFiltrationWindow.cpp)
+        include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h src/qinterface/filtrationwindows/QGaussianFiltrationWindow.cpp
+        include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h src/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
