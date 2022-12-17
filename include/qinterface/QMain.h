@@ -38,6 +38,11 @@ public:
     void openDitheringParametersWindow();
     void openGradientGenerationWindow();
     void openImageChooseDialog();
+    void openTresholdFiltrationWindow();
+    void openMedianFiltrationWindow();
+    void openGaussianFiltrationWindow();
+    void openLinearAveragingFiltrationWindow();
+    void openСontrastAdaptiveSharpeningFiltrationWindow();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H
