@@ -23,6 +23,7 @@ include_directories(include/gamma)
 include_directories(include/dithering)
 include_directories(include/line)
 include_directories(include/gradient)
+include_directories(include/filtration)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -59,7 +60,19 @@ add_executable(horoshoeditor src/app/main.cpp
         include/line/DrawColoredLine.h src/line/DrawColoredLine.cpp
         include/gradient/Gradient.h src/gradient/Gradient.cpp
         include/qinterface/QLineParametersSelectionWindow.h src/qinterface/QLineParametersSelectionWindow.cpp
-        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp)
+        include/qinterface/QDrawLineWindow.h src/qinterface/QDrawLineWindow.cpp
+        include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp
+        include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp
+        include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp
+        include/filtration/AbstractFiltering.h
+        include/filtration/ThresholdFiltering.h src/filtration/ThresholdFiltering.cpp
+        include/filtration/OtsuThresholdFiltering.h src/filtration/OtsuThresholdFiltering.cpp
+        include/filtration/MedianFiltering.h src/filtration/MedianFiltering.cpp
+        include/filtration/GaussianGilter.h src/filtration/GaussianFiltering.cpp
+        include/filtration/BoxBlurFiltering.h src/filtration/BoxBlurFiltering.cpp
+        include/filtration/SobelFiltering.h src/filtration/SobelFiltering.cpp
+        include/filtration/CASFiltering.h src/filtration/CASFiltering.cpp
+        )
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
