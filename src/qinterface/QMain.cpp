@@ -16,6 +16,7 @@
 #include "../../include/qinterface/filtrationwindows/QMedianFiltrationWindow.h"
 #include "../../include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h"
 #include "../../include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h"
+#include "../../include/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.h"
 
 QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
 
@@ -66,7 +67,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     auto gaussianFilter = new QAction("Фильтр Гаусса");
     auto linearAveragingFilter = new QAction("Линейный усредняющий фильтр (box blur)");
     auto sobelFilter = new QAction("Фильтр Собеля");
-    auto contrastAdaptiveSharpeningFilter = new QAction("ContrastAdaptiveSharpening");
+    auto contrastAdaptiveSharpeningFilter = new QAction("Contrast Adaptive Sharpening");
 
     filtrationMenu->addAction(thresholdFilter);
     filtrationMenu->addAction(otsuThresholdFilter);
@@ -118,7 +119,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(medianFilter, &QAction::triggered, this, &QMain::openMedianFiltrationWindow);
     connect(gaussianFilter, &QAction::triggered, this, &QMain::openGaussianFiltrationWindow);
     connect(linearAveragingFilter, &QAction::triggered, this, &QMain::openLinearAveragingFiltrationWindow);
-//    connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this, &QMain::openСontrastAdaptiveSharpeningFiltrationWindow);
+    connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this, &QMain::openСontrastAdaptiveSharpeningFiltrationWindow);
 }
 
 void QMain::openOpenWindow() {
@@ -309,5 +310,14 @@ void QMain::openLinearAveragingFiltrationWindow() {
 
     if (linearAveragingFiltrationWindow->checkSubmitted()) {
         auto radius = linearAveragingFiltrationWindow->getRadius();
+    }
+}
+
+void QMain::openСontrastAdaptiveSharpeningFiltrationWindow() {
+    auto contrastAdaptiveSharpeningFiltrationWindow = new QСontrastAdaptiveSharpeningFiltrationWindow();
+    contrastAdaptiveSharpeningFiltrationWindow->exec();
+
+    if (contrastAdaptiveSharpeningFiltrationWindow->checkSubmitted()) {
+        auto sharpness = contrastAdaptiveSharpeningFiltrationWindow->getSharpness();
     }
 }

@@ -67,7 +67,8 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h src/qinterface/filtrationwindows/QTresholdFiltrationWindow.cpp
         include/qinterface/filtrationwindows/QMedianFiltrationWindow.h src/qinterface/filtrationwindows/QMedianFiltrationWindow.cpp
         include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h src/qinterface/filtrationwindows/QGaussianFiltrationWindow.cpp
-        include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h src/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.cpp)
+        include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h src/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.cpp
+        include/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.h src/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
