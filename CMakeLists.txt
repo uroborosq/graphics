@@ -68,7 +68,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/filtration/ThresholdFiltering.h src/filtration/ThresholdFiltering.cpp
         include/filtration/OtsuThresholdFiltering.h src/filtration/OtsuThresholdFiltering.cpp
         include/filtration/MedianFiltering.h src/filtration/MedianFiltering.cpp
-        include/filtration/GaussianGilter.h src/filtration/GaussianFiltering.cpp
+        include/filtration/GaussianFiltering.h src/filtration/GaussianFiltering.cpp
         include/filtration/BoxBlurFiltering.h src/filtration/BoxBlurFiltering.cpp
         include/filtration/SobelFiltering.h src/filtration/SobelFiltering.cpp
         include/filtration/CASFiltering.h src/filtration/CASFiltering.cpp

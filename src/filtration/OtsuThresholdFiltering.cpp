@@ -57,7 +57,7 @@ int otsuThreshold(std::vector<float>& pixels) {
 
 bool OtsuThresholdFiltering::isUpper = false;
 
-std::vector<float> &OtsuThresholdFiltering::filter(std::vector<float>& pixels) {
+std::vector<float> &OtsuThresholdFiltering::filter(std::vector<float>& pixels, int width, int height) {
     float threshold = otsuThreshold(pixels);
     for (float & pixel : pixels) {
         if (isUpper) {

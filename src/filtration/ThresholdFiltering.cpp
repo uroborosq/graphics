@@ -7,7 +7,7 @@
 float ThresholdFiltering::threshold = 0;
 bool ThresholdFiltering::isUpper = false;
 
-std::vector<float> &ThresholdFiltering::filter(std::vector<float>& pixels) {
+std::vector<float> &ThresholdFiltering::filter(std::vector<float>& pixels, int width, int height) {
     for (float & pixel : pixels) {
         if (isUpper) {
             pixel = pixel >= threshold ? 0 : 255;

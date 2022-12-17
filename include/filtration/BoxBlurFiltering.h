@@ -10,8 +10,8 @@
 
 class BoxBlurFiltering : public AbstractFiltering {
 public:
-    bool static isUpper;
-    std::vector<float>& filter(std::vector<float>& pixels) override;
+    int static radius;
+    std::vector<float>& filter(std::vector<float>& pixels, int width, int height) override;
 };
 
 #endif //HOROSHOEDITOR_BOXBLURFILTERING_H
