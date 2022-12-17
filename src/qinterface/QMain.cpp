@@ -14,6 +14,7 @@
 #include "QChooseImageDialog.h"
 #include "../../include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h"
 #include "../../include/qinterface/filtrationwindows/QMedianFiltrationWindow.h"
+#include "../../include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h"
 
 QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
 
@@ -114,7 +115,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
     connect(thresholdFilter, &QAction::triggered, this, &QMain::openTresholdFiltrationWindow);
     connect(medianFilter, &QAction::triggered, this, &QMain::openMedianFiltrationWindow);
-//    connect(gaussianFilter, &QAction::triggered, this, &QMain::openGaussianFiltrationWindow);
+    connect(gaussianFilter, &QAction::triggered, this, &QMain::openGaussianFiltrationWindow);
 //    connect(linearAveragingFilter, &QAction::triggered, this, &QMain::openLinearAveragingFiltrationWindow);
 //    connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this, &QMain::openСontrastAdaptiveSharpeningFiltrationWindow);
 }
@@ -279,6 +280,7 @@ void QMain::openTresholdFiltrationWindow() {
     tresholdFiltrationWindow->exec();
 
     if (tresholdFiltrationWindow->checkSubmitted()) {
+        auto threshold = tresholdFiltrationWindow->getThresholdValue();
     }
 }
 
@@ -287,5 +289,15 @@ void QMain::openMedianFiltrationWindow() {
     medianFiltrationWindow->exec();
 
     if (medianFiltrationWindow->checkSubmitted()) {
+        auto radius = medianFiltrationWindow->getRadius();
+    }
+}
+
+void QMain::openGaussianFiltrationWindow() {
+    auto gaussianFiltrationWindow = new QGaussianFiltrationWindow();
+    gaussianFiltrationWindow->exec();
+
+    if (gaussianFiltrationWindow->checkSubmitted()) {
+        auto sigma = gaussianFiltrationWindow->getSigma();
     }
 }
