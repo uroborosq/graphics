@@ -12,6 +12,7 @@
 #include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
+#include "../../include/filtration/FiltrationEnum.h"
 #include "../../include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h"
 #include "../../include/qinterface/filtrationwindows/QMedianFiltrationWindow.h"
 #include "../../include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h"
@@ -116,9 +117,11 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
     connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
     connect(thresholdFilter, &QAction::triggered, this, &QMain::openTresholdFiltrationWindow);
+    connect(otsuThresholdFilter, &QAction::triggered, this, &QMain::openOtsuThresholdFiltrationWindow);
     connect(medianFilter, &QAction::triggered, this, &QMain::openMedianFiltrationWindow);
     connect(gaussianFilter, &QAction::triggered, this, &QMain::openGaussianFiltrationWindow);
     connect(linearAveragingFilter, &QAction::triggered, this, &QMain::openLinearAveragingFiltrationWindow);
+    connect(sobelFilter, &QAction::triggered, this, &QMain::openSobelFiltrationWindow);
     connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this, &QMain::openСontrastAdaptiveSharpeningFiltrationWindow);
 }
 
@@ -282,8 +285,13 @@ void QMain::openTresholdFiltrationWindow() {
     tresholdFiltrationWindow->exec();
 
     if (tresholdFiltrationWindow->checkSubmitted()) {
+        auto filter = Filtration::Threshold;
         auto threshold = tresholdFiltrationWindow->getThresholdValue();
     }
+}
+
+void QMain::openOtsuThresholdFiltrationWindow() {
+    auto filter = Filtration::OtsuThreshold;
 }
 
 void QMain::openMedianFiltrationWindow() {
@@ -291,6 +299,7 @@ void QMain::openMedianFiltrationWindow() {
     medianFiltrationWindow->exec();
 
     if (medianFiltrationWindow->checkSubmitted()) {
+        auto filter = Filtration::Median;
         auto radius = medianFiltrationWindow->getRadius();
     }
 }
@@ -300,6 +309,7 @@ void QMain::openGaussianFiltrationWindow() {
     gaussianFiltrationWindow->exec();
 
     if (gaussianFiltrationWindow->checkSubmitted()) {
+        auto filter = Filtration::Gaussian;
         auto sigma = gaussianFiltrationWindow->getSigma();
     }
 }
@@ -309,8 +319,13 @@ void QMain::openLinearAveragingFiltrationWindow() {
     linearAveragingFiltrationWindow->exec();
 
     if (linearAveragingFiltrationWindow->checkSubmitted()) {
+        auto filter = Filtration::LinearAveraging;
         auto radius = linearAveragingFiltrationWindow->getRadius();
     }
+}
+
+void QMain::openSobelFiltrationWindow() {
+    auto filter = Filtration::Sobel;
 }
 
 void QMain::openСontrastAdaptiveSharpeningFiltrationWindow() {
@@ -318,6 +333,7 @@ void QMain::openСontrastAdaptiveSharpeningFiltrationWindow() {
     contrastAdaptiveSharpeningFiltrationWindow->exec();
 
     if (contrastAdaptiveSharpeningFiltrationWindow->checkSubmitted()) {
+        auto filter = Filtration::ContrastAdaptiveSharpening;
         auto sharpness = contrastAdaptiveSharpeningFiltrationWindow->getSharpness();
     }
 }

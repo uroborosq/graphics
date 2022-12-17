@@ -39,9 +39,11 @@ public:
     void openGradientGenerationWindow();
     void openImageChooseDialog();
     void openTresholdFiltrationWindow();
+    void openOtsuThresholdFiltrationWindow();
     void openMedianFiltrationWindow();
     void openGaussianFiltrationWindow();
     void openLinearAveragingFiltrationWindow();
+    void openSobelFiltrationWindow();
     void openСontrastAdaptiveSharpeningFiltrationWindow();
 };
 
