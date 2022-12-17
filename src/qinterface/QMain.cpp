@@ -13,6 +13,7 @@
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
 #include "../../include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h"
+#include "../../include/qinterface/filtrationwindows/QMedianFiltrationWindow.h"
 
 QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
 
@@ -112,7 +113,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
     connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
     connect(thresholdFilter, &QAction::triggered, this, &QMain::openTresholdFiltrationWindow);
-//    connect(medianFilter, &QAction::triggered, this, &QMain::openMedianFiltrationWindow);
+    connect(medianFilter, &QAction::triggered, this, &QMain::openMedianFiltrationWindow);
 //    connect(gaussianFilter, &QAction::triggered, this, &QMain::openGaussianFiltrationWindow);
 //    connect(linearAveragingFilter, &QAction::triggered, this, &QMain::openLinearAveragingFiltrationWindow);
 //    connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this, &QMain::openСontrastAdaptiveSharpeningFiltrationWindow);
@@ -278,6 +279,13 @@ void QMain::openTresholdFiltrationWindow() {
     tresholdFiltrationWindow->exec();
 
     if (tresholdFiltrationWindow->checkSubmitted()) {
+    }
+}
 
+void QMain::openMedianFiltrationWindow() {
+    auto medianFiltrationWindow = new QMedianFiltrationWindow();
+    medianFiltrationWindow->exec();
+
+    if (medianFiltrationWindow->checkSubmitted()) {
     }
 }
