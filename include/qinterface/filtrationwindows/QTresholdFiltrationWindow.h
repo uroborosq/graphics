@@ -19,6 +19,7 @@ private:
 public:
     QTresholdFiltrationWindow();
     bool checkSubmitted();
+    int getThresholdValue();
 };
 
 #endif //HOROSHOEDITOR_QTRESHOLDFILTRATIONWINDOW_H

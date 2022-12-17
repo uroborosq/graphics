@@ -42,3 +42,7 @@ void QTresholdFiltrationWindow::addFilter() {
 void QTresholdFiltrationWindow::changeTresholdValue() {
     thresholdFiltrationValue->setText(" " + QString::number(thresholdFiltrationSlider->value()));
 }
+
+int QTresholdFiltrationWindow::getThresholdValue() {
+    return thresholdFiltrationSlider->value();
+}
