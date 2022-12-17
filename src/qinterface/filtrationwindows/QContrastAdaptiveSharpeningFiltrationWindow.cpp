@@ -1,6 +1,6 @@
-#include "../../../include/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.h"
+#include "QContrastAdaptiveSharpeningFiltrationWindow.h"
 
-QСontrastAdaptiveSharpeningFiltrationWindow::QСontrastAdaptiveSharpeningFiltrationWindow() {
+QContrastAdaptiveSharpeningFiltrationWindow::QContrastAdaptiveSharpeningFiltrationWindow() {
     isSubmitted = true;
     this->resize(200, 100);
 
@@ -26,23 +26,23 @@ QСontrastAdaptiveSharpeningFiltrationWindow::QСontrastAdaptiveSharpeningFiltra
     layout->addWidget(okButton);
     setLayout(layout);
 
-    connect(okButton, &QPushButton::clicked, this, &QСontrastAdaptiveSharpeningFiltrationWindow::addFilter);
-    connect(sharpnessSlider, &QSlider::valueChanged, this, &QСontrastAdaptiveSharpeningFiltrationWindow::changeSharpnessValue);
+    connect(okButton, &QPushButton::clicked, this, &QContrastAdaptiveSharpeningFiltrationWindow::addFilter);
+    connect(sharpnessSlider, &QSlider::valueChanged, this, &QContrastAdaptiveSharpeningFiltrationWindow::changeSharpnessValue);
 }
 
-bool QСontrastAdaptiveSharpeningFiltrationWindow::checkSubmitted() {
+bool QContrastAdaptiveSharpeningFiltrationWindow::checkSubmitted() {
     return isSubmitted;
 }
 
-void QСontrastAdaptiveSharpeningFiltrationWindow::addFilter() {
+void QContrastAdaptiveSharpeningFiltrationWindow::addFilter() {
     isSubmitted = true;
     this->close();
 }
 
-void QСontrastAdaptiveSharpeningFiltrationWindow::changeSharpnessValue() {
+void QContrastAdaptiveSharpeningFiltrationWindow::changeSharpnessValue() {
     sharpnessValue->setText(" " + QString::number(sharpnessSlider->value()));
 }
 
-int QСontrastAdaptiveSharpeningFiltrationWindow::getSharpness() {
+int QContrastAdaptiveSharpeningFiltrationWindow::getSharpness() {
     return sharpnessSlider->value();
 }

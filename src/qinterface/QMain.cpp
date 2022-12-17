@@ -12,12 +12,12 @@
 #include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
-#include "../../include/filtration/FiltrationEnum.h"
-#include "../../include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h"
-#include "../../include/qinterface/filtrationwindows/QMedianFiltrationWindow.h"
-#include "../../include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h"
-#include "../../include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h"
-#include "../../include/qinterface/filtrationwindows/QСontrastAdaptiveSharpeningFiltrationWindow.h"
+#include "FiltrationEnum.h"
+#include "QTresholdFiltrationWindow.h"
+#include "QMedianFiltrationWindow.h"
+#include "QGaussianFiltrationWindow.h"
+#include "QLinearAveragingFiltrationWindow.h"
+#include "QContrastAdaptiveSharpeningFiltrationWindow.h"
 
 QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
 
@@ -329,7 +329,7 @@ void QMain::openSobelFiltrationWindow() {
 }
 
 void QMain::openСontrastAdaptiveSharpeningFiltrationWindow() {
-    auto contrastAdaptiveSharpeningFiltrationWindow = new QСontrastAdaptiveSharpeningFiltrationWindow();
+    auto contrastAdaptiveSharpeningFiltrationWindow = new QContrastAdaptiveSharpeningFiltrationWindow();
     contrastAdaptiveSharpeningFiltrationWindow->exec();
 
     if (contrastAdaptiveSharpeningFiltrationWindow->checkSubmitted()) {

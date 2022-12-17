@@ -1,4 +1,4 @@
-#include "../../../include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h"
+#include "QGaussianFiltrationWindow.h"
 
 QGaussianFiltrationWindow::QGaussianFiltrationWindow() {
     isSubmitted = false;

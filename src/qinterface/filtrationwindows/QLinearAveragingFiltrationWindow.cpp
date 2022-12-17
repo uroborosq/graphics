@@ -1,4 +1,4 @@
-#include "../../../include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h"
+#include "QLinearAveragingFiltrationWindow.h"
 
 QLinearAveragingFiltrationWindow::QLinearAveragingFiltrationWindow() {
     isSubmitted = false;

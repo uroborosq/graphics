@@ -1,4 +1,4 @@
-#include "../../../include/qinterface/filtrationwindows/QMedianFiltrationWindow.h"
+#include "QMedianFiltrationWindow.h"
 
 QMedianFiltrationWindow::QMedianFiltrationWindow() {
     isSubmitted = false;

@@ -1,4 +1,4 @@
-#include "../../../include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h"
+#include "QTresholdFiltrationWindow.h"
 
 QTresholdFiltrationWindow::QTresholdFiltrationWindow() {
     isSubmitted = true;

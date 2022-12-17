@@ -1,5 +1,5 @@
-#ifndef HOROSHOEDITOR_QСONTRASTADAPTIVESHARPENINGFILTRATIONWINDOW_H
-#define HOROSHOEDITOR_QСONTRASTADAPTIVESHARPENINGFILTRATIONWINDOW_H
+#ifndef HOROSHOEDITOR_QCONTRASTADAPTIVESHARPENINGFILTRATIONWINDOW_H
+#define HOROSHOEDITOR_QCONTRASTADAPTIVESHARPENINGFILTRATIONWINDOW_H
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -8,7 +8,7 @@
 #include <QGridLayout>
 #include <QSlider>
 
-class QСontrastAdaptiveSharpeningFiltrationWindow : public QDialog {
+class QContrastAdaptiveSharpeningFiltrationWindow : public QDialog {
 private:
     bool isSubmitted;
     QSlider* sharpnessSlider = new QSlider();
@@ -17,8 +17,8 @@ private:
     void changeSharpnessValue();
 
 public:
-    QСontrastAdaptiveSharpeningFiltrationWindow();
+    QContrastAdaptiveSharpeningFiltrationWindow();
     bool checkSubmitted();
     int getSharpness();
 };
-#endif //HOROSHOEDITOR_QСONTRASTADAPTIVESHARPENINGFILTRATIONWINDOW_H
+#endif //HOROSHOEDITOR_QCONTRASTADAPTIVESHARPENINGFILTRATIONWINDOW_H
