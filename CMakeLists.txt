@@ -65,7 +65,7 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp
         include/qinterface/QFiltrationWindow.h src/qinterface/QFiltrationWindow.cpp
         include/filtration/FiltrationEnum.h
-        include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h src/qinterface/filtrationwindows/QTresholdFiltrationWindow.cpp)
+        include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h src/qinterface/filtrationwindows/QTresholdFiltrationWindow.cpp src/qinterface/filtrationwindows/QMedianFiltrationWindow.cpp include/qinterface/filtrationwindows/QMedianFiltrationWindow.h)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
