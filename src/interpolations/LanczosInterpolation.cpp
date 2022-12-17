@@ -1,7 +1,4 @@
-//
-// Created by kotyangensss on 15.12.2022.
-//
-
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include "LanczosInterpolation.h"
 
