@@ -10,7 +10,7 @@
 
 class CASFiltering : public AbstractFiltering {
 public:
-    bool static isUpper;
+    float static sharpness;
     std::vector<float>& filter(std::vector<float>& pixels, int width, int height) override;
 };
 
