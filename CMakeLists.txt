@@ -18,8 +18,6 @@ ENDIF ()
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Gui)
 
-find_package(ZLIB)
-
 if (UNIX)
     find_package(libdeflate)
 ENDIF ()
@@ -94,9 +92,6 @@ endif ()
 if (WIN32)
     target_link_libraries(horoshoeditor PRIVATE libdeflate)
 endif ()
-
-target_link_libraries(horoshoeditor PRIVATE ZLIB::ZLIB)
-
 
 set_target_properties(horoshoeditor PROPERTIES
         WIN32_EXECUTABLE ON
