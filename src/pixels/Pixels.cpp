@@ -8,6 +8,7 @@
 #include "GammaCorrection.h"
 #include "sRGBColorSpace.h"
 #include "DitheringMethodFactory.h"
+#include "AbstractFiltering.h"
 
 Pixels::Pixels()
 {
@@ -150,4 +151,8 @@ void Pixels::drawLine(AbstractDrawLine *drawer, const long long &x0, const long 
                       std::vector<float> &color, const int &lineWidth, const float &transparency)
 {
     values = drawer->drawLine(values, width, height, lineWidth, transparency, x0, y0, x1, y1, color);
+}
+
+void Pixels::setFiltering(AbstractFiltering *filtering) {
+    values = filtering->filter(values, width, height);
 }
