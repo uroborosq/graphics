@@ -16,6 +16,7 @@ public:
     void write(const std::string &path, const std::vector<float>&, FileImageInfo info) override;
     std::vector<float> read(const std::string &path) override;
     FileImageInfo getImageInfo() override;
+    bool checkHeader(const char*) override;
 private:
     FileImageInfo fileImageInfo;
 };

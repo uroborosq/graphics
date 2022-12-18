@@ -15,14 +15,14 @@ Pixels::Pixels() {
     colorChannel = ColorChannel::All;
     width = 0;
     height = 0;
-    format = FileFormat::PnmP5;
+    format = FileFormatType::Raw;
     dithering = Dithering::None;
     gamma = 0;
+    numColorChannels = -1;
 }
 
-Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, FileFormat _format, int numColorChannels_,
-               const ColorSpace &colorSpace_, const ColorChannel &colorChannel_,
-               const float &gamma_) {
+Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, FileFormatType _format, int numColorChannels_,
+               const ColorSpace &colorSpace_, const ColorChannel &colorChannel_, const float &gamma_) {
     auto size = values_.size();
     for (std::size_t i = 0; i < size; i++)
         values.push_back(values_[i]);
@@ -89,7 +89,7 @@ const int &Pixels::getHeight() const {
     return height;
 }
 
-FileFormat Pixels::getTag() {
+FileFormatType Pixels::getTag() {
     return format;
 }
 

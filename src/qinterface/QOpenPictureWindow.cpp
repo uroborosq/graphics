@@ -52,12 +52,7 @@ void QOpenPictureWindow::findPicture() {
             this,
             "Open Document",
             QDir::currentPath(),
-            "All files (*.*) ;; PPM files (*.ppm);; PNM files (*.file)");
-
-    if( !filename.isNull() )
-    {
-        qDebug() << "selected file path : " << filename.toUtf8();
-    }
+            "All files (*.*) ;; PPM files (*.ppm);; PNM files (*.pnm);; PNG files (*.png);;");
 
     auto pathText = (QLineEdit*)layout()->itemAt(1)->widget();
     pathText->setText(filename);

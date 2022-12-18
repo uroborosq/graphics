@@ -8,7 +8,7 @@
 #include "AbstractColorSpace.h"
 #include "AbstractDrawLine.h"
 #include "DitheringEnum.h"
-#include "FileFormat.h"
+#include "FileFormatType.h"
 
 class Pixels {
 private:
@@ -19,12 +19,12 @@ private:
     int width;
     int height;
     float gamma;
-    FileFormat format;
+    FileFormatType format;
     Dithering dithering;
     int ditheringDepth;
 public:
     Pixels();
-    Pixels(const std::vector<float> &values_, const int& width_, const int& height_, FileFormat format_, int numColorChannels_,
+    Pixels(const std::vector<float> &values_, const int& width_, const int& height_, FileFormatType format_, int numColorChannels_,
            const ColorSpace& colorSpace_ = ColorSpace::RGB, const ColorChannel& colorChannel_ = ColorChannel::All,
            const float& gamma_ = 0);
     std::vector<float> getValues();
@@ -34,7 +34,7 @@ public:
     void setColorChannel(const ColorChannel&);
     const int& getWidth() const;
     const int& getHeight() const;
-    FileFormat getTag();
+    FileFormatType getTag();
     const float& getGamma() const;
     void setGamma(const float&);
     void setDithering(const Dithering& dithering_, int ditheringDepth_);

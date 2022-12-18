@@ -12,6 +12,7 @@
 #include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
+#include "FileOpenDecider.h"
 
 void QMain::openOpenWindow() {
     auto openWindow = new QOpenPictureWindow();
@@ -20,9 +21,13 @@ void QMain::openOpenWindow() {
         if (openWindow->checkSubmitted()) {
             auto path = openWindow->getPicturePath();
             auto colorspaceChoice = openWindow->getColorSpace();
-            Pnm file;
-            auto data  = file.read(path);
-            auto info = file.getImageInfo();
+            AbstractFile* file = getFileOpener(path);
+
+            if (file == nullptr)
+                throw std::invalid_argument("Unknown error");
+
+            auto data  = file->read(path);
+            auto info = file->getImageInfo();
             auto tmp = new Pixels(data, info.width, info.height, info.fileFormat, info.channels, colorspaceChoice, ColorChannel::All, 0);
             currentPixels = tmp;
 
@@ -42,19 +47,21 @@ void QMain::openOpenWindow() {
 void QMain::openSaveWindow() {
     auto saveWindow = new QSavePictureWindow();
     saveWindow->exec();
-    auto savePicturePath = saveWindow->getPicturePath();
     try {
         if (saveWindow->checkSubmitted()) {
-            Pnm file;
+            auto savePicturePath = saveWindow->getPicturePath();
+            auto fileFormat = saveWindow->getFormat();
+            auto file = getFileOpener(fileFormat);
             FileImageInfo info{};
             info.width = currentPixels->getWidth();
             info.height = currentPixels->getHeight();
-            info.pallet = 255;
+            info.depth = 255;
+            info.channels = currentPixels->getNumberOfChannels();
             info.fileFormat = currentPixels->getTag();
             auto tmp = currentPixels->getGamma();
             currentPixels->setGamma(0);
             auto data = remove_other_channels(currentPixels->getValues(), currentPixels->getColorChannel());
-            file.write(savePicturePath, data, info);
+            file->write(savePicturePath, data, info);
             currentPixels->setGamma(tmp);
         }
     }
@@ -153,7 +160,6 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     auto fileMenu = new QMenu("Файл");
 
     auto chooseImage = new QAction("Выбрать изображение из открытых");
-    fileMenu->addAction(chooseImage);
     auto openFile = new QAction("Открыть");
     openFile->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
 
@@ -194,6 +200,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
 
     fileMenu->addAction(openFile);
     fileMenu->addAction(saveFile);
+    fileMenu->addAction(chooseImage);
 
     editMenu->addAction(colorspaceChange);
     editMenu->addAction(assignGamma);

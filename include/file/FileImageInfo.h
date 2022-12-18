@@ -5,15 +5,15 @@
 #ifndef HOROSHOEDITOR_FILEIMAGEINFO_H
 #define HOROSHOEDITOR_FILEIMAGEINFO_H
 
-#include "FileFormat.h"
+#include "FileFormatType.h"
 
 struct FileImageInfo {
     int height;
     int width;
-    int pallet;
+    unsigned char depth;
     float gamma;
     int channels;
-    FileFormat fileFormat;
+    FileFormatType fileFormat;
 };
 
 #endif //HOROSHOEDITOR_FILEIMAGEINFO_H

@@ -5,7 +5,7 @@
 #include <QSinglePointEvent>
 
 QImageWidget::QImageWidget(Pixels *pixels, QWidget* parent, Qt::WindowFlags f) : QLabel(parent, f) {
-    _colorChannelsNumber = pixels->getColorChannel() == ColorChannel::All ? pixels->getNumberOfChannels() : 1;
+    _colorChannelsNumber = pixels->getNumberOfChannels();
     _height = pixels->getHeight();
     _width = pixels->getWidth();
     _displayPixels = pixels->getValues();
@@ -74,7 +74,7 @@ void QImageWidget::reloadPixmap() {
             }
         }
 
-    } else if (_colorChannelsNumber == 3) {
+    } else if (_colorChannelsNumber == 1) {
         for (int i = 0; i < _height; ++i) {
             for (int j = 0; j < _width; ++j) {
                 auto offset = i * _width + j;
