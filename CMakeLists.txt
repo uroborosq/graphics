@@ -65,6 +65,14 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp
         include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp
         include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp
+        include/filtration/AbstractFiltering.h
+        include/filtration/ThresholdFiltering.h src/filtration/ThresholdFiltering.cpp
+        include/filtration/OtsuThresholdFiltering.h src/filtration/OtsuThresholdFiltering.cpp
+        include/filtration/MedianFiltering.h src/filtration/MedianFiltering.cpp
+        include/filtration/GaussianFiltering.h src/filtration/GaussianFiltering.cpp
+        include/filtration/BoxBlurFiltering.h src/filtration/BoxBlurFiltering.cpp
+        include/filtration/SobelFiltering.h src/filtration/SobelFiltering.cpp
+        include/filtration/CASFiltering.h src/filtration/CASFiltering.cpp
         include/filtration/FiltrationEnum.h
         include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h src/qinterface/filtrationwindows/QTresholdFiltrationWindow.cpp
         include/qinterface/filtrationwindows/QMedianFiltrationWindow.h src/qinterface/filtrationwindows/QMedianFiltrationWindow.cpp

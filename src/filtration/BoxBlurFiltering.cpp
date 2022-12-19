@@ -1,0 +1,38 @@
+//
+// Created by kotyangensss on 17.12.2022.
+//
+
+#include <cmath>
+#include "BoxBlurFiltering.h"
+
+int BoxBlurFiltering::radius = 1;
+
+float calculateBoxBlur(std::vector<float> &pixels, int width, int height, int x, int y, int colorSize, int curColor) {
+    float ans = 0;
+    int num = 0;
+    for (int i = y - BoxBlurFiltering::radius; i <= y + BoxBlurFiltering::radius; i++) {
+        for (int j = x - BoxBlurFiltering::radius; j <= x + BoxBlurFiltering::radius; j++) {
+            if (i < 0 || i >= height || j < 0 || j >= width) {
+                continue;
+            }
+            ans += pixels.at((i * width + j) * colorSize + curColor);
+            num++;
+        }
+    }
+    return ans / num;
+}
+
+std::vector<float> &BoxBlurFiltering::filter(std::vector<float> &pixels, int width, int height) {
+    int colorSize = pixels.size() / (width * height);
+    auto *newPixels = new std::vector<float>(pixels.size(), 0);
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            for (int k = 0; k < colorSize; k++) {
+                newPixels->at((i * width + j) * colorSize + k) = calculateBoxBlur(pixels, width, height, j, i,
+                                                                                  colorSize, k);
+            }
+        }
+    }
+
+    return *newPixels;
+}
