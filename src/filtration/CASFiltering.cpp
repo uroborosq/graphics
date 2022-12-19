@@ -4,10 +4,9 @@
 
 #include <cmath>
 #include "CASFiltering.h"
+#include "FilterConfiguration.h"
 
-float CASFiltering::sharpness = 0.5;
-
-float calculateSharpening(std::vector<float> &pixels, int width, int height, int x, int y, int colorSize, int curColor) {
+float calculateSharpening(std::vector<float> &pixels, int width, int height, int x, int y, int colorSize, int curColor, float sharpness) {
     float minG = 255;
     float maxG = 0;
     for (int j = -1; j <= 1; j++) {
@@ -36,9 +35,9 @@ float calculateSharpening(std::vector<float> &pixels, int width, int height, int
     float dMaxG = 255 - maxG;
     float w;
     if (dMaxG < dMinG) {
-        w = std::sqrt(dMaxG / maxG) * (-0.075 * CASFiltering::sharpness - 0.125);
+        w = std::sqrt(dMaxG / maxG) * (-0.075 * sharpness - 0.125);
     } else {
-        w = std::sqrt(dMinG / maxG) * (-0.075 * CASFiltering::sharpness - 0.125);
+        w = std::sqrt(dMinG / maxG) * (-0.075 * sharpness - 0.125);
     }
     float ans = 0;
     float num = 0;
@@ -72,14 +71,15 @@ float calculateSharpening(std::vector<float> &pixels, int width, int height, int
     }
 }
 
-std::vector<float> &CASFiltering::filter(std::vector<float> &pixels, int width, int height) {
+std::vector<float> &CASFiltering::filter(std::vector<float> &pixels, FilterConfiguration config, int width,
+                                         int height) {
     int colorSize = pixels.size() / (width * height);
     auto *newPixels = new std::vector<float>(pixels.size(), 0);
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             for (int k = 0; k < colorSize; k++) {
                 newPixels->at((i * width + j) * colorSize + k) = calculateSharpening(pixels, width, height, j, i,
-                                                                                     colorSize, k);
+                                                                                     colorSize, k, config.sharpness);
             }
         }
     }

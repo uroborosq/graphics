@@ -7,10 +7,11 @@
 
 #include <vector>
 #include "AbstractFiltering.h"
+#include "FilterConfiguration.h"
 
 class SobelFiltering : public AbstractFiltering {
 public:
-    std::vector<float>& filter(std::vector<float>& pixels, int width, int height) override;
+    std::vector<float> &filter(std::vector<float> &pixels, FilterConfiguration config, int width, int height) override;
 };
 
 #endif //HOROSHOEDITOR_SOBELFILTERING_H

@@ -6,10 +6,11 @@
 #define HOROSHOEDITOR_ABSTRACTFILTERING_H
 
 #include <vector>
+#include "FilterConfiguration.h"
 
 class AbstractFiltering
 {
 public:
-    virtual std::vector<float>& filter(std::vector<float>& pixels, int width, int height) = 0;
+    virtual std::vector<float> &filter(std::vector<float> &pixels, FilterConfiguration config, int width, int height) = 0;
 };
 #endif //HOROSHOEDITOR_ABSTRACTFILTERING_H

@@ -3,16 +3,16 @@
 //
 
 #include "ThresholdFiltering.h"
+#include "FilterConfiguration.h"
 
-float ThresholdFiltering::threshold = 0;
-bool ThresholdFiltering::isUpper = false;
 
-std::vector<float> &ThresholdFiltering::filter(std::vector<float>& pixels, int width, int height) {
+std::vector<float> &ThresholdFiltering::filter(std::vector<float> &pixels, FilterConfiguration config, int width,
+                                               int height) {
     for (float & pixel : pixels) {
-        if (isUpper) {
-            pixel = pixel >= threshold ? 0 : 255;
+        if (config.isUpper) {
+            pixel = pixel >= config.threshold ? 0 : 255;
         } else {
-            pixel = pixel <= threshold ? 0 : 255;
+            pixel = pixel <= config.threshold ? 0 : 255;
         }
     }
 

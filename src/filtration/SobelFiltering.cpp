@@ -33,7 +33,8 @@ float calculateSobel(std::vector<float> &pixels, int width, int height, int x, i
 }
 
 
-std::vector<float> &SobelFiltering::filter(std::vector<float> &pixels, int width, int height) {
+std::vector<float> &SobelFiltering::filter(std::vector<float> &pixels, FilterConfiguration config, int width,
+                                           int height) {
     int colorSize = pixels.size() / (width * height);
     auto *newPixels = new std::vector<float>(pixels.size(), 0);
     for (int i = 0; i < height; i++) {
