@@ -12,6 +12,7 @@
 #include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
+#include "QImageScalingWindow.h"
 
 void QMain::openOpenWindow() {
     auto openWindow = new QOpenPictureWindow();
@@ -191,6 +192,9 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     auto gradientGeneration = new QAction("Сгенерировать изображение с горизонтальным градиентом");
     gradientGeneration->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
 
+    auto imageScaling = new QAction("Задать маштабирование");
+    imageScaling->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
+
     drawLineMenu->addAction(drawLine);
     drawLineMenu->addAction(lineParameters);
 
@@ -205,6 +209,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     editMenu->addMenu(drawLineMenu);
     editMenu->addMenu(ditheringMenu);
     editMenu->addAction(gradientGeneration);
+    editMenu->addAction(imageScaling);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -230,6 +235,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(ditheringParameters, &QAction::triggered, this, &QMain::openDitheringParametersWindow);
     connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
     connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
+    connect(imageScaling, &QAction::triggered, this, &QMain::openImageScalingWindow);
 }
 
 void QMain::openImageChooseDialog() {
@@ -251,4 +257,10 @@ void QMain::openImageChooseDialog() {
         setCentralWidget(picture);
     }
 
+}
+
+void QMain::openImageScalingWindow() {
+    auto imageScalingWindow = new QImageScalingWindow();
+    imageScalingWindow->show();
+//    if (imageScalingWindow->checkSubmitted()) {}
 }

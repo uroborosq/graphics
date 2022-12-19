@@ -69,7 +69,9 @@ add_executable(horoshoeditor src/app/main.cpp
         include/interpolations/BilinearInterpolation.h src/interpolations/BilinearInterpolation.cpp
         include/interpolations/LanczosInterpolation.h src/interpolations/LanczosInterpolation.cpp
         include/interpolations/BCSplinesInterpolation.h src/interpolations/BCSplinesInterpolation.cpp
-        )
+        include/qinterface/QImageScalingWindow.h src/qinterface/QImageScalingWindow.cpp
+        include/interpolations/InterpolationEnum.h
+        include/qinterface/QBCSplineWindow.h src/qinterface/QBCSplineWindow.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)

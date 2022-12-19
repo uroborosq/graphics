@@ -38,6 +38,7 @@ public:
     void openDitheringParametersWindow();
     void openGradientGenerationWindow();
     void openImageChooseDialog();
+    void openImageScalingWindow();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H
