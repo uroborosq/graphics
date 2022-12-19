@@ -7,12 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 IF (WIN32)
     set(CMAKE_PREFIX_PATH "C:\\Users\\UroborosQ\\AppData\\Local\\6.4.0\\msvc2019_64\\lib\\cmake")
     # сюда загнать путь к libdeflate.h
-    include_directories("${LIBDEFLATE_HEADERS_PATH}")
+    include_directories("C:/windagovno/libdeflate")
     add_library(libdeflate SHARED IMPORTED)
     # сюда загнать путь к libdeflate.dll
-    set_property(TARGET libdeflate PROPERTY IMPORTED_LOCATION "${LIBDEFALTE_DLL_PATH}")
+    set_property(TARGET libdeflate PROPERTY IMPORTED_LOCATION "C:/windagovno/libdeflate/libdeflate.a")
     # сюда загнать путь к libdeflate.dll.a
-    set_property(TARGET libdeflate PROPERTY IMPORTED_IMPLIB "${LIBDEFLATE_A_PATH}")
+    set_property(TARGET libdeflate PROPERTY IMPORTED_IMPLIB "C:/windagovno/libdeflate/libdeflate.dll.a")
 ENDIF ()
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)

@@ -9,6 +9,7 @@
 #include <bit>
 #include <cmath>
 #include "PngFilters.h"
+#include <algorithm>
 
 std::vector<float> Png::read(const std::string &path) {
     data.clear();
@@ -165,7 +166,7 @@ void Png::write(const std::string &path, const std::vector<float> &pixels, FileI
         }
     }
     for (int i = 0; i < outputSize; i += 8192) {
-        auto actualLength = std::min(std::min(outputSize - i, outputSize), (std::size_t) 8192);
+        auto actualLength = std::min(std::min(outputSize - i, outputSize), (unsigned long) 8192);
         chunk = buildChunk((int) actualLength, compressedBytes + i, "IDAT");
         output.write((char *) chunk, (int) actualLength + 12);
     }
@@ -195,7 +196,7 @@ int Png::bigEndianBytesToInt(const unsigned char *bytes) {
     return bytes[3] | (bytes[2] << 8) | (bytes[1] << 16) | (bytes[0] << 24);
 }
 
-uint8_t *Png::decodeWithLibdeflate(const uint8_t *data, unsigned long size, unsigned long availableSize, int *output) {
+uint8_t *Png::decodeWithLibdeflate(const uint8_t *data, unsigned long size, unsigned long availableSize, std::size_t *output) {
     auto decompressor = libdeflate_alloc_decompressor();
     auto decompressedBytes = new uint8_t[availableSize];
     if (decompressor == nullptr)
@@ -203,7 +204,7 @@ uint8_t *Png::decodeWithLibdeflate(const uint8_t *data, unsigned long size, unsi
     while (true) {
         auto result = libdeflate_zlib_decompress(decompressor, data, size,
                                                  decompressedBytes,
-                                                 availableSize, reinterpret_cast<size_t *>(output));
+                                                 availableSize, output);
         if (result == LIBDEFLATE_SUCCESS) {
             break;
         } else if (result == LIBDEFLATE_BAD_DATA) {
@@ -287,14 +288,16 @@ unsigned char *Png::undoFilterScanline(unsigned char *scanline, unsigned char *p
 }
 
 void Png::composeDate() {
-    int outputSize;
+    auto* outputSize = new std::size_t;
     std::size_t availableOutputSize = info.height * info.width * bytesPerPixel;
     auto decompressedBytes = decodeWithLibdeflate(compressedData, compressedDataPointer,
-                                                  availableOutputSize, &outputSize);
+                                                  availableOutputSize, outputSize);
 
     auto *previous = new unsigned char[info.width * bytesPerPixel];
     for (int j = 0; j < info.width * bytesPerPixel; j++) previous[j] = 0;
+    std::ofstream cout("log.txt", 'r');
 
+    cout << "\n";
     for (int i = 0; i < info.height; i++) {
         auto *scanline = undoFilterScanline(decompressedBytes + info.width * i * bytesPerPixel + i, previous);
 
@@ -307,6 +310,7 @@ void Png::composeDate() {
             }
         } else {
             for (int j = 0; j < info.width * bytesPerPixel; j++) {
+                cout << int(scanline[j]) << " ";
                 data.push_back(float(scanline[j]));
             }
         }
@@ -316,6 +320,7 @@ void Png::composeDate() {
     }
     delete[] previous;
     delete[] decompressedBytes;
+    delete outputSize;
 }
 
 unsigned char *Png::intToBigEndianBytes(int number) {

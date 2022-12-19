@@ -1,22 +1,5 @@
 #include "Pnm.h"
 
-//Pnm::Pnm(const std::string &path) {
-//    read(path);
-//    }
-
-//void Pnm::write(const std::string &path) {
-//    std::ofstream out(path, std::ios::out | std::ios::binary);
-//    if (out.is_open()) {
-//        out << tag << ' ' << width << ' ' << height << ' ' << max << ' ';
-//        for (float & ch: data) {
-//            out << char(ch);
-//        }
-//    } else {
-//        throw std::invalid_argument("Не получается получить доступ к файлу");
-//    }
-//}
-
-
 std::vector<float> Pnm::read(const std::string &path) {
     fileImageInfo = FileImageInfo{};
     std::ifstream in(path, std::ios::in | std::ios::binary);
@@ -39,7 +22,7 @@ std::vector<float> Pnm::read(const std::string &path) {
     in >> fileImageInfo.height;
     in.get(space);
     in >> depth;
-    fileImageInfo.depth = depth;
+    fileImageInfo.depth = (unsigned char)std::log2(depth + 1);
     in.get(space);
 
 

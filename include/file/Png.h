@@ -23,7 +23,7 @@ private:
     static int bigEndianBytesToInt(const unsigned char *);
     static unsigned char* intToBigEndianBytes(int);
 //    static uint8_t* decodeWithZlib(const uint8_t* data, int size, int availableSize, int* outputSize);
-    static uint8_t* decodeWithLibdeflate(const uint8_t* data, unsigned long size, unsigned long availableSize, int* output);
+    static uint8_t* decodeWithLibdeflate(const uint8_t* data, unsigned long size, unsigned long availableSize, std::size_t * output);
 
     void parsePallet(const unsigned char* palletChunk, int length);
     void parseHeader(const unsigned char* headerData);

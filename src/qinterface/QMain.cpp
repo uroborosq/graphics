@@ -55,7 +55,7 @@ void QMain::openSaveWindow() {
             FileImageInfo info{};
             info.width = currentPixels->getWidth();
             info.height = currentPixels->getHeight();
-            info.depth = 255;
+            info.depth = 8;
             info.channels = currentPixels->getNumberOfChannels();
             info.fileFormat = currentPixels->getTag();
             auto tmp = currentPixels->getGamma();

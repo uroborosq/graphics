@@ -25,8 +25,8 @@ SubPngFilter::undoFilter(const unsigned char *scanline, const unsigned char *pre
     for (int i = 0; i < channelsNumber; i++)
         newScanline[i] = scanline[i];
 
-    for (int i = 1; i < size; i++) {
-        newScanline[i] = scanline[i] + newScanline[i - channelsNumber];
+    for (int i = channelsNumber; i < size; i++) {
+        newScanline[i] = (scanline[i] + newScanline[i - channelsNumber]) % 256;
     }
     return newScanline;
 }
@@ -46,7 +46,7 @@ UpPngFilter::undoFilter(const unsigned char *scanline, const unsigned char *prev
                         short channelsNumber) {
     auto *newScanline = new unsigned char[size];
     for (int i = 0; i < size; i++) {
-        newScanline[i] = scanline[i] + previousScanline[i];
+        newScanline[i] = (scanline[i] + previousScanline[i]) % 256;
     }
     return newScanline;
 }
@@ -57,7 +57,7 @@ unsigned char *AveragePngFilter::applyFilter(const unsigned char *scanline, cons
     auto *newScanline = new unsigned char[size];
 
     for (int i = 0; i < channelsNumber; i++)
-        newScanline[i] = scanline[i] - (unsigned char)std::floor(previousScanline[i] / 2);
+        newScanline[i] = (scanline[i] - (unsigned char)std::floor(previousScanline[i] / 2)) % 256;
 
     for (int i = channelsNumber; i < size; i++) {
         newScanline[i] =
@@ -73,7 +73,7 @@ AveragePngFilter::undoFilter(const unsigned char *scanline, const unsigned char 
     for (int i = 0; i < channelsNumber; i++)
         newScanline[i] = scanline[i] + (unsigned char)std::floor(previousScanline[i] / 2);
     for (int i = channelsNumber; i < size; i++) {
-        newScanline[i] = scanline[i] + (unsigned char)std::floor((int(newScanline[i - channelsNumber] + int(previousScanline[i]))) / 2);
+        newScanline[i] = (scanline[i] + (unsigned char)std::floor((int(newScanline[i - channelsNumber] + int(previousScanline[i]))) / 2)) % 256;
     }
     return newScanline;
 }
@@ -98,7 +98,7 @@ PaethPngFilter::undoFilter(const unsigned char *scanline, const unsigned char *p
         newScanline[i] = scanline[i] + paethPredictor(0, previousScanline[i], 0);
 
     for (int i = channelsNumber; i < size; i++) {
-        newScanline[i] = scanline[i] + paethPredictor(newScanline[i - channelsNumber], previousScanline[i], previousScanline[i - channelsNumber]);
+        newScanline[i] = (scanline[i] + paethPredictor(newScanline[i - channelsNumber], previousScanline[i], previousScanline[i - channelsNumber])) % 256;
     }
     return newScanline;
 }
