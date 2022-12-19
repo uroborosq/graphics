@@ -4,14 +4,13 @@
 
 #include <fstream>
 #include "Png.h"
-#include <map>
 #include "libdeflate.h"
-#include <bit>
 #include <cmath>
 #include "PngFilters.h"
 #include <algorithm>
 
 std::vector<float> Png::read(const std::string &path) {
+
     data.clear();
     pallet.clear();
     info = FileImageInfo{};
@@ -70,8 +69,10 @@ std::vector<float> Png::read(const std::string &path) {
     }
 
     composeDate();
+
     input.close();
     return data;
+
 }
 
 void Png::write(const std::string &path, const std::vector<float> &pixels, FileImageInfo imageInfo) {
@@ -288,16 +289,16 @@ unsigned char *Png::undoFilterScanline(unsigned char *scanline, unsigned char *p
 }
 
 void Png::composeDate() {
-    auto* outputSize = new std::size_t;
+    std::size_t outputSize;
     std::size_t availableOutputSize = info.height * info.width * bytesPerPixel;
+
     auto decompressedBytes = decodeWithLibdeflate(compressedData, compressedDataPointer,
-                                                  availableOutputSize, outputSize);
+                                                  availableOutputSize, &outputSize);
+
 
     auto *previous = new unsigned char[info.width * bytesPerPixel];
     for (int j = 0; j < info.width * bytesPerPixel; j++) previous[j] = 0;
-    std::ofstream cout("log.txt", 'r');
 
-    cout << "\n";
     for (int i = 0; i < info.height; i++) {
         auto *scanline = undoFilterScanline(decompressedBytes + info.width * i * bytesPerPixel + i, previous);
 
@@ -310,7 +311,6 @@ void Png::composeDate() {
             }
         } else {
             for (int j = 0; j < info.width * bytesPerPixel; j++) {
-                cout << int(scanline[j]) << " ";
                 data.push_back(float(scanline[j]));
             }
         }
@@ -320,7 +320,6 @@ void Png::composeDate() {
     }
     delete[] previous;
     delete[] decompressedBytes;
-    delete outputSize;
 }
 
 unsigned char *Png::intToBigEndianBytes(int number) {
