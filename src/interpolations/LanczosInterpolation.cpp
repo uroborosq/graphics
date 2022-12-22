@@ -38,7 +38,7 @@ float calculateLanczos(
             w += t;
         }
     }
-    return std::abs(ans / w);
+    return std::min(std::abs(ans / w), 255.0f);
 }
 
 std::vector<float> &LanczosInterpolation::interpolate(
