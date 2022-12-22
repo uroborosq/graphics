@@ -1,3 +1,4 @@
+#include <cmath>
 #include "Pnm.h"
 
 std::vector<float> Pnm::read(const std::string &path) {

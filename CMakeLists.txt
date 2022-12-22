@@ -81,7 +81,7 @@ add_executable(
         include/file/AbstractFile.h
         include/file/Png.h src/file/Png.cpp
         include/file/FileImageInfo.h
-        include/file/FileFormatType.h include/file/PngFilters.h src/file/PngFilters.cpp include/file/FileOpenDecider.h src/file/FileOpenDecider.cpp include/file/FileFormat.h)
+        include/file/FileFormatType.h include/file/PngFilters.h src/file/PngFilters.cpp include/file/FileOpenDecider.h src/file/FileOpenDecider.cpp include/file/FileFormat.h src/file/Pnm.cpp)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)
