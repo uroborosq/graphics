@@ -39,6 +39,15 @@ public:
     void openGradientGenerationWindow();
     void openImageChooseDialog();
     void openImageScalingWindow();
+    void openTresholdFiltrationWindow();
+    void openOtsuThresholdFiltrationWindow();
+    void openMedianFiltrationWindow();
+    void openGaussianFiltrationWindow();
+    void openLinearAveragingFiltrationWindow();
+    void openSobelFiltrationWindow();
+    void openContrastAdaptiveSharpeningFiltrationWindow();
+    void updatePicture();
+    void removeFiltering();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H

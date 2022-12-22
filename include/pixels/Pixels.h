@@ -10,6 +10,8 @@
 #include "PnmFormat.h"
 #include "DitheringEnum.h"
 #include "InterpolationEnum.h"
+#include "AbstractFiltering.h"
+#include "FiltrationEnum.h"
 
 class Pixels {
 private:
@@ -21,6 +23,8 @@ private:
     float gamma;
     PnmFormat format;
     Dithering dithering;
+    Filtration filtration;
+    FilterConfiguration filterConfiguration;
     int ditheringDepth;
     Interpolation interpolation;
     int scalingWidth;
@@ -50,6 +54,8 @@ public:
                           std::vector<float> &color, const int &lineWidth, const float& transparency);
     void setInterpolation(Interpolation, int &width, int &height, int &x, int &y, double &bSpline, double &cSpline);
     Interpolation& getInterpolation();
+    void setFiltering(Filtration type, FilterConfiguration);
+    Filtration getFiltering();
 };
 
 

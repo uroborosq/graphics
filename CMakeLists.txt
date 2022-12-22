@@ -24,6 +24,8 @@ include_directories(include/dithering)
 include_directories(include/line)
 include_directories(include/gradient)
 include_directories(include/interpolations)
+include_directories(include/filtration)
+include_directories(include/qinterface/filtrationwindows)
 
 add_executable(horoshoeditor src/app/main.cpp
         include/pnm/Pnm.h src/pnm/Pnm.cpp
@@ -72,7 +74,22 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QImageScalingWindow.h src/qinterface/QImageScalingWindow.cpp
         include/interpolations/InterpolationEnum.h
         include/qinterface/QBCSplineWindow.h src/qinterface/QBCSplineWindow.cpp
-        include/interpolations/InterpolatinFabricMethod.h src/interpolations/InterpolationFabricMethod.cpp)
+        include/interpolations/InterpolatinFabricMethod.h src/interpolations/InterpolationFabricMethod.cpp
+
+        include/filtration/AbstractFiltering.h
+        include/filtration/ThresholdFiltering.h src/filtration/ThresholdFiltering.cpp
+        include/filtration/OtsuThresholdFiltering.h src/filtration/OtsuThresholdFiltering.cpp
+        include/filtration/MedianFiltering.h src/filtration/MedianFiltering.cpp
+        include/filtration/GaussianFiltering.h src/filtration/GaussianFiltering.cpp
+        include/filtration/BoxBlurFiltering.h src/filtration/BoxBlurFiltering.cpp
+        include/filtration/SobelFiltering.h src/filtration/SobelFiltering.cpp
+        include/filtration/CASFiltering.h src/filtration/CASFiltering.cpp
+        include/filtration/FiltrationEnum.h
+        include/qinterface/filtrationwindows/QTresholdFiltrationWindow.h src/qinterface/filtrationwindows/QTresholdFiltrationWindow.cpp
+        include/qinterface/filtrationwindows/QMedianFiltrationWindow.h src/qinterface/filtrationwindows/QMedianFiltrationWindow.cpp
+        include/qinterface/filtrationwindows/QGaussianFiltrationWindow.h src/qinterface/filtrationwindows/QGaussianFiltrationWindow.cpp
+        include/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.h src/qinterface/filtrationwindows/QLinearAveragingFiltrationWindow.cpp
+        include/qinterface/filtrationwindows/QContrastAdaptiveSharpeningFiltrationWindow.h src/qinterface/filtrationwindows/QContrastAdaptiveSharpeningFiltrationWindow.cpp include/filtration/FiltrationFabricMethod.h src/filtration/FiltrationFabricMethod.cpp include/filtration/FilterConfiguration.h)
 
 target_link_libraries(horoshoeditor PRIVATE Qt6::Widgets)
 target_link_libraries(horoshoeditor PRIVATE Qt6::Gui)

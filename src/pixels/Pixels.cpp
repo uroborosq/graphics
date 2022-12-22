@@ -9,6 +9,8 @@
 #include "sRGBColorSpace.h"
 #include "DitheringMethodFactory.h"
 #include "InterpolatinFabricMethod.h"
+#include "AbstractFiltering.h"
+#include "FiltrationFabricMethod.h"
 
 Pixels::Pixels()
 {
@@ -27,6 +29,7 @@ Pixels::Pixels()
     scalingShiftY = 0;
     bSpline = 0;
     cSpline = 0.5;
+    filtration = NoFiltration;
 }
 
 Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, const char *tag_,
@@ -44,6 +47,7 @@ Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &
     gamma = gamma_;
     dithering = Dithering::None;
     interpolation = Interpolation::NoInterpolation;
+    filtration = NoFiltration;
 }
 
 std::vector<float> Pixels::getValues()
@@ -53,10 +57,21 @@ std::vector<float> Pixels::getValues()
     auto size = values.size();
     for (std::size_t i = 0; i < size; i++)
         valuesToSend.push_back(values[i]);
+
+    if (filtration != NoFiltration) {
+        auto filter = getFiltrationByEnum(filtration);
+        if (filter != nullptr)
+        valuesToSend = filter->filter(valuesToSend, filterConfiguration, width, height);
+    }
+
+
     if (dithering != Dithering::None)
     {
         valuesToSend = DitheringMethodFactory::create(dithering)->proceed(valuesToSend, width, ditheringDepth, format == P6);
     }
+
+
+
 
     if (colorChannel != ColorChannel::All)
     {
@@ -70,6 +85,7 @@ std::vector<float> Pixels::getValues()
                                                           scalingShiftX, scalingShiftY, bSpline, cSpline);
         }
     }
+
 
     return valuesToSend;
 }
@@ -94,6 +110,8 @@ void Pixels::setColorSpace(const ColorSpace &colorSpace_)
     {
         values = converter->fromLinearRGB(values);
     }
+
+
 
     colorSpace = colorSpace_;
 }
@@ -182,4 +200,13 @@ void Pixels::setInterpolation(Interpolation interpolation_, int &width_, int &he
 
 Interpolation &Pixels::getInterpolation() {
     return interpolation;
+}
+
+void Pixels::setFiltering(Filtration type, FilterConfiguration config) {
+    filtration = type;
+    filterConfiguration = config;
+}
+
+Filtration Pixels::getFiltering() {
+    return filtration;
 }
