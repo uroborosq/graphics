@@ -7,17 +7,18 @@
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QPushButton>
+#include <QLineEdit>
 
 class QGaussianFiltrationWindow : public QDialog {
 private:
     bool isSubmitted;
-    QSpinBox* sigmaBox = new QSpinBox();
+    QLineEdit* sigmaBox;
     void addFilter();
 
 public:
     QGaussianFiltrationWindow();
     bool checkSubmitted();
-    int getSigma();
+    float getSigma();
 };
 
 #endif //HOROSHOEDITOR_QGAUSSIANFILTRATIONWINDOW_H

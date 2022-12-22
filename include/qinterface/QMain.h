@@ -44,7 +44,9 @@ public:
     void openGaussianFiltrationWindow();
     void openLinearAveragingFiltrationWindow();
     void openSobelFiltrationWindow();
-    void openСontrastAdaptiveSharpeningFiltrationWindow();
+    void openContrastAdaptiveSharpeningFiltrationWindow();
+    void updatePicture();
+    void removeFiltering();
 };
 
 #endif //HOROSHOEDITOR_QMAIN_H

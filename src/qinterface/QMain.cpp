@@ -69,7 +69,9 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     auto linearAveragingFilter = new QAction("Линейный усредняющий фильтр (box blur)");
     auto sobelFilter = new QAction("Фильтр Собеля");
     auto contrastAdaptiveSharpeningFilter = new QAction("Contrast Adaptive Sharpening");
+    auto noneFilter = new QAction("Без фильтрации");
 
+    filtrationMenu->addAction(noneFilter);
     filtrationMenu->addAction(thresholdFilter);
     filtrationMenu->addAction(otsuThresholdFilter);
     filtrationMenu->addAction(medianFilter);
@@ -122,7 +124,9 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(gaussianFilter, &QAction::triggered, this, &QMain::openGaussianFiltrationWindow);
     connect(linearAveragingFilter, &QAction::triggered, this, &QMain::openLinearAveragingFiltrationWindow);
     connect(sobelFilter, &QAction::triggered, this, &QMain::openSobelFiltrationWindow);
-    connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this, &QMain::openСontrastAdaptiveSharpeningFiltrationWindow);
+    connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this,
+            &QMain::openContrastAdaptiveSharpeningFiltrationWindow);
+    connect(noneFilter, &QAction::triggered, this, &QMain::removeFiltering);
 }
 
 void QMain::openOpenWindow() {
@@ -285,13 +289,18 @@ void QMain::openTresholdFiltrationWindow() {
     tresholdFiltrationWindow->exec();
 
     if (tresholdFiltrationWindow->checkSubmitted()) {
+        FilterConfiguration config{};
         auto filter = Filtration::Threshold;
-        auto threshold = tresholdFiltrationWindow->getThresholdValue();
+        config.threshold = (float)tresholdFiltrationWindow->getThresholdValue();
+        currentPixels->setFiltering(filter, config);
+        updatePicture();
     }
 }
 
 void QMain::openOtsuThresholdFiltrationWindow() {
     auto filter = Filtration::OtsuThreshold;
+    currentPixels->setFiltering(filter, FilterConfiguration{});
+    updatePicture();
 }
 
 void QMain::openMedianFiltrationWindow() {
@@ -299,8 +308,11 @@ void QMain::openMedianFiltrationWindow() {
     medianFiltrationWindow->exec();
 
     if (medianFiltrationWindow->checkSubmitted()) {
+        FilterConfiguration config{};
         auto filter = Filtration::Median;
-        auto radius = medianFiltrationWindow->getRadius();
+        config.radius = medianFiltrationWindow->getRadius();
+        currentPixels->setFiltering(filter, config);
+        updatePicture();
     }
 }
 
@@ -309,8 +321,11 @@ void QMain::openGaussianFiltrationWindow() {
     gaussianFiltrationWindow->exec();
 
     if (gaussianFiltrationWindow->checkSubmitted()) {
+        FilterConfiguration config{};
         auto filter = Filtration::Gaussian;
-        auto sigma = gaussianFiltrationWindow->getSigma();
+        config.sigma = gaussianFiltrationWindow->getSigma();
+        currentPixels->setFiltering(filter, config);
+        updatePicture();
     }
 }
 
@@ -319,21 +334,41 @@ void QMain::openLinearAveragingFiltrationWindow() {
     linearAveragingFiltrationWindow->exec();
 
     if (linearAveragingFiltrationWindow->checkSubmitted()) {
+        FilterConfiguration config{};
         auto filter = Filtration::LinearAveraging;
-        auto radius = linearAveragingFiltrationWindow->getRadius();
+        config.radius = linearAveragingFiltrationWindow->getRadius();
+        currentPixels->setFiltering(filter, config);
+        updatePicture();
     }
+
 }
 
 void QMain::openSobelFiltrationWindow() {
     auto filter = Filtration::Sobel;
+    currentPixels->setFiltering(filter, FilterConfiguration{});
+    updatePicture();
 }
 
-void QMain::openСontrastAdaptiveSharpeningFiltrationWindow() {
+void QMain::openContrastAdaptiveSharpeningFiltrationWindow() {
     auto contrastAdaptiveSharpeningFiltrationWindow = new QContrastAdaptiveSharpeningFiltrationWindow();
     contrastAdaptiveSharpeningFiltrationWindow->exec();
 
     if (contrastAdaptiveSharpeningFiltrationWindow->checkSubmitted()) {
+        FilterConfiguration config{};
         auto filter = Filtration::ContrastAdaptiveSharpening;
-        auto sharpness = contrastAdaptiveSharpeningFiltrationWindow->getSharpness();
+        config.sharpness = (float)contrastAdaptiveSharpeningFiltrationWindow->getSharpness() / 255.0f;
+        currentPixels->setFiltering(filter, config);
+        updatePicture();
     }
+}
+
+void QMain::updatePicture() {
+    delete picture;
+    picture = new QImageWidget(currentPixels, this);
+    setCentralWidget(picture);
+}
+
+void QMain::removeFiltering() {
+    currentPixels->setFiltering(NoFiltration, FilterConfiguration{});
+    updatePicture();
 }

@@ -7,11 +7,11 @@
 
 #include <vector>
 #include "AbstractFiltering.h"
+#include "FilterConfiguration.h"
 
 class BoxBlurFiltering : public AbstractFiltering {
 public:
-    int static radius;
-    std::vector<float>& filter(std::vector<float>& pixels, int width, int height) override;
+    std::vector<float> &filter(std::vector<float> &pixels, FilterConfiguration config, int width, int height) override;
 };
 
 #endif //HOROSHOEDITOR_BOXBLURFILTERING_H

@@ -7,9 +7,7 @@ QGaussianFiltrationWindow::QGaussianFiltrationWindow() {
     auto layout = new QVBoxLayout();
     auto sigmaLayout = new QHBoxLayout();
     auto sigmaLabel = new QLabel("Задайте сигму");
-    sigmaBox = new QSpinBox();
-    sigmaBox->setMinimum(1);
-    sigmaBox->setSingleStep(1);
+    sigmaBox = new QLineEdit("0.5");
     auto okButton = new QPushButton("Применить");
 
     sigmaLayout->addWidget(sigmaLabel);
@@ -32,6 +30,6 @@ void QGaussianFiltrationWindow::addFilter() {
     this->close();
 }
 
-int QGaussianFiltrationWindow::getSigma() {
-    return sigmaBox->value();
+float QGaussianFiltrationWindow::getSigma() {
+    return std::stof(sigmaBox->text().toStdString());
 }

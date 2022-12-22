@@ -2,6 +2,7 @@
 #define HOROSHOEDITOR_FILTRATIONENUM_H
 
 enum Filtration {
+    NoFiltration,
     Threshold,
     OtsuThreshold,
     Median,

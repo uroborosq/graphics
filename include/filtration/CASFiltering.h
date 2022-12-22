@@ -10,8 +10,7 @@
 
 class CASFiltering : public AbstractFiltering {
 public:
-    float static sharpness;
-    std::vector<float>& filter(std::vector<float>& pixels, int width, int height) override;
+    std::vector<float> &filter(std::vector<float> &pixels, FilterConfiguration config, int width, int height) override;
 };
 
 #endif //HOROSHOEDITOR_CASFILTERING_H

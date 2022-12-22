@@ -3,14 +3,14 @@
 //
 
 #include <cmath>
+#include <algorithm>
 #include "MedianFiltering.h"
 
-int MedianFiltering::radius = 1;
 
-float calculateMedian(std::vector<float> &pixels, int width, int height, int x, int y, int colorSize, int curColor) {
+float calculateMedian(std::vector<float> &pixels, int width, int height, int x, int y, int colorSize, int curColor, int radius) {
     auto *window = new std::vector<float>();
-    for (int i = y - MedianFiltering::radius; i <= y + MedianFiltering::radius; i++) {
-        for (int j = x - MedianFiltering::radius; j <= x + MedianFiltering::radius; j++) {
+    for (int i = y - radius; i <= y + radius; i++) {
+        for (int j = x - radius; j <= x + radius; j++) {
             if (i < 0 || i >= height || j < 0 || j >= width) {
                 continue;
             }
@@ -22,14 +22,15 @@ float calculateMedian(std::vector<float> &pixels, int width, int height, int x, 
 }
 
 
-std::vector<float> &MedianFiltering::filter(std::vector<float> &pixels, int width, int height) {
+std::vector<float> &MedianFiltering::filter(std::vector<float> &pixels, FilterConfiguration config, int width,
+                                            int height) {
     int colorSize = pixels.size() / (width * height);
     auto *newPixels = new std::vector<float>(pixels.size(), 0);
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             for (int k = 0; k < colorSize; k++) {
                 newPixels->at((i * width + j) * colorSize + k) = calculateMedian(pixels, width, height, j, i,
-                                                                                  colorSize, k);
+                                                                                  colorSize, k, config.radius);
             }
         }
     }
