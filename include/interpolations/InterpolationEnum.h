@@ -2,6 +2,7 @@
 #define HOROSHOEDITOR_INTERPOLATIONENUM_H
 
 enum Interpolation {
+    NoInterpolation,
     NearestNeighbour,
     Bilinear,
     Lanczos,

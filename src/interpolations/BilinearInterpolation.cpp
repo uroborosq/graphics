@@ -24,7 +24,9 @@ std::vector<float> &BilinearInterpolation::interpolate(
         int newWidth,
         int newHeight,
         float x,
-        float y
+        float y,
+        double b,
+        double c
         ) {
     int centerX = width / 2;
     int centerY = height / 2;

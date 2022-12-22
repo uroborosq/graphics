@@ -1,5 +1,6 @@
 #include "QImageScalingWindow.h"
 #include "QBCSplineWindow.h"
+#include "InterpolationEnum.h"
 
 QImageScalingWindow::QImageScalingWindow() {
     isSubmitted = false;
@@ -89,4 +90,32 @@ void QImageScalingWindow::bcSpline() {
             cValue = bcSplineWindow->getCValue();
         }
     }
+}
+
+Interpolation QImageScalingWindow::getInterpolationParameters() {
+    return (Interpolation)scalingComboBox->currentIndex();
+}
+
+int QImageScalingWindow::getWidth() {
+    return widhtBox->value();
+}
+
+int QImageScalingWindow::getHeight() {
+    return heightBox->value();
+}
+
+int QImageScalingWindow::getXShift() {
+    return xBox->value();
+}
+
+int QImageScalingWindow::getYShift() {
+    return yBox->value();
+}
+
+double QImageScalingWindow::getBValue() {
+    return bValue;
+}
+
+double QImageScalingWindow::getCValue() {
+    return cValue;
 }

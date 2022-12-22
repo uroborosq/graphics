@@ -9,7 +9,15 @@
 
 class NearestNeighbourInterpolation : public AbstractInterpolation {
 public:
-    std::vector<float> &interpolate(std::vector<float>& pixels, int width, int height, int newWidth, int newHeight, float x, float y) override;
+    std::vector<float> &interpolate(std::vector<float>& pixels,
+                                    int width,
+                                    int height,
+                                    int newWidth,
+                                    int newHeight,
+                                    float x,
+                                    float y,
+                                    double b,
+                                    double c) override;
 };
 
 #endif //HOROSHOEDITOR_NEARESTNEIGHBOURINTERPOLATION_H

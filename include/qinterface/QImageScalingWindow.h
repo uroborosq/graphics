@@ -1,7 +1,7 @@
 #ifndef HOROSHOEDITOR_QIMAGESCALINGWINDOW_H
 #define HOROSHOEDITOR_QIMAGESCALINGWINDOW_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -10,7 +10,7 @@
 #include <QPushButton>
 #include "InterpolationEnum.h"
 
-class QImageScalingWindow : public QWidget {
+class QImageScalingWindow : public QDialog {
 private:
     bool isSubmitted;
     double bValue = 0;
@@ -26,6 +26,13 @@ private:
 public:
     QImageScalingWindow();
     bool checkSubmitted();
+    Interpolation getInterpolationParameters();
+    int getWidth();
+    int getHeight();
+    int getXShift();
+    int getYShift();
+    double getBValue();
+    double getCValue();
 };
 
 #endif //HOROSHOEDITOR_QIMAGESCALINGWINDOW_H

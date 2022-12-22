@@ -4,7 +4,7 @@
 #include <cmath>
 #include "BCSplinesInterpolation.h"
 
-float BCSplinesInterpolation::b = 0.0;
+float BCSplinesInterpolation::b = 0;
 float BCSplinesInterpolation::c = 0.5;
 
 float bc(float x) {
@@ -56,8 +56,12 @@ std::vector<float> &BCSplinesInterpolation::interpolate(
         int newWidth,
         int newHeight,
         float x,
-        float y
+        float y,
+        double b,
+        double c
 ) {
+    BCSplinesInterpolation::b = b;
+    BCSplinesInterpolation::c = c;
     int centerX = width / 2;
     int centerY = height / 2;
     int colorSize = pixels.size() / (width * height);

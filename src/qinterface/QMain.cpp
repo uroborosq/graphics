@@ -262,5 +262,17 @@ void QMain::openImageChooseDialog() {
 void QMain::openImageScalingWindow() {
     auto imageScalingWindow = new QImageScalingWindow();
     imageScalingWindow->show();
-//    if (imageScalingWindow->checkSubmitted()) {}
+    if (imageScalingWindow->checkSubmitted()) {
+        auto interpolation = imageScalingWindow->getInterpolationParameters();
+        auto newWidth = imageScalingWindow->getWidth();
+        auto newHeight = imageScalingWindow->getHeight();
+        auto x = imageScalingWindow->getXShift();
+        auto y = imageScalingWindow->getYShift();
+        auto b = imageScalingWindow->getBValue();
+        auto c = imageScalingWindow->getCValue();
+        currentPixels->setInterpolation(interpolation, newWidth, newHeight, x, y, b, c);
+        delete picture;
+        picture = new QImageWidget(currentPixels, this);
+        setCentralWidget(picture);
+    }
 }
