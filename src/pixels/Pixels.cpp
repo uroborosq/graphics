@@ -8,6 +8,9 @@
 #include "GammaCorrection.h"
 #include "sRGBColorSpace.h"
 #include "DitheringMethodFactory.h"
+#include "InterpolatinFabricMethod.h"
+#include "AbstractFiltering.h"
+#include "FiltrationFabricMethod.h"
 
 Pixels::Pixels() {
     values = std::vector<float>();
@@ -18,7 +21,14 @@ Pixels::Pixels() {
     format = FileFormatType::Raw;
     dithering = Dithering::None;
     gamma = 0;
-    numColorChannels = -1;
+    interpolation = Interpolation::NoInterpolation;
+    scalingWidth = 0;
+    scalingHeight = 0;
+    scalingShiftX = 0;
+    scalingShiftY = 0;
+    bSpline = 0;
+    cSpline = 0.5;
+    filtration = NoFiltration;
 }
 
 Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &height_, FileFormatType _format, int numColorChannels_,
@@ -34,6 +44,8 @@ Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &
     gamma = gamma_;
     numColorChannels = numColorChannels_;
     dithering = Dithering::None;
+    interpolation = Interpolation::NoInterpolation;
+    filtration = NoFiltration;
 }
 
 std::vector<float> Pixels::getValues() {
@@ -48,8 +60,35 @@ std::vector<float> Pixels::getValues() {
     }
 
     if (colorChannel != ColorChannel::All) {
+
+    if (filtration != NoFiltration) {
+        auto filter = getFiltrationByEnum(filtration);
+        if (filter != nullptr)
+        valuesToSend = filter->filter(valuesToSend, filterConfiguration, width, height);
+    }
+
+
+    if (dithering != Dithering::None)
+    {
+        valuesToSend = DitheringMethodFactory::create(dithering)->proceed(valuesToSend, width, ditheringDepth, format == P6);
+    }
+
+
+
+
+    if (colorChannel != ColorChannel::All)
+    {
         valuesToSend = select_color_channel(valuesToSend, colorChannel);
     }
+
+    if (interpolation != Interpolation::NoInterpolation) {
+        auto interpolationType = getInterpolationByEnum(interpolation);
+        if (interpolationType != nullptr) {
+            valuesToSend = interpolationType->interpolate(valuesToSend, width, height, scalingWidth, scalingHeight,
+                                                          scalingShiftX, scalingShiftY, bSpline, cSpline);
+        }
+    }
+
 
     return valuesToSend;
 }
@@ -69,6 +108,8 @@ void Pixels::setColorSpace(const ColorSpace &colorSpace_) {
     if (converter != nullptr) {
         values = converter->fromLinearRGB(values);
     }
+
+
 
     colorSpace = colorSpace_;
 }
@@ -133,4 +174,26 @@ void Pixels::drawLine(AbstractDrawLine *drawer, const long long &x0, const long 
 
 int Pixels::getNumberOfChannels() {
     return numColorChannels;
+void Pixels::setInterpolation(Interpolation interpolation_, int &width_, int &height_, int &x_, int &y_, double  &bSpline_,
+                              double &cSpline_) {
+    interpolation = interpolation_;
+    scalingWidth = width_;
+    scalingHeight = height_;
+    scalingShiftX = x_;
+    scalingShiftY = y_;
+    bSpline = bSpline_;
+    cSpline = cSpline_;
+}
+
+Interpolation &Pixels::getInterpolation() {
+    return interpolation;
+}
+
+void Pixels::setFiltering(Filtration type, FilterConfiguration config) {
+    filtration = type;
+    filterConfiguration = config;
+}
+
+Filtration Pixels::getFiltering() {
+    return filtration;
 }
