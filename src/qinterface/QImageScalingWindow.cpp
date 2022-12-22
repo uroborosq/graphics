@@ -26,12 +26,14 @@ QImageScalingWindow::QImageScalingWindow() {
     auto okButton = new QPushButton("Применить");
 
     widhtBox->setMinimum(1);
+    widhtBox->setMaximum(1e5);
     widhtBox->setValue(1);
 
     widthLayout->addWidget(widhtLabel);
     widthLayout->addWidget(widhtBox);
 
     heightBox->setMinimum(1);
+    heightBox->setMaximum(1e5);
     heightBox->setValue(1);
 
     heightLayout->addWidget(heightLabel);
@@ -49,6 +51,7 @@ QImageScalingWindow::QImageScalingWindow() {
     yLayout->addWidget(yLabel);
     yLayout->addWidget(yBox);
 
+    scalingComboBox->addItem("Без увеличения");
     scalingComboBox->addItem("Ближайшая точка (метод ближайщего соседа)");
     scalingComboBox->addItem("Билинейное");
     scalingComboBox->addItem("Lanczos3");
@@ -81,7 +84,7 @@ void QImageScalingWindow::scaleImage() {
 
 void QImageScalingWindow::bcSpline() {
 
-    if (scalingComboBox->currentIndex() == 3) {
+    if (scalingComboBox->currentIndex() == Interpolation::BCSplines) {
         auto bcSplineWindow = new QBCSplineWindow(bValue, cValue);
         bcSplineWindow->exec();
 

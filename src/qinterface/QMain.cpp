@@ -261,7 +261,7 @@ void QMain::openImageChooseDialog() {
 
 void QMain::openImageScalingWindow() {
     auto imageScalingWindow = new QImageScalingWindow();
-    imageScalingWindow->show();
+    imageScalingWindow->exec();
     if (imageScalingWindow->checkSubmitted()) {
         auto interpolation = imageScalingWindow->getInterpolationParameters();
         auto newWidth = imageScalingWindow->getWidth();

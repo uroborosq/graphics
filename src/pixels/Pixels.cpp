@@ -172,10 +172,6 @@ void Pixels::drawLine(AbstractDrawLine *drawer, const long long &x0, const long 
 void Pixels::setInterpolation(Interpolation interpolation_, int &width_, int &height_, int &x_, int &y_, double  &bSpline_,
                               double &cSpline_) {
     interpolation = interpolation_;
-    if (width_ > width || height_ > height)
-        throw std::invalid_argument("the width or height values are too large for this image");
-    if (x_ > width || y_ > height)
-        throw std::invalid_argument("the shift values are too large for this image");
     scalingWidth = width_;
     scalingHeight = height_;
     scalingShiftX = x_;
