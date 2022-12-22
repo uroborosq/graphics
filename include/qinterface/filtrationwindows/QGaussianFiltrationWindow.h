@@ -12,7 +12,7 @@
 class QGaussianFiltrationWindow : public QDialog {
 private:
     bool isSubmitted;
-    QLineEdit* sigmaBox;
+    QDoubleSpinBox* sigmaBox;
     void addFilter();
 
 public:
