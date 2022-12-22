@@ -54,31 +54,22 @@ std::vector<float> Pixels::getValues() {
     auto size = values.size();
     for (std::size_t i = 0; i < size; i++)
         valuesToSend.push_back(values[i]);
-    if (dithering != Dithering::None) {
-        valuesToSend = DitheringMethodFactory::create(dithering)->proceed(valuesToSend, width, ditheringDepth,
-                                                                          colorChannel == ColorChannel::All ? 3 : 1);
-    }
-
-    if (colorChannel != ColorChannel::All) {
-
-    if (filtration != NoFiltration) {
-        auto filter = getFiltrationByEnum(filtration);
-        if (filter != nullptr)
-        valuesToSend = filter->filter(valuesToSend, filterConfiguration, width, height);
-    }
-
-
-    if (dithering != Dithering::None)
-    {
-        valuesToSend = DitheringMethodFactory::create(dithering)->proceed(valuesToSend, width, ditheringDepth, format == P6);
-    }
-
-
-
 
     if (colorChannel != ColorChannel::All)
     {
         valuesToSend = select_color_channel(valuesToSend, colorChannel);
+    }
+
+
+    if (filtration != NoFiltration) {
+        auto filter = getFiltrationByEnum(filtration);
+        if (filter != nullptr)
+            valuesToSend = filter->filter(valuesToSend, filterConfiguration, width, height);
+    }
+
+    if (dithering != Dithering::None) {
+        valuesToSend = DitheringMethodFactory::create(dithering)->proceed(valuesToSend, width, ditheringDepth,
+                                                                          colorChannel == ColorChannel::All ? 3 : 1);
     }
 
     if (interpolation != Interpolation::NoInterpolation) {
@@ -174,6 +165,7 @@ void Pixels::drawLine(AbstractDrawLine *drawer, const long long &x0, const long 
 
 int Pixels::getNumberOfChannels() {
     return numColorChannels;
+}
 void Pixels::setInterpolation(Interpolation interpolation_, int &width_, int &height_, int &x_, int &y_, double  &bSpline_,
                               double &cSpline_) {
     interpolation = interpolation_;

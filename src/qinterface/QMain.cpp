@@ -62,6 +62,9 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     auto gradientGeneration = new QAction("Сгенерировать изображение с горизонтальным градиентом");
     gradientGeneration->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
 
+    auto imageScaling = new QAction("Задать маштабирование");
+    imageScaling->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
+
     auto filtrationMenu = new QMenu("Применить фильтр к изображению");
 
     auto thresholdFilter = new QAction("Пороговая фильтрация");
@@ -95,6 +98,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     editMenu->addAction(ditheringParameters);
     editMenu->addAction(gradientGeneration);
     editMenu->addMenu(filtrationMenu);
+    editMenu->addAction(imageScaling);
 
     auto close = new QAction("Закрыть");
     close->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -129,6 +133,7 @@ QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
     connect(contrastAdaptiveSharpeningFilter, &QAction::triggered, this,
             &QMain::openContrastAdaptiveSharpeningFiltrationWindow);
     connect(noneFilter, &QAction::triggered, this, &QMain::removeFiltering);
+    connect(imageScaling, &QAction::triggered, this, &QMain::openImageScalingWindow);
 }
 
 void QMain::openOpenWindow() {
@@ -267,91 +272,6 @@ void QMain::openGradientGenerationWindow() {
     }
 }
 
-
-QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
-
-    currentPixels = pixels_;
-    picture = new QImageWidget(pixels_, this);
-    this->resize(300, 300);
-
-    auto fileMenu = new QMenu("Файл");
-
-    auto chooseImage = new QAction("Выбрать изображение из открытых");
-    auto openFile = new QAction("Открыть");
-    openFile->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
-
-    auto saveFile = new QAction("Сохранить как");
-    saveFile->setShortcut(QKeySequence(Qt::CTRL | static_cast<Qt::Key>(Qt::SHIFT) + Qt::Key_S));
-
-    auto editMenu = new QMenu("Редактировать");
-
-    auto colorspaceChange = new QAction("Изменить цветовое пространство");
-    colorspaceChange->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
-
-    auto assignGamma = new QAction("Назначить гамму");
-    assignGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
-
-    auto convertGamma = new QAction("Преобразовать гамму");
-    convertGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-
-    auto drawLineMenu = new QMenu("Рисовать");
-
-    auto drawLine = new QAction("Нарисовать линию");
-    drawLine->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
-
-    auto lineParameters = new QAction("Изменить параметры линии");
-    lineParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
-
-    auto ditheringMenu = new QMenu("Дизеринг");
-
-    auto ditheringParameters = new QAction("Изменить параметры дизеринга");
-    ditheringParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Z));
-
-    auto gradientGeneration = new QAction("Сгенерировать изображение с горизонтальным градиентом");
-    gradientGeneration->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
-
-    drawLineMenu->addAction(drawLine);
-    drawLineMenu->addAction(lineParameters);
-
-    ditheringMenu->addAction(ditheringParameters);
-
-    fileMenu->addAction(openFile);
-    fileMenu->addAction(saveFile);
-    fileMenu->addAction(chooseImage);
-
-    editMenu->addAction(colorspaceChange);
-    editMenu->addAction(assignGamma);
-    editMenu->addAction(convertGamma);
-    editMenu->addMenu(drawLineMenu);
-    editMenu->addMenu(ditheringMenu);
-    editMenu->addAction(gradientGeneration);
-
-    auto close = new QAction("Закрыть");
-    close->setShortcut(QKeySequence(Qt::Key_Escape));
-    connect(close, &QAction::triggered, [this]() {
-        this->close();
-    });
-
-    auto menuBar = new QMenuBar();
-    menuBar->addMenu(fileMenu);
-    menuBar->addMenu(editMenu);
-    menuBar->addAction(close);
-
-    this->setMenuBar(menuBar);
-    this->setCentralWidget(picture);
-
-    connect(openFile, &QAction::triggered, this, &QMain::openOpenWindow);
-    connect(saveFile, &QAction::triggered, this, &QMain::openSaveWindow);
-    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
-    connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
-    connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
-    connect(drawLine, &QAction::triggered, this, &QMain::openDrawLineWindow);
-    connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
-    connect(ditheringParameters, &QAction::triggered, this, &QMain::openDitheringParametersWindow);
-    connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
-    connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
-}
-
 void QMain::openImageChooseDialog() {
     auto names = std::vector<std::string>();
 
@@ -386,12 +306,6 @@ void QMain::openTresholdFiltrationWindow() {
     }
 }
 
-    auto imageScaling = new QAction("Задать маштабирование");
-    imageScaling->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
-
-    drawLineMenu->addAction(drawLine);
-    drawLineMenu->addAction(lineParameters);
-
 void QMain::openOtsuThresholdFiltrationWindow() {
     auto filter = Filtration::OtsuThreshold;
     currentPixels->setFiltering(filter, FilterConfiguration{});
@@ -411,13 +325,6 @@ void QMain::openMedianFiltrationWindow() {
     }
 }
 
-    editMenu->addAction(colorspaceChange);
-    editMenu->addAction(assignGamma);
-    editMenu->addAction(convertGamma);
-    editMenu->addMenu(drawLineMenu);
-    editMenu->addMenu(ditheringMenu);
-    editMenu->addAction(gradientGeneration);
-    editMenu->addAction(imageScaling);
 void QMain::openGaussianFiltrationWindow() {
     auto gaussianFiltrationWindow = new QGaussianFiltrationWindow();
     gaussianFiltrationWindow->exec();
@@ -443,17 +350,7 @@ void QMain::openLinearAveragingFiltrationWindow() {
         updatePicture();
     }
 
-    connect(openFile, &QAction::triggered, this, &QMain::openOpenWindow);
-    connect(saveFile, &QAction::triggered, this, &QMain::openSaveWindow);
-    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
-    connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
-    connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
-    connect(drawLine, &QAction::triggered, this, &QMain::openDrawLineWindow);
-    connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
-    connect(ditheringParameters, &QAction::triggered, this, &QMain::openDitheringParametersWindow);
-    connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
-    connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
-    connect(imageScaling, &QAction::triggered, this, &QMain::openImageScalingWindow);
+
 
 }
 
