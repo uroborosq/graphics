@@ -5,7 +5,7 @@
 #include <QSinglePointEvent>
 
 QImageWidget::QImageWidget(Pixels *pixels, QWidget* parent, Qt::WindowFlags f) : QLabel(parent, f) {
-    _format = pixels->getTag();
+    _colorChannelsNumber = pixels->getNumberOfChannels();
     _height = pixels->getHeight();
     _width = pixels->getWidth();
     _displayPixels = pixels->getValues();
@@ -46,11 +46,11 @@ void QImageWidget::convertToRgb(const ColorSpace &colorSpace) {
 void QImageWidget::proceedGammaCorrection(const float &pixelsGamma) {
     auto gammaCorrector = GammaCorrection();
     if (pixelsGamma != _gammaCorrection) {
-        // если мы хотим показать в какой-то гамме а у нас sRGB
+        // если мы хотим показать в какой-то гамме, а у нас sRGB
         if (pixelsGamma == 0) {
             _displayPixels = sRGBColorSpace().toLinearRGB(_displayPixels);
             _displayPixels = gammaCorrector.changeGamma(_displayPixels, 1, _gammaCorrection);
-            // если мы хотим показать в sRGB а у нас какая то гамма
+            // если мы хотим показать в sRGB а у нас какая-то гамма
         } else if (_gammaCorrection == 0) {
 
             _displayPixels = gammaCorrector.changeGamma(_displayPixels, pixelsGamma, 1);
@@ -63,7 +63,7 @@ void QImageWidget::proceedGammaCorrection(const float &pixelsGamma) {
 
 void QImageWidget::reloadPixmap() {
     auto image = QImage(_width, _height, QImage::Format_RGB888);
-    if (_format == PnmFormat::P6) {
+    if (_colorChannelsNumber == 3) {
         for (int i = 0; i < _height; ++i) {
             for (int j = 0; j < _width; ++j) {
                 auto offset = i * _width * 3 + j * 3;
@@ -74,7 +74,7 @@ void QImageWidget::reloadPixmap() {
             }
         }
 
-    } else if (_format == PnmFormat::P5) {
+    } else if (_colorChannelsNumber == 1) {
         for (int i = 0; i < _height; ++i) {
             for (int j = 0; j < _width; ++j) {
                 auto offset = i * _width + j;

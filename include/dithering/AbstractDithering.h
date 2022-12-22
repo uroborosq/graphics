@@ -10,7 +10,7 @@
 class AbstractDithering
 {
 public:
-    virtual std::vector<float>& proceed(std::vector<float>& pixels, int width, int depth, bool isColorful)= 0;
+    virtual std::vector<float>& proceed(std::vector<float>& pixels, int width, int depth, int numOfChannels)= 0;
 };
 
 

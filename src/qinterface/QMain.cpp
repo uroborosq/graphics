@@ -12,6 +12,7 @@
 #include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
+#include "FileOpenDecider.h"
 #include "QImageScalingWindow.h"
 #include "FiltrationEnum.h"
 #include "QTresholdFiltrationWindow.h"
@@ -137,8 +138,14 @@ void QMain::openOpenWindow() {
         if (openWindow->checkSubmitted()) {
             auto path = openWindow->getPicturePath();
             auto colorspaceChoice = openWindow->getColorSpace();
-            auto file = Pnm(path);
-            auto tmp = new Pixels(file.data, file.width, file.height, file.tag, colorspaceChoice, ColorChannel::All, 0);
+            AbstractFile* file = getFileOpener(path);
+
+            if (file == nullptr)
+                throw std::invalid_argument("Unknown error");
+
+            auto data  = file->read(path);
+            auto info = file->getImageInfo();
+            auto tmp = new Pixels(data, info.width, info.height, info.fileFormat, info.channels, colorspaceChoice, ColorChannel::All, 0);
             currentPixels = tmp;
 
             delete picture;
@@ -157,26 +164,22 @@ void QMain::openOpenWindow() {
 void QMain::openSaveWindow() {
     auto saveWindow = new QSavePictureWindow();
     saveWindow->exec();
-    auto savePicturePath = saveWindow->getPicturePath();
     try {
         if (saveWindow->checkSubmitted()) {
-            Pnm file;
-            file.width = currentPixels->getWidth();
-            file.height = currentPixels->getHeight();
-            file.max = 255;
-            file.tag[0] = 'P';
-            if (currentPixels->getTag() == PnmFormat::P5)
-                file.tag[1] = '5';
-            else {
-                if (currentPixels->getColorChannel() == ColorChannel::All)
-                    file.tag[1] = '6';
-                else
-                    file.tag[1] = '5';
-            }
+            auto savePicturePath = saveWindow->getPicturePath();
+            auto fileFormat = saveWindow->getFormat();
+            auto file = getFileOpener(fileFormat);
+            FileImageInfo info{};
+            info.width = currentPixels->getWidth();
+            info.height = currentPixels->getHeight();
+            info.depth = 8;
+            info.channels = currentPixels->getNumberOfChannels();
+            info.fileFormat = currentPixels->getTag();
+            auto tmp = currentPixels->getGamma();
             currentPixels->setGamma(0);
-            file.data = currentPixels->getValues();
-            file.data = remove_other_channels(file.data, currentPixels->getColorChannel());
-            file.write(savePicturePath);
+            auto data = remove_other_channels(currentPixels->getValues(), currentPixels->getColorChannel());
+            file->write(savePicturePath, data, info);
+            currentPixels->setGamma(tmp);
         }
     }
     catch (const std::invalid_argument &e) {
@@ -262,6 +265,91 @@ void QMain::openGradientGenerationWindow() {
         gradientCounter++;
         setCentralWidget(picture);
     }
+}
+
+
+QMain::QMain(Pixels *pixels_, QImageWidget *picture_) {
+
+    currentPixels = pixels_;
+    picture = new QImageWidget(pixels_, this);
+    this->resize(300, 300);
+
+    auto fileMenu = new QMenu("Файл");
+
+    auto chooseImage = new QAction("Выбрать изображение из открытых");
+    auto openFile = new QAction("Открыть");
+    openFile->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
+
+    auto saveFile = new QAction("Сохранить как");
+    saveFile->setShortcut(QKeySequence(Qt::CTRL | static_cast<Qt::Key>(Qt::SHIFT) + Qt::Key_S));
+
+    auto editMenu = new QMenu("Редактировать");
+
+    auto colorspaceChange = new QAction("Изменить цветовое пространство");
+    colorspaceChange->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
+
+    auto assignGamma = new QAction("Назначить гамму");
+    assignGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+
+    auto convertGamma = new QAction("Преобразовать гамму");
+    convertGamma->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+
+    auto drawLineMenu = new QMenu("Рисовать");
+
+    auto drawLine = new QAction("Нарисовать линию");
+    drawLine->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
+
+    auto lineParameters = new QAction("Изменить параметры линии");
+    lineParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+
+    auto ditheringMenu = new QMenu("Дизеринг");
+
+    auto ditheringParameters = new QAction("Изменить параметры дизеринга");
+    ditheringParameters->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Z));
+
+    auto gradientGeneration = new QAction("Сгенерировать изображение с горизонтальным градиентом");
+    gradientGeneration->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
+
+    drawLineMenu->addAction(drawLine);
+    drawLineMenu->addAction(lineParameters);
+
+    ditheringMenu->addAction(ditheringParameters);
+
+    fileMenu->addAction(openFile);
+    fileMenu->addAction(saveFile);
+    fileMenu->addAction(chooseImage);
+
+    editMenu->addAction(colorspaceChange);
+    editMenu->addAction(assignGamma);
+    editMenu->addAction(convertGamma);
+    editMenu->addMenu(drawLineMenu);
+    editMenu->addMenu(ditheringMenu);
+    editMenu->addAction(gradientGeneration);
+
+    auto close = new QAction("Закрыть");
+    close->setShortcut(QKeySequence(Qt::Key_Escape));
+    connect(close, &QAction::triggered, [this]() {
+        this->close();
+    });
+
+    auto menuBar = new QMenuBar();
+    menuBar->addMenu(fileMenu);
+    menuBar->addMenu(editMenu);
+    menuBar->addAction(close);
+
+    this->setMenuBar(menuBar);
+    this->setCentralWidget(picture);
+
+    connect(openFile, &QAction::triggered, this, &QMain::openOpenWindow);
+    connect(saveFile, &QAction::triggered, this, &QMain::openSaveWindow);
+    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
+    connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
+    connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
+    connect(drawLine, &QAction::triggered, this, &QMain::openDrawLineWindow);
+    connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
+    connect(ditheringParameters, &QAction::triggered, this, &QMain::openDitheringParametersWindow);
+    connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
+    connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
 }
 
 void QMain::openImageChooseDialog() {

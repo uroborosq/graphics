@@ -6,7 +6,7 @@
 #include "RandomDithering.h"
 #include "NearestColor.h"
 
-std::vector<float> &RandomDithering::proceed(std::vector<float> &pixels, int width, int depth, bool isColorful) {
+std::vector<float> &RandomDithering::proceed(std::vector<float> &pixels, int width, int depth, int numOfChannels) {
     auto size = pixels.size();
     for (std::size_t i = 0; i < size; i++) {
         float newColor = pixels[i] + std::rand() % 256 - 128;
