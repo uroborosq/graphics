@@ -23,6 +23,7 @@ include_directories(include/gamma)
 include_directories(include/dithering)
 include_directories(include/line)
 include_directories(include/gradient)
+include_directories(include/interpolations)
 include_directories(include/filtration)
 include_directories(include/qinterface/filtrationwindows)
 
@@ -65,6 +66,16 @@ add_executable(horoshoeditor src/app/main.cpp
         include/qinterface/QGradientGenerationWindow.h src/qinterface/QGradientGenerationWindow.cpp
         include/qinterface/QDitheringParametersWindow.h src/qinterface/QDitheringParametersWindow.cpp
         include/qinterface/QChooseImageDialog.h src/qinterface/QChooseImageDialog.cpp
+        include/interpolations/AbstractInterpolation.h
+        include/interpolations/NearestNeighbourInterpolation.h src/interpolations/NearestNeighbourInterpolation.cpp
+        include/interpolations/BilinearInterpolation.h src/interpolations/BilinearInterpolation.cpp
+        include/interpolations/LanczosInterpolation.h src/interpolations/LanczosInterpolation.cpp
+        include/interpolations/BCSplinesInterpolation.h src/interpolations/BCSplinesInterpolation.cpp
+        include/qinterface/QImageScalingWindow.h src/qinterface/QImageScalingWindow.cpp
+        include/interpolations/InterpolationEnum.h
+        include/qinterface/QBCSplineWindow.h src/qinterface/QBCSplineWindow.cpp
+        include/interpolations/InterpolatinFabricMethod.h src/interpolations/InterpolationFabricMethod.cpp
+
         include/filtration/AbstractFiltering.h
         include/filtration/ThresholdFiltering.h src/filtration/ThresholdFiltering.cpp
         include/filtration/OtsuThresholdFiltering.h src/filtration/OtsuThresholdFiltering.cpp

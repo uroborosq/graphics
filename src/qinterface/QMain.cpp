@@ -12,6 +12,7 @@
 #include "QDitheringParametersWindow.h"
 #include "QGradientGenerationWindow.h"
 #include "QChooseImageDialog.h"
+#include "QImageScalingWindow.h"
 #include "FiltrationEnum.h"
 #include "QTresholdFiltrationWindow.h"
 #include "QMedianFiltrationWindow.h"
@@ -297,6 +298,12 @@ void QMain::openTresholdFiltrationWindow() {
     }
 }
 
+    auto imageScaling = new QAction("Задать маштабирование");
+    imageScaling->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
+
+    drawLineMenu->addAction(drawLine);
+    drawLineMenu->addAction(lineParameters);
+
 void QMain::openOtsuThresholdFiltrationWindow() {
     auto filter = Filtration::OtsuThreshold;
     currentPixels->setFiltering(filter, FilterConfiguration{});
@@ -316,6 +323,13 @@ void QMain::openMedianFiltrationWindow() {
     }
 }
 
+    editMenu->addAction(colorspaceChange);
+    editMenu->addAction(assignGamma);
+    editMenu->addAction(convertGamma);
+    editMenu->addMenu(drawLineMenu);
+    editMenu->addMenu(ditheringMenu);
+    editMenu->addAction(gradientGeneration);
+    editMenu->addAction(imageScaling);
 void QMain::openGaussianFiltrationWindow() {
     auto gaussianFiltrationWindow = new QGaussianFiltrationWindow();
     gaussianFiltrationWindow->exec();
@@ -340,6 +354,18 @@ void QMain::openLinearAveragingFiltrationWindow() {
         currentPixels->setFiltering(filter, config);
         updatePicture();
     }
+
+    connect(openFile, &QAction::triggered, this, &QMain::openOpenWindow);
+    connect(saveFile, &QAction::triggered, this, &QMain::openSaveWindow);
+    connect(colorspaceChange, &QAction::triggered, this, &QMain::openColorSpaceAndChannelWindow);
+    connect(assignGamma, &QAction::triggered, this, &QMain::openAssignGammaWindow);
+    connect(convertGamma, &QAction::triggered, this, &QMain::openConvertGammaWindow);
+    connect(drawLine, &QAction::triggered, this, &QMain::openDrawLineWindow);
+    connect(lineParameters, &QAction::triggered, this, &QMain::openLineParametersWindow);
+    connect(ditheringParameters, &QAction::triggered, this, &QMain::openDitheringParametersWindow);
+    connect(gradientGeneration, &QAction::triggered, this, &QMain::openGradientGenerationWindow);
+    connect(chooseImage, &QAction::triggered, this, &QMain::openImageChooseDialog);
+    connect(imageScaling, &QAction::triggered, this, &QMain::openImageScalingWindow);
 
 }
 
@@ -371,4 +397,22 @@ void QMain::updatePicture() {
 void QMain::removeFiltering() {
     currentPixels->setFiltering(NoFiltration, FilterConfiguration{});
     updatePicture();
+}
+
+void QMain::openImageScalingWindow() {
+    auto imageScalingWindow = new QImageScalingWindow();
+    imageScalingWindow->exec();
+    if (imageScalingWindow->checkSubmitted()) {
+        auto interpolation = imageScalingWindow->getInterpolationParameters();
+        auto newWidth = imageScalingWindow->getWidth();
+        auto newHeight = imageScalingWindow->getHeight();
+        auto x = imageScalingWindow->getXShift();
+        auto y = imageScalingWindow->getYShift();
+        auto b = imageScalingWindow->getBValue();
+        auto c = imageScalingWindow->getCValue();
+        currentPixels->setInterpolation(interpolation, newWidth, newHeight, x, y, b, c);
+        delete picture;
+        picture = new QImageWidget(currentPixels, this);
+        setCentralWidget(picture);
+    }
 }

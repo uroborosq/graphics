@@ -9,6 +9,7 @@
 #include "AbstractDrawLine.h"
 #include "PnmFormat.h"
 #include "DitheringEnum.h"
+#include "InterpolationEnum.h"
 #include "AbstractFiltering.h"
 #include "FiltrationEnum.h"
 
@@ -25,6 +26,13 @@ private:
     Filtration filtration;
     FilterConfiguration filterConfiguration;
     int ditheringDepth;
+    Interpolation interpolation;
+    int scalingWidth;
+    int scalingHeight;
+    int scalingShiftX;
+    int scalingShiftY;
+    double bSpline;
+    double cSpline;
 public:
     Pixels();
     Pixels(const std::vector<float> &values_, const int& width_, const int& height_, const char* tag_,
@@ -44,6 +52,8 @@ public:
     const Dithering& getDithering();
     void drawLine(AbstractDrawLine *drawer, const long long &x0, const long long &y0, const long long &x1, const long long &y1,
                           std::vector<float> &color, const int &lineWidth, const float& transparency);
+    void setInterpolation(Interpolation, int &width, int &height, int &x, int &y, double &bSpline, double &cSpline);
+    Interpolation& getInterpolation();
     void setFiltering(Filtration type, FilterConfiguration);
     Filtration getFiltering();
 };

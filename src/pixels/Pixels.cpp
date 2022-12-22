@@ -8,6 +8,7 @@
 #include "GammaCorrection.h"
 #include "sRGBColorSpace.h"
 #include "DitheringMethodFactory.h"
+#include "InterpolatinFabricMethod.h"
 #include "AbstractFiltering.h"
 #include "FiltrationFabricMethod.h"
 
@@ -21,6 +22,13 @@ Pixels::Pixels()
     format = PnmFormat::P6;
     dithering = Dithering::None;
     gamma = 0;
+    interpolation = Interpolation::NoInterpolation;
+    scalingWidth = 0;
+    scalingHeight = 0;
+    scalingShiftX = 0;
+    scalingShiftY = 0;
+    bSpline = 0;
+    cSpline = 0.5;
     filtration = NoFiltration;
 }
 
@@ -38,6 +46,7 @@ Pixels::Pixels(const std::vector<float> &values_, const int &width_, const int &
     colorChannel = colorChannel_;
     gamma = gamma_;
     dithering = Dithering::None;
+    interpolation = Interpolation::NoInterpolation;
     filtration = NoFiltration;
 }
 
@@ -69,6 +78,13 @@ std::vector<float> Pixels::getValues()
         valuesToSend = select_color_channel(valuesToSend, colorChannel);
     }
 
+    if (interpolation != Interpolation::NoInterpolation) {
+        auto interpolationType = getInterpolationByEnum(interpolation);
+        if (interpolationType != nullptr) {
+            valuesToSend = interpolationType->interpolate(valuesToSend, width, height, scalingWidth, scalingHeight,
+                                                          scalingShiftX, scalingShiftY, bSpline, cSpline);
+        }
+    }
 
 
     return valuesToSend;
@@ -169,6 +185,21 @@ void Pixels::drawLine(AbstractDrawLine *drawer, const long long &x0, const long 
                       std::vector<float> &color, const int &lineWidth, const float &transparency)
 {
     values = drawer->drawLine(values, width, height, lineWidth, transparency, x0, y0, x1, y1, color);
+}
+
+void Pixels::setInterpolation(Interpolation interpolation_, int &width_, int &height_, int &x_, int &y_, double  &bSpline_,
+                              double &cSpline_) {
+    interpolation = interpolation_;
+    scalingWidth = width_;
+    scalingHeight = height_;
+    scalingShiftX = x_;
+    scalingShiftY = y_;
+    bSpline = bSpline_;
+    cSpline = cSpline_;
+}
+
+Interpolation &Pixels::getInterpolation() {
+    return interpolation;
 }
 
 void Pixels::setFiltering(Filtration type, FilterConfiguration config) {
