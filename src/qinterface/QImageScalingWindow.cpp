@@ -39,13 +39,15 @@ QImageScalingWindow::QImageScalingWindow() {
     heightLayout->addWidget(heightLabel);
     heightLayout->addWidget(heightBox);
 
-    xBox->setMinimum(0);
+    xBox->setMinimum(-1e3);
+    xBox->setMaximum(1e3);
     xBox->setValue(0);
 
     xLayout->addWidget(xLabel);
     xLayout->addWidget(xBox);
 
-    yBox->setMinimum(0);
+    yBox->setMinimum(-1e3);
+    yBox->setMaximum(1e3);
     yBox->setValue(0);
 
     yLayout->addWidget(yLabel);
