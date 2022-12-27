@@ -2,7 +2,6 @@
 #define QIMAGEWIDGET_H
 
 #include <QLabel>
-#include "PnmFormat.h"
 #include "Pixels.h"
 
 class QImageWidget : public QLabel
@@ -10,7 +9,7 @@ class QImageWidget : public QLabel
 private:
     int _width;
     int _height;
-    PnmFormat _format;
+    int _colorChannelsNumber;
     std::vector<float> _displayPixels;
     float _gammaCorrection;
     int _mousePressXCoordinate = 0;

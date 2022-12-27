@@ -2,7 +2,8 @@
 #include "QDrawLineWindow.h"
 #include "DrawColoredLine.h"
 
-QDrawLineWindow::QDrawLineWindow(Pixels* pixels, QImageWidget** picture, QMain* mainWindow, QColor color, int lineThickness, float lineTransparency) {
+QDrawLineWindow::QDrawLineWindow(Pixels *pixels, QImageWidget **picture, QMain *mainWindow, QColor color,
+                                 int lineThickness, float lineTransparency) {
     this->resize(200, 100);
 
     _pixels = pixels;
@@ -74,17 +75,17 @@ void QDrawLineWindow::chooseSecondPoint() {
     secondPointYValue->setText(QString::number((*_picture)->getMousePressYCoordinate()));
 }
 
-void QDrawLineWindow::draw()
-{
+void QDrawLineWindow::draw() {
     auto drawer = new DrawColoredLine();
     auto x0 = firstPointXValue->text().toLongLong();
     auto y0 = firstPointYValue->text().toLongLong();
     auto x1 = secondPointXValue->text().toLongLong();
     auto y1 = secondPointYValue->text().toLongLong();
     std::vector<float> color;
-    if (_pixels->getTag() == PnmFormat::P6)
-    color = std::vector<float>{static_cast<float>(_color.red()), static_cast<float>(_color.green()), static_cast<float>(_color.blue())};
-    else if (_pixels->getTag() == PnmFormat::P5)
+    if (_pixels->getNumberOfChannels() == 3)
+        color = std::vector<float>{static_cast<float>(_color.red()), static_cast<float>(_color.green()),
+                                   static_cast<float>(_color.blue())};
+    else
         color = std::vector<float>{static_cast<float>(graySpin->value())};
 
     _pixels->drawLine(drawer, x0, y0, x1, y1, color, _lineThickness, 1 - _lineTransparency);

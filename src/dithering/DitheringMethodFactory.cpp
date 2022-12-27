@@ -20,4 +20,5 @@ AbstractDithering *DitheringMethodFactory::create(Dithering dithering) {
         case None:
             return nullptr;
     }
+    return nullptr;
 }

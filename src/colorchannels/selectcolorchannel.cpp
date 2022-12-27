@@ -3,32 +3,32 @@
 //
 #include "selectcolorchannel.h"
 
-std::vector<float>& select_color_channel(std::vector<float> &pixels, const ColorChannel &colorChannel) {
+std::vector<float> select_color_channel(const std::vector<float> &pixels, const ColorChannel &colorChannel) {
     auto size = pixels.size();
     if (colorChannel == ColorChannel::All) {
         return pixels;
     }
-
-   for (std::size_t i = 0; i < size; i++)
+   auto filtered_pixels = std::vector<float>(size);
+   for (std::size_t i = colorChannel - 1; i < size; i += 3)
    {
-       if (i % 3 != colorChannel - 1)
-           pixels[i] = 0;
+//       if (i % 3 != colorChannel - 1)
+//           pixels[i] = 0;
+       filtered_pixels[i] = pixels[i];
    }
 
-    return pixels;
+    return filtered_pixels;
 }
 
-std::vector<float>& remove_other_channels(std::vector<float> &pixels, const ColorChannel &colorChannel) {
+std::vector<float> remove_other_channels(const std::vector<float> &pixels, const ColorChannel &colorChannel) {
     auto size = pixels.size();
-    auto filtered_pixels = new std::vector<float>();
     if (colorChannel == ColorChannel::All) {
-        *filtered_pixels = pixels;
-        return *filtered_pixels;
+        return pixels;
     }
-    
+    auto filtered_pixels = std::vector<float>();
+
     for (std::size_t i = colorChannel - 1; i < size; i += 3) {
-        filtered_pixels->push_back(pixels[i]);
+        filtered_pixels.push_back(pixels[i]);
     }
 
-    return *filtered_pixels;
+    return filtered_pixels;
 }

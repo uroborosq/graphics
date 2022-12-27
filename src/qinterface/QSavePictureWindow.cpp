@@ -11,12 +11,15 @@ QSavePictureWindow::QSavePictureWindow() {
     savePathLine = new QLineEdit();
     auto saveLabel = new QLabel("Введите путь для сохранения файла");
     auto saveButton = new QPushButton("Сохранить");
+    formatList = new QComboBox();
+    formatList->addItem("PNM");
+    formatList->addItem("PNG");
     saveButton->setAutoDefault(true);
 
     auto layout = new QVBoxLayout();
     layout->addWidget(saveLabel);
     layout->addWidget(savePathLine);
-
+    layout->addWidget(formatList);
     layout->addWidget(saveButton);
     setLayout(layout);
 
@@ -34,4 +37,8 @@ void QSavePictureWindow::savePicture() {
 
 std::string QSavePictureWindow::getPicturePath() {
     return savePathLine->text().toStdString();
+}
+
+FileFormat QSavePictureWindow::getFormat() {
+    return FileFormat(formatList->currentIndex());
 }

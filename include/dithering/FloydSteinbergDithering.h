@@ -9,7 +9,7 @@
 
 class FloydSteinbergDithering : public AbstractDithering {
 public:
-    std::vector<float> &proceed(std::vector<float> &pixels, int width, int depth, bool isColorful) override;
+    std::vector<float> &proceed(std::vector<float> &pixels, int width, int depth, int numOfChannels) override;
 };
 
 #endif //HOROSHOEDITOR_FLOYDSTEINBERGDITHERING_H

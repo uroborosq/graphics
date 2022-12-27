@@ -11,13 +11,14 @@
 #include <QDialog>
 #include "Pnm.h"
 #include "Pixels.h"
-
+#include "FileFormat.h"
 class QSavePictureWindow : public QDialog {
 public:
+    QComboBox* formatList;
     explicit QSavePictureWindow();
     std::string getPicturePath();
     bool checkSubmitted();
-
+    FileFormat getFormat();
 private:
     QLineEdit* savePathLine;
     bool isSubmitted;

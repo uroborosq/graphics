@@ -82,10 +82,9 @@ void QGradientGenerationWindow::generateGradientPicture() {
                                             static_cast<float>(rightColor.green()),
                                             static_cast<float>(rightColor.blue())};
         auto *gradient = new Gradient();
-        const char *tag = "P6";
         auto values = gradient->drawGradient(widthBox->value(), heightBox->value(), leftColorVector, rightColorVector);
         delete pixels;
-        pixels = new Pixels(values, widthBox->value(), heightBox->value(), tag, ColorSpace::RGB, ColorChannel::All, 0);
+        pixels = new Pixels(values, widthBox->value(), heightBox->value(), Raw, 3, ColorSpace::RGB, ColorChannel::All, 0);
         picture = new QImageWidget(pixels, nullptr);
         gradientButton->setText("Закрыть превью");
         picture->show();
@@ -103,10 +102,9 @@ void QGradientGenerationWindow::generateGrayscaleGradient() {
         std::vector<float> leftColorVector{0};
         std::vector<float> rightColorVector{255};
         auto *gradient = new Gradient();
-        const char *tag = "P5";
         auto values = gradient->drawGradient(widthBox->value(), heightBox->value(), leftColorVector, rightColorVector);
         delete pixels;
-        pixels = new Pixels(values, widthBox->value(), heightBox->value(), tag, ColorSpace::RGB, ColorChannel::All, 1);
+        pixels = new Pixels(values, widthBox->value(), heightBox->value(), Raw, 1 , ColorSpace::RGB, ColorChannel::All, 1);
         picture = new QImageWidget(pixels, nullptr);
         gradientButton->setText("Закрыть превью");
         picture->show();
